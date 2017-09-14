@@ -248,125 +248,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/hiveasfas/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="leonyoung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://i.cbc.ca/1.3311592.1447111976!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_620/kobe-bryant.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/14/hiveasfas/" itemprop="url">hiveasfas</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-14T23:06:17+08:00">
-                2017-09-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/hive如何实现自定义函数/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -460,19 +341,17 @@
       
         
           
-            <h2 id="hive如何实现自定义函数"><a href="#hive如何实现自定义函数" class="headerlink" title="hive如何实现自定义函数"></a>hive如何实现自定义函数</h2><blockquote>
+            <h1 id="hive如何实现自定义函数"><a href="#hive如何实现自定义函数" class="headerlink" title="hive如何实现自定义函数"></a>hive如何实现自定义函数</h1><blockquote>
 <p>概述：我们在使用hive的时候，很多时候执行复杂的sql时，hive提供的函数无法满足我们的需求。这个时候就需要我们自己去定义一个函数。<br>幸好，hive为我们允许使用java来子线自定义函数。</p>
 </blockquote>
-<p>####1、实现自定义UDF函数必须满足两个条件。</p>
-<ul>
+<h4 id="1、实现自定义UDF函数必须满足两个条件。"><a href="#1、实现自定义UDF函数必须满足两个条件。" class="headerlink" title="1、实现自定义UDF函数必须满足两个条件。"></a>1、实现自定义UDF函数必须满足两个条件。</h4><ul>
 <li>（1） 必须是org.apache.Hadoop.hive.ql.exec.UDF的子类 </li>
 <li>（2） 必须实现evaluate函数。</li>
 </ul>
-<p>####2、实现方法具体如下：</p>
-<ul>
+<h4 id="2、实现方法具体如下："><a href="#2、实现方法具体如下：" class="headerlink" title="2、实现方法具体如下："></a>2、实现方法具体如下：</h4><ul>
 <li>（1）将$HIVE_HOME/lib中的两个jar包，分别是hive-contrib-2.1.1.jar和hive-exec-2.1.1.jar，把两个jar包放置到java的目录下，然后新建一个类，继承UDF。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">package org.apache.hadoop.hive.contrib.udf.example;</div><div class="line">import org.apache.commons.lang.StringUtils;import org.apache.hadoop.hive.ql.exec.UDF;</div><div class="line">import java.util.Arrays;</div><div class="line">public class ReturnMin extends UDF</div><div class="line">&#123;</div><div class="line">    public static Integer evaluate(String str, String separator) &#123;</div><div class="line">        int result = 100;       </div><div class="line">        if(StringUtils.isEmpty(str))&#123;</div><div class="line">            return result;        </div><div class="line">         &#125;</div><div class="line">        String[] strArray = str.split(separator);</div><div class="line">        int[] intArray = new int[strArray.length];        </div><div class="line">        for(int i = 0 ; i &lt; strArray.length ; i++) &#123;</div><div class="line">            intArray[i] = Integer.parseInt(strArray[i]);        </div><div class="line">        &#125;</div><div class="line">        Arrays.sort(intArray);        </div><div class="line">        return intArray[0];    </div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">package org.apache.hadoop.hive.contrib.udf.example;</div><div class="line">import org.apache.commons.lang.StringUtils;import 	org.apache.hadoop.hive.ql.exec.UDF;</div><div class="line">import java.util.Arrays;</div><div class="line">public class ReturnMin extends UDF</div><div class="line">&#123;</div><div class="line">   	public static Integer evaluate(String str, String separator) &#123;</div><div class="line">       	int result = 100;       </div><div class="line">       	if(StringUtils.isEmpty(str))&#123;</div><div class="line">           	return result;        </div><div class="line">        	&#125;</div><div class="line">       	String[] strArray = str.split(separator);</div><div class="line">       	int[] intArray = new int[strArray.length];        </div><div class="line">       	for(int i = 0 ; i &lt; strArray.length ; i++) &#123;</div><div class="line">           	intArray[i] = Integer.parseInt(strArray[i]);        </div><div class="line">       	&#125;</div><div class="line">       	Arrays.sort(intArray);        </div><div class="line">       	return intArray[0];    </div><div class="line">       	&#125;</div></pre></td></tr></table></figure>
 <ul>
 <li><p>(2)  然后将ReturnMin.class文件拷贝到hive-contrib-2.1.1.jar\org\apache\hadoop\hive\contrib\udf\example目录中，然后替换hive select<br>在hive的cli中执行：CREATE FUNCTION ReturnMin AS ‘org.apache.hadoop.hive.contrib.udf.example.ReturnMin’;<br>然后重新进入cli中，给这个函数传递一个数字的字符串和分隔符就能够将这个字符串最小的值返回。</p>
 <p>hive删除一个自定义函数： drop function cutString;</p>
@@ -897,7 +776,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">文章</span>
               </a>
             </div>
