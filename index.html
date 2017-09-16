@@ -1,1144 +1,431 @@
-<!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next muse use-motion" lang="zh-hk">
+<!DOCTYPE HTML>
+<html>
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<meta name="theme-color" content="#222">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable"  content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <link rel="dns-prefetch" href="//t11.baidu.com">
+    <!--SEO-->
+
+<meta name="description" content="人类总不会寂寞，因为生命是进步的，是天生的。"/>
+
+
+
+<meta name="robots" content="all" />
+<meta name="google" content="all" />
+<meta name="googlebot" content="all" />
+<meta name="verify" content="all" />
+    <!--Title-->
+
+
+<title>Hexo</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
 
 
 
 
 
+<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
+<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
 
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+    
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
     
     
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.2" />
-
-
-
-
-
-
-<meta name="description" content="人类总不会寂寞，因为生命是进步的，是天生的。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="人类总不会寂寞，因为生命是进步的，是天生的。">
-<meta property="og:locale" content="zh-hk">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
-<meta name="twitter:description" content="人类总不会寂寞，因为生命是进步的，是天生的。">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Muse',
-    version: '5.1.2',
-    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://yoursite.com/"/>
-
-
-
-
-
-  <title>Hexo</title>
-  
-
-
-
-
-
-
-
-
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
 
-  
-  
-    
-  
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
 
-  <div class="container sidebar-position-left 
-  page-home">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Hexo</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+<body>
+    <header class="main-header">
+    <div class="main-header-box">
+        <a class="branding" href="/" title="">
+            <img src="/img/header_logo.png" alt="Snippet 博客主题">
+        </a>
+        <h2 class="text-hide">Snippet主题</h2>
+        <img src="/img/header_logo.png" alt="Snippet 博客主题" class="hide">
     </div>
-      
-        <p class="site-subtitle"></p>
-      
-  </div>
-
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首頁
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            歸檔
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-bars"></i>
+                    </span>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class=""><a href="/">Home</a></li>
+                        
+                            <li role="presentation" class=""><a href="/categories/前端/">前端</a></li>
+                        
+                            <li role="presentation" class=""><a href="/categories/后端/">后端</a></li>
+                        
+                            <li role="presentation" class=""><a href="/categories/工具/">工具</a></li>
+                        
+                            <li role="presentation" class=""><a href="/categories/资源/">资源</a></li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-  <section id="posts" class="posts-expand">
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/16/上传本地jar包到nexus仓库中/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="leonyoung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://i.cbc.ca/1.3311592.1447111976!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_620/kobe-bryant.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/16/上传本地jar包到nexus仓库中/" itemprop="url">上传本地jar包到nexus仓库中</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-16T15:40:16+08:00">
-                2017-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>#上传本地jar包到nexus仓库中</p>
-<blockquote>
-<p>概述：有时在我们的nexus仓库中没有项目中所需的jar包，这个时候就需要从网络中下载，然后上传到nexus仓库中，然后我们就可以嗨森的敲代码啦。</p>
-</blockquote>
-<h4 id="1、首先需要是对应的repository有上传的权限"><a href="#1、首先需要是对应的repository有上传的权限" class="headerlink" title="1、首先需要是对应的repository有上传的权限"></a>1、首先需要是对应的repository有上传的权限</h4><p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547143/haha_zqbfpz.png" alt=""></p>
-<h4 id="2、我们这里讲jar包上传到3rd-party仓库中。先点击artifact-upload然后选择GAV-definition，手动将group-id、artifact、version填入，然后packaging选择jar。"><a href="#2、我们这里讲jar包上传到3rd-party仓库中。先点击artifact-upload然后选择GAV-definition，手动将group-id、artifact、version填入，然后packaging选择jar。" class="headerlink" title="2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、artifact、version填入，然后packaging选择jar。"></a>2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、artifact、version填入，然后packaging选择jar。</h4><p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547985/4B23709_hwgqem.png" alt=""></p>
-<h4 id="3、然后点击select-artifact（s）-to-upload将本地的jar加入，点击add-artifact，然后点击upload-artifact。"><a href="#3、然后点击select-artifact（s）-to-upload将本地的jar加入，点击add-artifact，然后点击upload-artifact。" class="headerlink" title="3、然后点击select artifact（s） to upload将本地的jar加入，点击add artifact，然后点击upload artifact。"></a>3、然后点击select artifact（s） to upload将本地的jar加入，点击add artifact，然后点击upload artifact。</h4><p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547145/sb_pmqkdu.png" alt=""></p>
-<h4 id="4、最后刷新就能看到刚才加入的jar包。"><a href="#4、最后刷新就能看到刚才加入的jar包。" class="headerlink" title="4、最后刷新就能看到刚才加入的jar包。"></a>4、最后刷新就能看到刚才加入的jar包。</h4><p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547145/sb28F42D_beaise.png" alt=""></p>
-<p><strong>此外需要注意的是，将入到3rd仓库之后可能对应的坐标会发生变化。如果前后坐标没有对应上，那么在pom文件中还是找不到相应的依赖。</strong></p>
-<p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547143/jiang58A_vvzx28.png" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/hive如何实现自定义函数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="leonyoung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://i.cbc.ca/1.3311592.1447111976!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_620/kobe-bryant.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/14/hive如何实现自定义函数/" itemprop="url">hive如何实现自定义函数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-14T23:06:17+08:00">
-                2017-09-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hive/" itemprop="url" rel="index">
-                    <span itemprop="name">hive</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="hive如何实现自定义函数"><a href="#hive如何实现自定义函数" class="headerlink" title="hive如何实现自定义函数"></a>hive如何实现自定义函数</h1><blockquote>
-<p>概述：我们在使用hive的时候，很多时候执行复杂的sql时，hive提供的函数无法满足我们的需求。这个时候就需要我们自己去定义一个函数。<br>幸好，hive为我们允许使用java来子线自定义函数。</p>
-</blockquote>
-<h4 id="1、实现自定义UDF函数必须满足两个条件。"><a href="#1、实现自定义UDF函数必须满足两个条件。" class="headerlink" title="1、实现自定义UDF函数必须满足两个条件。"></a>1、实现自定义UDF函数必须满足两个条件。</h4><ul>
-<li>（1） 必须是org.apache.Hadoop.hive.ql.exec.UDF的子类 </li>
-<li>（2） 必须实现evaluate函数。</li>
-</ul>
-<h4 id="2、实现方法具体如下："><a href="#2、实现方法具体如下：" class="headerlink" title="2、实现方法具体如下："></a>2、实现方法具体如下：</h4><ul>
-<li>（1）将$HIVE_HOME/lib中的两个jar包，分别是hive-contrib-2.1.1.jar和hive-exec-2.1.1.jar，把两个jar包放置到java的目录下，然后新建一个类，继承UDF。</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> org.apache.hadoop.hive.contrib.udf.example;</div><div class="line"><span class="keyword">import</span> org.apache.commons.lang.StringUtils;<span class="keyword">import</span> 	org.apache.hadoop.hive.ql.exec.UDF;</div><div class="line"><span class="keyword">import</span> java.util.Arrays;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReturnMin</span> <span class="keyword">extends</span> <span class="title">UDF</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">evaluate</span><span class="params">(String str, String separator)</span> </span>&#123;</div><div class="line">       	<span class="keyword">int</span> result = <span class="number">100</span>;       </div><div class="line">       	<span class="keyword">if</span>(StringUtils.isEmpty(str))&#123;</div><div class="line">           	<span class="keyword">return</span> result;        </div><div class="line">        	&#125;</div><div class="line">       	String[] strArray = str.split(separator);</div><div class="line">       	<span class="keyword">int</span>[] intArray = <span class="keyword">new</span> <span class="keyword">int</span>[strArray.length];        </div><div class="line">       	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; strArray.length ; i++) &#123;</div><div class="line">           	intArray[i] = Integer.parseInt(strArray[i]);        </div><div class="line">       	&#125;</div><div class="line">       	Arrays.sort(intArray);        </div><div class="line">       	<span class="keyword">return</span> intArray[<span class="number">0</span>];    </div><div class="line">   	&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li><p>(2)  然后将ReturnMin.class文件拷贝到hive-contrib-2.1.1.jar\org\apache\hadoop\hive\contrib\udf\example目录中，然后替换hive select<br>在hive的cli中执行：CREATE FUNCTION ReturnMin AS ‘org.apache.hadoop.hive.contrib.udf.example.ReturnMin’;<br>然后重新进入cli中，给这个函数传递一个数字的字符串和分隔符就能够将这个字符串最小的值返回。</p>
-<p>hive删除一个自定义函数： drop function cutString;</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/hive中sql总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="leonyoung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://i.cbc.ca/1.3311592.1447111976!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_620/kobe-bryant.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/14/hive中sql总结/" itemprop="url">hive中sql总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-14T12:24:47+08:00">
-                2017-09-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hive/" itemprop="url" rel="index">
-                    <span itemprop="name">hive</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>###hive中sql总结</p>
-<p>#####1、对指定的某一个列去重</p>
-<blockquote>
-<p>insert into table allrecord partition (year=2017, month=08, day=25) select t.id, t.tssend, t.apmac, t.mac, t.rssi from (select id, tssend, apmac ,mac, rssi, row_number() over(distribute by mac sort by tssend )as rn from allrecords) t where t.rn=1;</p>
-</blockquote>
-<p>上面试对mac去重，然后对tssend排序后插入allrecord这张表</p>
-<p>#####2、删除分区</p>
-<blockquote>
-<p>ALTER TABLE macinfo_2017 DROP IF EXISTS PARTITION (year=2017, month=03, day=22);</p>
-</blockquote>
-<p>#####3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。</p>
-<blockquote>
-<p>drop table tablename; </p>
-</blockquote>
-<p>若是表创建为外部表，则只会删除相应的原信息，对数据没有影响。</p>
-<p>#####4、 创建一个partition_table002的表，使得表结构和partition_table001一样。</p>
-<blockquote>
-<p>create table if not exists partition_table002 like partition_table001;</p>
-</blockquote>
-<p>#####5、使用load加载数据到表中</p>
-<blockquote>
-<p>load data local inpath ‘t_student1.txt’ overwrite inte table t_student1;</p>
-</blockquote>
-<p>#####6、创建外部表</p>
-<blockquote>
-<p>create EXTERNAL table IF NOT EXISTS macinfo_20170221(<br>    tssend string COMMENT ‘Probe upload data time’,<br>    apmac string COMMENT ‘Probe MAC address’,<br>    mac string COMMENT ‘Mobile device MAC address’,<br>    rssi string  COMMENT ‘WiFi signal strength of mobile devices’)<br>    partitioned by (year int, month int, day int)<br>    ROW FORMAT SERDE ‘org.openx.data.jsonserde.JsonSerDe’<br>    WITH SERDEPROPERTIES (<br>    “mac”=”$.mac”,<br>    “apmac”=”$.apmac”,<br>    “rssi”=”$.rssi”,<br>    “tssend”=”$.tssend”<br>    )<br>    STORED AS TEXTFILE<br>    LOCATION ‘/opt/local/software/a.txt’; </p>
-</blockquote>
-<p><strong>注意：</strong>这里创建外部表时会有坑，主要是数据存储格式的问题，我的数据存储为json格式，而hive并不直接支持读取json格式数据，需要添加相应的jar包才能解析数据。</p>
-<p>#####7、hive外部表创建分区关联相应的目录（必须是目录）</p>
-<blockquote>
-<p>   ALTER TABLE macinfo_2017 ADD PARTITION (year = 2017, month = 02, day = 21);</p>
-</blockquote>
-<p>未完待续。。。。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/python爬虫如何获取到只需要的数据/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="leonyoung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://i.cbc.ca/1.3311592.1447111976!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_620/kobe-bryant.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/14/python爬虫如何获取到只需要的数据/" itemprop="url">python爬虫如何过滤多余数据</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-14T11:28:39+08:00">
-                2017-09-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="python爬虫如何获取到只需要的数据"><a href="#python爬虫如何获取到只需要的数据" class="headerlink" title="python爬虫如何获取到只需要的数据"></a>python爬虫如何获取到只需要的数据</h3><blockquote>
-<p>概述：在爬虫的学习过程中，最麻烦的也许就是如何从一大堆html标签中过滤出我们所需要的，在这里有三种方法：re正则表达式、BeautifulSoup、使用lxml中的xpath。</p>
-</blockquote>
-<p>####1 、先介绍如何使用lxml中的xpath</p>
-<p>(1)  我们需要安装相应的依赖，然后在项目中导入相应的模块</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from lxml import etree</div><div class="line">import lxml</div></pre></td></tr></table></figure>
-<p>(2) 之后再代码中转化成xpath<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">detailPath = etree.HTML(html)</div><div class="line">        questions_titile = detailPath.xpath(<span class="string">'//ul[@class="list-group"]/li/div/div[@class="question-title"]/a/text()'</span>)</div></pre></td></tr></table></figure></p>
-<p>注意上边的两个单引号之间的一串，前面两个’//‘是表示从这里开始，然后一级一级的去寻找所需要的元素，如果想获取属性值，例如是图片的url，最后可以使用<br>@href，如果想获取里边的文本值，那就使用text()。</p>
-<p>(3) 特殊用法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">from lxml import etree</div><div class="line">html=&quot;&quot;&quot;</div><div class="line">    &lt;body&gt;</div><div class="line">        &lt;div id=&quot;aa&quot;&gt;aa&lt;/div&gt;</div><div class="line">        &lt;div id=&quot;ab&quot;&gt;ab&lt;/div&gt;</div><div class="line">        &lt;div id=&quot;ac&quot;&gt;ac&lt;/div&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">    &quot;&quot;&quot;</div><div class="line">selector=etree.HTML(html)</div><div class="line">content=selector.xpath(&apos;//div[starts-with(@id,&quot;a&quot;)]/text()&apos;) #这里使用starts-with方法提取div的id标签属性值开头为a的div标签</div></pre></td></tr></table></figure></p>
-<p>这篇文章有简单应用：<a href="http://blog.csdn.net/winterto1990/article/details/47903653介绍" target="_blank" rel="external">http://blog.csdn.net/winterto1990/article/details/47903653介绍</a>    </p>
-<p><strong>最后一个大绝招：直接在chrome中开发者模式，右键找到你想寻找的元素标签，copy xpath就能将这个元素对应的xpath找到！</strong>    </p>
-<p>####1 、python中提供的re模块</p>
-<blockquote>
-<p>正则表达式是一种更为强大的字符串匹配、字符串查找、字符串替换等操作工具。上篇讲解了正则表达式的基本概念和语法以及re模块的基本使用方式，这节来详细说说 re 模块作为 Python 正则表达式引擎提供了哪些便利性操作。<br>正则表达式的所有操作都是围绕着匹配对象(Match)进行的，只有表达式与字符串匹配才有可能进行后续操作。判断匹配与否有两个方法，分别是 re.match() 和 re.search()，两者有什么区别呢？</p>
-</blockquote>
-<p>区别：<br>match 方法从字符串的起始位置开始检查，如果刚好有一个子字符串与正则表达式相匹配，则返回一个Match对象，只要起始位置不匹配则退出，不再往后检查了，返回 None</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; re.match(r&quot;b.r&quot;, &quot;foobar&quot;)   # 不匹配</div><div class="line">&gt;&gt;&gt; re.match(r&quot;b.r&quot;, &quot;barfoo&quot;)   # 匹配</div><div class="line">&lt;_sre.SRE_Match object at 0x102f05b28&gt;</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<p>search 方法虽然也是从起始位置开始检查，但是它在起始位置不匹配的时候会一直尝试往后检查，直到匹配为止，如果到字符串的末尾还没有匹配，则返回 None<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; re.search(r&quot;b.r&quot;, &quot;foobar&quot;) # 匹配</div><div class="line">&lt;_sre.SRE_Match object at 0x000000000254D578&gt;</div><div class="line">&gt;&gt;&gt; re.match(r&quot;b.r&quot;, &quot;foobr&quot;)  # 不匹配</div></pre></td></tr></table></figure></p>
-<p>但是二者都是匹配到就停止匹配了，哪怕还有更多能匹配的也不管。</p>
-<p>参考：<a href="https://foofish.net/re-tutorial.html" target="_blank" rel="external">https://foofish.net/re-tutorial.html</a>    、<a href="https://foofish.net/crawler-re-second.html" target="_blank" rel="external">https://foofish.net/crawler-re-second.html</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-  </section>
-
-  
-
-
-          </div>
-          
-
-
-          
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-
-      <section class="site-overview sidebar-panel sidebar-panel-active">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          
-            <img class="site-author-image" itemprop="image"
-              src="https://i.cbc.ca/1.3311592.1447111976!/fileImage/httpImage/image.jpg_gen/derivatives/16x9_620/kobe-bryant.jpg"
-              alt="leonyoung" />
-          
-            <p class="site-author-name" itemprop="name">leonyoung</p>
-            <p class="site-description motion-element" itemprop="description">人类总不会寂寞，因为生命是进步的，是天生的。</p>
-        </div>
-
-        <nav class="site-state motion-element">
-
-          
-            <div class="site-state-item site-state-posts">
-            
-              <a href="/archives/">
-            
-                <span class="site-state-item-count">4</span>
-                <span class="site-state-item-name">文章</span>
-              </a>
-            </div>
-          
-
-          
-            
-            
-            <div class="site-state-item site-state-categories">
-              
-                <span class="site-state-item-count">3</span>
-                <span class="site-state-item-name">分類</span>
-              
-            </div>
-          
-
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-
-        
-
-
-      </section>
-
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">leonyoung</span>
-
-  
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content">
+                    <div class="carousel">
+    <img src="/img/head-img.jpg">
 </div>
 
 
-  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動</div>
 
-  <span class="post-meta-divider">|</span>
+<article class="post">
+    
+        <div class="post-media">
+            <a href="javascript:">
+                <img class="img-ajax" src="./img/loading.gif"  data-src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547145/sb_pmqkdu.png"   alt="上传本地jar包到nexus仓库中"> 
+            </a>
+        </div>
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2017/09/16/上传本地jar包到nexus仓库中/">上传本地jar包到nexus仓库中</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年09月16日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            #上传本地jar包到nexus仓库中
 
-  <div class="theme-info">主題 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.2</div>
+概述：有时在我们的nexus仓库中没有项目中所需的jar包，这个时候就需要从网络中下载，然后上传到nexus仓库中，然后我们就可以嗨森的敲代码啦。
 
+1、首先需要是对应的repository有上...
+        </p> 
+    </div>
+    <footer class="post-footer clearfix">
+        <div class="pull-left tag-list">
+            <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>java</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            null
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2017/09/16</span>
+    </span>
+</div>
 
-        
+        </div>
 
-
-
-
-
-
-
-        
-      </div>
+        <div class="post-permalink"> 
+            <a href="/2017/09/16/上传本地jar包到nexus仓库中/" class="btn btn-default">阅读全文</a>
+        </div>
     </footer>
+</article>
 
+
+<article class="post">
     
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2017/09/14/hive如何实现自定义函数/">hive如何实现自定义函数</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年09月14日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            hive如何实现自定义函数
+概述：我们在使用hive的时候，很多时候执行复杂的sql时，hive提供的函数无法满足我们的需求。这个时候就需要我们自己去定义一个函数。幸好，hive为我们允许使用java来子线自定义函数。
+
+1、实现自定...
+        </p> 
+    </div>
+    <footer class="post-footer clearfix">
+        <div class="pull-left tag-list">
+            <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>hive</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            null
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2017/09/14</span>
+    </span>
+</div>
+
+        </div>
+
+        <div class="post-permalink"> 
+            <a href="/2017/09/14/hive如何实现自定义函数/" class="btn btn-default">阅读全文</a>
+        </div>
+    </footer>
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2017/09/14/hive中sql总结/">hive中sql总结</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年09月14日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            ###hive中sql总结
+#####1、对指定的某一个列去重
+
+insert into table allrecord partition (year=2017, month=08, day=25) select t.id, t.t...
+        </p> 
+    </div>
+    <footer class="post-footer clearfix">
+        <div class="pull-left tag-list">
+            <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>hive</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            null
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2017/09/14</span>
+    </span>
+</div>
+
+        </div>
+
+        <div class="post-permalink"> 
+            <a href="/2017/09/14/hive中sql总结/" class="btn btn-default">阅读全文</a>
+        </div>
+    </footer>
+</article>
+
+
+<article class="post">
+    
+    <div class="post-content">
+        <div class="post-head home-post-head">
+            <h1 class="post-title">
+                <a href="/2017/09/14/python爬虫如何获取到只需要的数据/">python爬虫如何过滤多余数据</a>
+            </h1>
+            <div class="post-meta">  &bull;
+                <time class="post-date" datetime="" title="">
+                    2017年09月14日
+                </time>
+            </div>
+        </div>
+        <p class="brief">
+            python爬虫如何获取到只需要的数据
+概述：在爬虫的学习过程中，最麻烦的也许就是如何从一大堆html标签中过滤出我们所需要的，在这里有三种方法：re正则表达式、BeautifulSoup、使用lxml中的xpath。
+
+####1 ...
+        </p> 
+    </div>
+    <footer class="post-footer clearfix">
+        <div class="pull-left tag-list">
+            <div class="post-meta">
+    
+    
+    <span class="categories-meta fa-wrap">
+        <i class="fa fa-folder-open-o"></i>
+        <span>python</span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-tags"></i>
+        <span class="tags-meta">
+            
+            null
+            
+        </span>
+    </span>
+    
+    
+    <span class="fa-wrap">
+        <i class="fa fa-clock-o"></i>
+        <span class="date-meta">2017/09/14</span>
+    </span>
+</div>
+
+        </div>
+
+        <div class="post-permalink"> 
+            <a href="/2017/09/14/python爬虫如何获取到只需要的数据/" class="btn btn-default">阅读全文</a>
+        </div>
+    </footer>
+</article>
+
+
+
+
+
+
+                </main>
+                
+    <aside class="col-md-4 sidebar">
         
-      </div>
-    
-
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
-
-
-
-  
-  
-
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
-
-
-  
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
+        
+    <div class="widget notification">
+        <h3 class="title">网站公告</h3>
+        <div>
+            <p>主题Snippet v1.1.0版本即将上线，敬请期待~ <br>
+主题下载：<a href="https://github.com/shenliyang/hexo-theme-snippet"
+title="fork me" target="_blank">Snippet主题</a></p>
+        </div>
+    </div>
+
+        
+        
+    <div class="widget">
+        <h3 class="title">Categories</h3>
+        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hive/"><i class="fa" aria-hidden="true">hive</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link current" href="/categories/java/"><i class="fa" aria-hidden="true">java</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/"><i class="fa" aria-hidden="true">python</i></a><span class="category-list-count">1</span></li></ul>
+    </div>
+
+
+        
+        
+    <div class="widget">
+      <h3 class="title">Archives</h3>
+        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">September 2017</i></a><span class="archive-list-count">4</span></li></ul>
+    </div>
+
+
+        
+        
+
+        
+        
+    <div class="widget">
+        <h3 class="title">Friends</h3>
+        <div class="content friends-link">
+        
+            <a href="http://www.shenliyang.com" class="fa" target="_blank">作者博客</a>
+        
+        </div>
+    </div>
+
+
+        
+    </aside>
+
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"> 
+                <span>Copyright &copy; 
+                    <a href="//www.shenliyang.com/" rel="nofollow">Snippet中文网</a>
+                </span> | 
+                <span>
+                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
+                </span> | 
+                <span>
+                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/app.js?rev=@@hash"></script>
 
 </body>
 </html>
