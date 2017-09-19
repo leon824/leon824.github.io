@@ -1,148 +1,302 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="zh-hk">
 <head>
-    <!--Setting-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="renderer" content="webkit|ie-comp|ie-stand">
-    <meta name="apple-mobile-web-app-capable"  content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="format-detection" content="telephone=no,email=no">
-    <link rel="dns-prefetch" href="//t11.baidu.com">
-    <!--SEO-->
 
-<meta name="description" content="人类总不会寂寞，因为生命是进步的，是天生的。"/>
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
 
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="leonyoung" />
 
 
-<meta name="robots" content="all" />
-<meta name="google" content="all" />
-<meta name="googlebot" content="all" />
-<meta name="verify" content="all" />
-    <!--Title-->
 
+<meta name="description" content="python爬虫如何获取到只需要的数据 概述：在爬虫的学习过程中，最麻烦的也许就是如何从一大堆html标签中过滤出我们所需要的，在这里有三种方法：re正则表达式、BeautifulSoup、使用lxml中的xpath。  ####1 、先介绍如何使用lxml中的xpath (1)  我们需要安装相应的依赖，然后在项目中导入相应的模块 12from lxml import etreeimport l">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python爬虫如何过滤多余数据">
+<meta property="og:url" content="http://yoursite.com/2017/09/14/python爬虫如何获取到只需要的数据/index.html">
+<meta property="og:site_name" content="Leon&#39;s Blog">
+<meta property="og:description" content="python爬虫如何获取到只需要的数据 概述：在爬虫的学习过程中，最麻烦的也许就是如何从一大堆html标签中过滤出我们所需要的，在这里有三种方法：re正则表达式、BeautifulSoup、使用lxml中的xpath。  ####1 、先介绍如何使用lxml中的xpath (1)  我们需要安装相应的依赖，然后在项目中导入相应的模块 12from lxml import etreeimport l">
+<meta property="og:locale" content="zh-hk">
+<meta property="og:updated_time" content="2017-09-14T14:51:16.474Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python爬虫如何过滤多余数据">
+<meta name="twitter:description" content="python爬虫如何获取到只需要的数据 概述：在爬虫的学习过程中，最麻烦的也许就是如何从一大堆html标签中过滤出我们所需要的，在这里有三种方法：re正则表达式、BeautifulSoup、使用lxml中的xpath。  ####1 、先介绍如何使用lxml中的xpath (1)  我们需要安装相应的依赖，然后在项目中导入相应的模块 12from lxml import etreeimport l">
 
-<title>python爬虫如何过滤多余数据 | Leon&#39;s Blog</title>
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
 
     <link rel="alternate" href="/atom.xml" title="Leon&#39;s Blog" type="application/atom+xml">
 
 
-    <link rel="icon" href="/favicon.ico">
 
-    
-
+    <link rel="shortcut icon" href="/favicon.png">
 
 
 
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css?rev=9.12.0">
-
-
-<link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.4/css/bootstrap.min.css?rev=3.3.4">
-<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
 
 
 
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
 
-    
 
 
-    
-    
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>python爬虫如何过滤多余数据 | Leon&#39;s Blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: 
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
 </head>
-
-
-<!--[if lte IE 8]>
-<style>
-    html{ font-size: 1em }
-</style>
-<![endif]-->
-<!--[if lte IE 9]>
-<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
-<![endif]-->
-
 <body>
-    <header class="main-header">
-    <div class="main-header-box">
-        <a class="branding" href="/" title="">
-            <img src="/img/header_logo.png" alt="Snippet 博客主题">
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
         </a>
-        <h2 class="text-hide">Snippet主题</h2>
-        <img src="/img/header_logo.png" alt="Snippet 博客主题" class="hide">
-    </div>
-</header>
-    <nav class="main-navigation">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="navbar-header"><span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu" id="mnav">
-                    <span class="sr-only">Toggle navigation</span>
-                    <i class="fa fa-bars"></i>
-                    </span>
+        <hgroup>
+          <h1 class="header-author"><a href="/">leonyoung</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
                 </div>
-                <div class="collapse navbar-collapse" id="main-menu">
-                    <ul class="menu">
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
                         
-                            <li role="presentation" class=""><a href="/">Home</a></li>
+                        <li>友情链接</li>
                         
-                            <li role="presentation" class=""><a href="/categories/前端/">前端</a></li>
                         
-                            <li role="presentation" class=""><a href="/categories/后端/">后端</a></li>
-                        
-                            <li role="presentation" class=""><a href="/categories/工具/">工具</a></li>
-                        
-                            <li role="presentation" class=""><a href="/categories/资源/">资源</a></li>
+                        <li>关于我</li>
                         
                     </ul>
                 </div>
             </div>
-        </div>
-    </div>
-</nav>
-    <section class="content-wrap">
-        <div class="container">
-            <div class="row">
-                <main class="col-md-8 main-content">
-                    <p id="process"></p>
-<article class="post">
-    <div class="post-head">
-        <h1 id="python爬虫如何过滤多余数据">
-            
-            python爬虫如何过滤多余数据
-            
-        </h1>
-        <div class="post-meta">
-    
-    
-    <span class="categories-meta fa-wrap">
-        <i class="fa fa-folder-open-o"></i>
-        <span>python</span>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-tags"></i>
-        <span class="tags-meta">
-            
-            null
-            
-        </span>
-    </span>
-    
-    
-    <span class="fa-wrap">
-        <i class="fa fa-clock-o"></i>
-        <span class="date-meta">2017/09/14</span>
-    </span>
-</div>
+        
 
-            
-            
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于前端</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
     </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">leonyoung</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">leonyoung</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-python爬虫如何获取到只需要的数据" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/14/python爬虫如何获取到只需要的数据/" class="article-date">
+      <time datetime="2017-09-14T03:28:39.000Z" itemprop="datePublished">2017-09-14</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
     
-    <div class="post-body">
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python爬虫如何过滤多余数据
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/python/">python</a>
+    </div>
+
+
+        
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
         <h3 id="python爬虫如何获取到只需要的数据"><a href="#python爬虫如何获取到只需要的数据" class="headerlink" title="python爬虫如何获取到只需要的数据"></a>python爬虫如何获取到只需要的数据</h3><blockquote>
 <p>概述：在爬虫的学习过程中，最麻烦的也许就是如何从一大堆html标签中过滤出我们所需要的，在这里有三种方法：re正则表达式、BeautifulSoup、使用lxml中的xpath。</p>
 </blockquote>
@@ -164,137 +318,208 @@
 <p>但是二者都是匹配到就停止匹配了，哪怕还有更多能匹配的也不管。</p>
 <p>参考：<a href="https://foofish.net/re-tutorial.html" target="_blank" rel="external">https://foofish.net/re-tutorial.html</a>    、<a href="https://foofish.net/crawler-re-second.html" target="_blank" rel="external">https://foofish.net/crawler-re-second.html</a></p>
 
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/09/14/python爬虫如何获取到只需要的数据/">python爬虫如何过滤多余数据</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">leonyoung</a></p>
+        <p><span>发布时间:</span>2017-09-14, 11:28:39</p>
+        <p><span>最后更新:</span>2017-09-14, 22:51:16</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/09/14/python爬虫如何获取到只需要的数据/" title="python爬虫如何过滤多余数据">http://yoursite.com/2017/09/14/python爬虫如何获取到只需要的数据/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/09/14/python爬虫如何获取到只需要的数据/　　作者: leonyoung" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
     </div>
 
-    <div class="post-footer">   
-        <div>
-            
-                转载声明: 商业转载请联系作者获得授权,非商业转载请注明出处 © Snippet
-            
-        </div>
-        <div>
-            
-                License: <a href="https://creativecommons.org/licenses/by-nc-nd/3.0/" target="_blank">
-知识共享署名-非商业性使用-禁止演绎 3.0 未本地化版本许可协议（CC BY-NC-ND 3.0）
-</a>
-            
-        </div>  
-    </div>
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/09/14/hive中sql总结/">
+                    hive中sql总结
+                </a>
+            </div>
+        
+        
+    </nav>
+
+  
 </article>
 
-<div class="article-nav prev-next-wrap clearfix">
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#python爬虫如何获取到只需要的数据"><span class="toc-number">1.</span> <span class="toc-text">python爬虫如何获取到只需要的数据</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
     
-        <a href="/2017/09/14/hive中sql总结/" class="pre-post btn btn-default"><i class="fa fa-angle-left fa-fw"></i>上一篇</a>
+<div class="share">
     
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"python爬虫如何过滤多余数据　| Leon's Blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
     
 </div>
 
 
-    <div id="comments">
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
         
-    <div id="uyan_frame"></div>
-    <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid="></script>
+            <a href="/2017/09/14/hive中sql总结/" title="上一篇: hive中sql总结">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
 
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
-
-
-
-
-
-
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
     </div>
 
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/09/16/上传本地jar包到nexus仓库中/">上传本地jar包到nexus仓库中</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/14/hive如何实现自定义函数/">hive如何实现自定义函数</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/14/hive中sql总结/">hive中sql总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/09/14/python爬虫如何获取到只需要的数据/">python爬虫如何过滤多余数据</a></li></ul>
 
 
 
 
-                </main>
-                
-    <aside class="col-md-4 sidebar">
+    <script>
         
-        
-    <div class="widget notification">
-        <h3 class="title">网站公告</h3>
-        <div>
-            <p>主题Snippet v1.1.0版本即将上线，敬请期待~ <br>
-主题下载：<a href="https://github.com/shenliyang/hexo-theme-snippet"
-title="fork me" target="_blank">Snippet主题</a></p>
-        </div>
-    </div>
-
-        
-        
-    <div class="widget">
-        <h3 class="title">Categories</h3>
-        <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/hive/"><i class="fa" aria-hidden="true">hive</i></a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link current" href="/categories/java/"><i class="fa" aria-hidden="true">java</i></a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/python/"><i class="fa" aria-hidden="true">python</i></a><span class="category-list-count">1</span></li></ul>
-    </div>
-
-
-        
-        
-    <div class="widget">
-      <h3 class="title">Archives</h3>
-        <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/09/"><i class="fa" aria-hidden="true">September 2017</i></a><span class="archive-list-count">4</span></li></ul>
-    </div>
-
-
-        
-        
-
-        
-        
-    <div class="widget">
-        <h3 class="title">Friends</h3>
-        <div class="content friends-link">
-        
-            <a href="http://www.shenliyang.com" class="fa" target="_blank">作者博客</a>
-        
-        </div>
-    </div>
-
-
-        
-    </aside>
-
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 leonyoung
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
-    </section>
-    <footer class="main-footer">
-    <div class="container">
-        <div class="row">
-        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
     </div>
 </footer>
-
-
-
-
-
-
-    <div class="copyright">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-12"> 
-                <span>Copyright &copy; 
-                    <a href="//www.shenliyang.com/" rel="nofollow">Snippet中文网</a>
-                </span> | 
-                <span>
-                    Powered by <a href="//hexo.io" class="copyright-links" target="_blank" rel="nofollow">Hexo</a>
-                </span> | 
-                <span>
-                    Theme by <a href="//github.com/shenliyang/hexo-theme-snippet.git" class="copyright-links" target="_blank" rel="nofollow">Snippet</a>
-                </span>
-            </div>
-        </div>
     </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
 </div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
 
-  <script src="/assets/highlight.pack.js?rev=@@hash"></script>
-  <script>
-    hljs.initHighlightingOnLoad(); //初始化代码高亮 
-  </script>
-
-<script src="/js/app.js?rev=@@hash"></script>
-
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
 </body>
 </html>
