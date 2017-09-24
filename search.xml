@@ -9,9 +9,12 @@
       </categories>
   </entry>
   <entry>
-    <title></title>
-    <url>%2F2017%2F09%2F24%2Fpython%E7%88%AC%E8%99%AB%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E5%88%B0%E5%8F%AA%E9%9C%80%E8%A6%81%E7%9A%84%E6%95%B0%E6%8D%AE%2F</url>
+    <title><![CDATA[python爬虫如何获取到只需要的数据]]></title>
+    <url>%2F2017%2F09%2F18%2Fpython%E7%88%AC%E8%99%AB%E5%A6%82%E4%BD%95%E8%8E%B7%E5%8F%96%E5%88%B0%E5%8F%AA%E9%9C%80%E8%A6%81%E7%9A%84%E6%95%B0%E6%8D%AE%2F</url>
     <content type="text"><![CDATA[python爬虫如何获取到只需要的数据 概述：在爬虫的学习过程中，最麻烦的也许就是如何从一大堆html标签中过滤出我们所需要的，在这里有三种方法：re正则表达式、BeautifulSoup、使用lxml中的xpath。 1 、先介绍如何使用lxml中的xpath(1) 我们需要安装相应的依赖，然后在项目中导入相应的模块 12from lxml import etreeimport lxml (2) 之后再代码中转化成xpath12detailPath = etree.HTML(html) questions_titile = detailPath.xpath('//ul[@class="list-group"]/li/div/div[@class="question-title"]/a/text()') 注意上边的两个单引号之间的一串，前面两个’//‘是表示从这里开始，然后一级一级的去寻找所需要的元素，如果想获取属性值，例如是图片的url，最后可以使用@href，如果想获取里边的文本值，那就使用text()。 (3) 特殊用法12345678910from lxml import etreehtml=&quot;&quot;&quot; &lt;body&gt; &lt;div id=&quot;aa&quot;&gt;aa&lt;/div&gt; &lt;div id=&quot;ab&quot;&gt;ab&lt;/div&gt; &lt;div id=&quot;ac&quot;&gt;ac&lt;/div&gt; &lt;/body&gt; &quot;&quot;&quot;selector=etree.HTML(html)content=selector.xpath(&apos;//div[starts-with(@id,&quot;a&quot;)]/text()&apos;) #这里使用starts-with方法提取div的id标签属性值开头为a的div标签 这篇文章有简单应用：http://blog.csdn.net/winterto1990/article/details/47903653介绍 最后一个大绝招：直接在chrome中开发者模式，右键找到你想寻找的元素标签，copy xpath就能将这个元素对应的xpath找到！ 1 、python中提供的re模块 正则表达式是一种更为强大的字符串匹配、字符串查找、字符串替换等操作工具。上篇讲解了正则表达式的基本概念和语法以及re模块的基本使用方式，这节来详细说说 re 模块作为 Python 正则表达式引擎提供了哪些便利性操作。正则表达式的所有操作都是围绕着匹配对象(Match)进行的，只有表达式与字符串匹配才有可能进行后续操作。判断匹配与否有两个方法，分别是 re.match() 和 re.search()，两者有什么区别呢？ 区别：match 方法从字符串的起始位置开始检查，如果刚好有一个子字符串与正则表达式相匹配，则返回一个Match对象，只要起始位置不匹配则退出，不再往后检查了，返回 None 1234&gt;&gt;&gt; re.match(r&quot;b.r&quot;, &quot;foobar&quot;) # 不匹配&gt;&gt;&gt; re.match(r&quot;b.r&quot;, &quot;barfoo&quot;) # 匹配&lt;_sre.SRE_Match object at 0x102f05b28&gt;&gt;&gt;&gt; search 方法虽然也是从起始位置开始检查，但是它在起始位置不匹配的时候会一直尝试往后检查，直到匹配为止，如果到字符串的末尾还没有匹配，则返回 None123&gt;&gt;&gt; re.search(r&quot;b.r&quot;, &quot;foobar&quot;) # 匹配&lt;_sre.SRE_Match object at 0x000000000254D578&gt;&gt;&gt;&gt; re.match(r&quot;b.r&quot;, &quot;foobr&quot;) # 不匹配 但是二者都是匹配到就停止匹配了，哪怕还有更多能匹配的也不管。 参考：https://foofish.net/re-tutorial.html 、https://foofish.net/crawler-re-second.html]]></content>
+      <categories>
+        <category>python</category>
+      </categories>
   </entry>
   <entry>
     <title><![CDATA[上传本地jar包到nexus仓库中]]></title>
