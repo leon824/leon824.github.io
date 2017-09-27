@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
+    <title><![CDATA[Spring MVC访问静态资源文件]]></title>
     <url>%2F2017%2F09%2F27%2FSpringMVC%E8%AE%BF%E9%97%AE%E9%9D%99%E6%80%81%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6%2F</url>
     <content type="text"><![CDATA[Spring MVC访问静态资源文件 我们在使用spring MVC开发时，需要在web.xml文件中配置DispatcherServlet，指定映射条件，如下所示： 1234567891011121314&lt;servlet&gt; &lt;servlet-name&gt;Dispatcher&lt;/servlet-name&gt; &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt; &lt;!--加载配置文件--&gt; &lt;init-param&gt; &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt; &lt;param-value&gt;classpath:/conf/spring-mvc.xml&lt;/param-value&gt; &lt;/init-param&gt; &lt;load-on-startup&gt;1&lt;/load-on-startup&gt; &lt;/servlet&gt; &lt;servlet-mapping&gt; &lt;servlet-name&gt;Dispatcher&lt;/servlet-name&gt; &lt;url-pattern&gt;/&lt;/url-pattern&gt; &lt;/servlet-mapping&gt; 通常都需要将DispatcherServlet配置为拦截所有请求，所以将url-pattern配置为”/“。但这样就会出现一个问题，通常在页面中需要使用到的js、css、图片等等静态文件就无法请求了。 一般有用两种方式来处理这种情况1、使用 mvc:resources的方式，将配置添加到appContext-**.xml文件中例如： 12 &lt;!-- 对静态资源文件的访问 --&gt;&lt;mvc:resources mapping="/**" location="/" /&gt; mapping是url映射处理，location是相对于WebContent的路径。 2、 配置DispatcherServlet值拦截.do的请求。 1234567891011121314&lt;servlet&gt; &lt;servlet-name&gt;Dispatcher&lt;/servlet-name&gt; &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet &lt;/servlet-class&gt; &lt;init-param&gt; &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt; &lt;param-value&gt;classpath:configure/spring-mvc.xml&lt;/param-value&gt; &lt;/init-param&gt; &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;&lt;/servlet&gt;&lt;servlet-mapping&gt; &lt;servlet-name&gt;Dispatcher&lt;/servlet-name&gt; &lt;url-pattern&gt;*.do&lt;/url-pattern&gt;&lt;/servlet-mapping&gt;]]></content>
+      <categories>
+        <category>java</category>
+      </categories>
   </entry>
   <entry>
     <title><![CDATA[爬取猫眼电影数据（一）]]></title>
