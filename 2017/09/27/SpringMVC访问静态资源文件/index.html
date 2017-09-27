@@ -69,17 +69,17 @@
 
 
 
-<meta name="description" content="hive中sql总结1、对指定的某一个列去重1insert into table allrecord partition (year=2017, month=08, day=25) select t.id, t.tssend, t.apmac, t.mac, t.rssi from (select id, tssend, apmac ,mac, rssi, row_number() over(di">
+<meta name="description" content="Spring MVC访问静态资源文件 我们在使用spring MVC开发时，需要在web.xml文件中配置DispatcherServlet，指定映射条件，如下所示：   1234567891011121314&amp;lt;servlet&amp;gt;       &amp;lt;servlet-name&amp;gt;Dispatcher&amp;lt;/servlet-name&amp;gt;       &amp;lt;servlet-cla">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hive中sql总结">
-<meta property="og:url" content="http://yoursite.com/2017/09/14/hive中sql总结/index.html">
+<meta property="og:title" content="花谢花开">
+<meta property="og:url" content="http://yoursite.com/2017/09/27/SpringMVC访问静态资源文件/index.html">
 <meta property="og:site_name" content="花谢花开">
-<meta property="og:description" content="hive中sql总结1、对指定的某一个列去重1insert into table allrecord partition (year=2017, month=08, day=25) select t.id, t.tssend, t.apmac, t.mac, t.rssi from (select id, tssend, apmac ,mac, rssi, row_number() over(di">
+<meta property="og:description" content="Spring MVC访问静态资源文件 我们在使用spring MVC开发时，需要在web.xml文件中配置DispatcherServlet，指定映射条件，如下所示：   1234567891011121314&amp;lt;servlet&amp;gt;       &amp;lt;servlet-name&amp;gt;Dispatcher&amp;lt;/servlet-name&amp;gt;       &amp;lt;servlet-cla">
 <meta property="og:locale" content="zh-hk">
-<meta property="og:updated_time" content="2017-09-24T01:03:43.000Z">
+<meta property="og:updated_time" content="2017-09-27T03:37:03.874Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hive中sql总结">
-<meta name="twitter:description" content="hive中sql总结1、对指定的某一个列去重1insert into table allrecord partition (year=2017, month=08, day=25) select t.id, t.tssend, t.apmac, t.mac, t.rssi from (select id, tssend, apmac ,mac, rssi, row_number() over(di">
+<meta name="twitter:title" content="花谢花开">
+<meta name="twitter:description" content="Spring MVC访问静态资源文件 我们在使用spring MVC开发时，需要在web.xml文件中配置DispatcherServlet，指定映射条件，如下所示：   1234567891011121314&amp;lt;servlet&amp;gt;       &amp;lt;servlet-name&amp;gt;Dispatcher&amp;lt;/servlet-name&amp;gt;       &amp;lt;servlet-cla">
 
 
 
@@ -109,13 +109,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/14/hive中sql总结/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/27/SpringMVC访问静态资源文件/"/>
 
 
 
 
 
-  <title>hive中sql总结 | 花谢花开</title>
+  <title> | 花谢花开</title>
   
 
 
@@ -265,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/hive中sql总结/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/27/SpringMVC访问静态资源文件/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="leonyoung">
@@ -282,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">hive中sql总结</h1>
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
         <div class="post-meta">
@@ -294,8 +294,8 @@
               
                 <span class="post-meta-item-text">發表於</span>
               
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-14T12:24:47+08:00">
-                2017-09-14
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-27T11:37:03+08:00">
+                2017-09-27
               </time>
             
 
@@ -305,29 +305,9 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hive/" itemprop="url" rel="index">
-                    <span itemprop="name">hive</span>
-                  </a>
-                </span>
 
-                
-                
-              
-            </span>
           
-
+            
           
 
           
@@ -352,33 +332,15 @@
       
 
       
-        <h2 id="hive中sql总结"><a href="#hive中sql总结" class="headerlink" title="hive中sql总结"></a>hive中sql总结</h2><h4 id="1、对指定的某一个列去重"><a href="#1、对指定的某一个列去重" class="headerlink" title="1、对指定的某一个列去重"></a>1、对指定的某一个列去重</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">insert into table allrecord partition (year=2017, month=08, day=25) select t.id, t.tssend, t.apmac, t.mac, t.rssi from (select id, tssend, apmac ,mac, rssi, row_number() over(distribute by mac sort by tssend )as rn from allrecords) t where t.rn=1;</div></pre></td></tr></table></figure>
-<p>上面试对字段mac去重，然后对tssend排序后插入allrecord这张表</p>
-<h4 id="2、删除分区"><a href="#2、删除分区" class="headerlink" title="2、删除分区"></a>2、删除分区</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> macinfo_2017 <span class="keyword">DROP</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="keyword">PARTITION</span> (<span class="keyword">year</span>=<span class="number">2017</span>, <span class="keyword">month</span>=<span class="number">03</span>, <span class="keyword">day</span>=<span class="number">22</span>);</div></pre></td></tr></table></figure>
-<h4 id="3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。"><a href="#3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。" class="headerlink" title="3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。"></a>3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">drop</span> <span class="keyword">table</span> tablename;</div></pre></td></tr></table></figure>
-<p>若是表创建为外部表，则只会删除相应的原信息，对数据没有影响。</p>
-<h4 id="4、-创建一个partition-table002的表，使得表结构和partition-table001一样。"><a href="#4、-创建一个partition-table002的表，使得表结构和partition-table001一样。" class="headerlink" title="4、 创建一个partition_table002的表，使得表结构和partition_table001一样。"></a>4、 创建一个partition_table002的表，使得表结构和partition_table001一样。</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> partition_table002 <span class="keyword">like</span> partition_table001;</div></pre></td></tr></table></figure>
-<h4 id="5、使用load加载数据到表中"><a href="#5、使用load加载数据到表中" class="headerlink" title="5、使用load加载数据到表中"></a>5、使用load加载数据到表中</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">load</span> <span class="keyword">data</span> <span class="keyword">local</span> inpath <span class="string">'t_student1.txt'</span> overwrite inte <span class="keyword">table</span> t_student1;</div></pre></td></tr></table></figure>
-<h4 id="6、创建外部表"><a href="#6、创建外部表" class="headerlink" title="6、创建外部表"></a>6、创建外部表</h4><pre><code class="sql"><span class="keyword">create</span> <span class="keyword">EXTERNAL</span> <span class="keyword">table</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> macinfo_20170221(
-    tssend <span class="keyword">string</span> <span class="keyword">COMMENT</span> <span class="string">'Probe upload data time'</span>,
-    apmac <span class="keyword">string</span> <span class="keyword">COMMENT</span> <span class="string">'Probe MAC address'</span>,
-    mac <span class="keyword">string</span> <span class="keyword">COMMENT</span> <span class="string">'Mobile device MAC address'</span>,
-    rssi <span class="keyword">string</span>  <span class="keyword">COMMENT</span> <span class="string">'WiFi signal strength of mobile devices'</span>)
-    partitioned <span class="keyword">by</span> (<span class="keyword">year</span> <span class="built_in">int</span>, <span class="keyword">month</span> <span class="built_in">int</span>, <span class="keyword">day</span> <span class="built_in">int</span>) 
-    <span class="keyword">ROW</span> <span class="keyword">FORMAT</span> SERDE <span class="string">'org.openx.data.jsonserde.JsonSerDe'</span>  
-    <span class="keyword">WITH</span> SERDEPROPERTIES (
-    <span class="string">"mac"</span>=<span class="string">"$.mac"</span>,
-    <span class="string">"apmac"</span>=<span class="string">"$.apmac"</span>,
-    <span class="string">"rssi"</span>=<span class="string">"$.rssi"</span>,
-    <span class="string">"tssend"</span>=<span class="string">"$.tssend"</span> 
-    )
-    <span class="keyword">STORED</span> <span class="keyword">AS</span> TEXTFILE
-    LOCATION <span class="string">'/opt/local/software/a.txt'</span>;
-</code></pre>
-<p><strong>注意：</strong>这里创建外部表时会有坑，主要是数据存储格式的问题，我的数据存储为json格式，而hive并不直接支持读取json格式数据，需要添加相应的jar包才能解析数据。</p>
-<h4 id="7、hive外部表创建分区关联相应的目录（必须是目录）"><a href="#7、hive外部表创建分区关联相应的目录（必须是目录）" class="headerlink" title="7、hive外部表创建分区关联相应的目录（必须是目录）"></a>7、hive外部表创建分区关联相应的目录（必须是目录）</h4><pre><code class="sql"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> macinfo_2017 <span class="keyword">ADD</span> <span class="keyword">PARTITION</span> (<span class="keyword">year</span> = <span class="number">2017</span>, <span class="keyword">month</span> = <span class="number">02</span>, <span class="keyword">day</span> = <span class="number">21</span>);
-</code></pre>
-<p>未完待续。。。。</p>
+        <h1 id="Spring-MVC访问静态资源文件"><a href="#Spring-MVC访问静态资源文件" class="headerlink" title="Spring MVC访问静态资源文件"></a>Spring MVC访问静态资源文件</h1><blockquote>
+<p>我们在使用spring MVC开发时，需要在web.xml文件中配置DispatcherServlet，指定映射条件，如下所示：</p>
+</blockquote>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>Dispatcher<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></div><div class="line">       <span class="comment">&lt;!--加载配置文件--&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></div><div class="line">           <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:/conf/spring-mvc.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></div><div class="line">       <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></div><div class="line">   <span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>Dispatcher<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></div><div class="line">       <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>通常都需要将DispatcherServlet配置为拦截所有请求，所以将url-pattern配置为”/“。但这样就会出现一个问题，通常在页面中需要使用到的js、css、图片等等静态文件就无法请求了。</p>
+<h3 id="一般有用两种方式来处理这种情况"><a href="#一般有用两种方式来处理这种情况" class="headerlink" title="一般有用两种方式来处理这种情况"></a><strong>一般有用两种方式来处理这种情况</strong></h3><h4 id="1、使用-mvc-resources的方式，将配置添加到appContext-xml文件中"><a href="#1、使用-mvc-resources的方式，将配置添加到appContext-xml文件中" class="headerlink" title="1、使用 mvc:resources的方式，将配置添加到appContext-**.xml文件中"></a>1、使用 mvc:resources的方式，将配置添加到appContext-**.xml文件中</h4><p>例如：</p>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"> <span class="comment">&lt;!-- 对静态资源文件的访问 --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">mvc:resources</span> <span class="attr">mapping</span>=<span class="string">"/**"</span> <span class="attr">location</span>=<span class="string">"/"</span> /&gt;</span></div></pre></td></tr></table></figure>
+<p> mapping是url映射处理，location是相对于WebContent的路径。</p>
+<h4 id="2、-配置DispatcherServlet值拦截-do的请求。"><a href="#2、-配置DispatcherServlet值拦截-do的请求。" class="headerlink" title="2、 配置DispatcherServlet值拦截.do的请求。"></a>2、 配置DispatcherServlet值拦截.do的请求。</h4> <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>Dispatcher<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>org.springframework.web.servlet.DispatcherServlet</div><div class="line">	<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">init-param</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">param-name</span>&gt;</span>contextConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">param-value</span>&gt;</span>classpath:configure/spring-mvc.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>Dispatcher<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>*.do<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></div></pre></td></tr></table></figure>
 
       
     </div>
@@ -403,15 +365,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/09/24/爬取猫眼电影数据-1/" rel="next" title="爬取猫眼电影数据（一）">
+                <i class="fa fa-chevron-left"></i> 爬取猫眼电影数据（一）
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/14/hive如何实现自定义函数/" rel="prev" title="hive如何实现自定义函数">
-                hive如何实现自定义函数 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -439,6 +401,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -535,7 +501,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hive中sql总结"><span class="nav-number">1.</span> <span class="nav-text">hive中sql总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、对指定的某一个列去重"><span class="nav-number">1.0.1.</span> <span class="nav-text">1、对指定的某一个列去重</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、删除分区"><span class="nav-number">1.0.2.</span> <span class="nav-text">2、删除分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。"><span class="nav-number">1.0.3.</span> <span class="nav-text">3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、-创建一个partition-table002的表，使得表结构和partition-table001一样。"><span class="nav-number">1.0.4.</span> <span class="nav-text">4、 创建一个partition_table002的表，使得表结构和partition_table001一样。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、使用load加载数据到表中"><span class="nav-number">1.0.5.</span> <span class="nav-text">5、使用load加载数据到表中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6、创建外部表"><span class="nav-number">1.0.6.</span> <span class="nav-text">6、创建外部表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7、hive外部表创建分区关联相应的目录（必须是目录）"><span class="nav-number">1.0.7.</span> <span class="nav-text">7、hive外部表创建分区关联相应的目录（必须是目录）</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring-MVC访问静态资源文件"><span class="nav-number">1.</span> <span class="nav-text">Spring MVC访问静态资源文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一般有用两种方式来处理这种情况"><span class="nav-number">1.0.1.</span> <span class="nav-text">一般有用两种方式来处理这种情况</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、使用-mvc-resources的方式，将配置添加到appContext-xml文件中"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">1、使用 mvc:resources的方式，将配置添加到appContext-**.xml文件中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、-配置DispatcherServlet值拦截-do的请求。"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">2、 配置DispatcherServlet值拦截.do的请求。</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
