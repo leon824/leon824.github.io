@@ -69,17 +69,21 @@
 
 
 
-<meta name="description" content="hive中sql总结1、对指定的某一个列去重1insert into table allrecord partition (year=2017, month=08, day=25) select t.id, t.tssend, t.apmac, t.mac, t.rssi from (select id, tssend, apmac ,mac, rssi, row_number() over(di">
+<meta name="description" content="Application has been killed. Reason: Master removed our application: FAILED spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。  查看worker运行的log，发现下面的问题。 然后进入到/opt/soft/spark/work目录发现当前有31999个文件，而在linux文件系统中一个文件夹最多能够">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hive中sql总结">
-<meta property="og:url" content="http://yoursite.com/2017/09/14/hive中sql总结/index.html">
+<meta property="og:title" content="花谢花开">
+<meta property="og:url" content="http://yoursite.com/2017/11/27/记录一次spark踩坑/index.html">
 <meta property="og:site_name" content="花谢花开">
-<meta property="og:description" content="hive中sql总结1、对指定的某一个列去重1insert into table allrecord partition (year=2017, month=08, day=25) select t.id, t.tssend, t.apmac, t.mac, t.rssi from (select id, tssend, apmac ,mac, rssi, row_number() over(di">
+<meta property="og:description" content="Application has been killed. Reason: Master removed our application: FAILED spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。  查看worker运行的log，发现下面的问题。 然后进入到/opt/soft/spark/work目录发现当前有31999个文件，而在linux文件系统中一个文件夹最多能够">
 <meta property="og:locale" content="zh-hk">
-<meta property="og:updated_time" content="2017-09-24T01:03:43.000Z">
+<meta property="og:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511777579/spark2_mkrjds.png">
+<meta property="og:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511777840/spark3_g4xgox.png">
+<meta property="og:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511778332/spark4_vnexdx.png">
+<meta property="og:updated_time" content="2017-11-27T10:26:17.129Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="hive中sql总结">
-<meta name="twitter:description" content="hive中sql总结1、对指定的某一个列去重1insert into table allrecord partition (year=2017, month=08, day=25) select t.id, t.tssend, t.apmac, t.mac, t.rssi from (select id, tssend, apmac ,mac, rssi, row_number() over(di">
+<meta name="twitter:title" content="花谢花开">
+<meta name="twitter:description" content="Application has been killed. Reason: Master removed our application: FAILED spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。  查看worker运行的log，发现下面的问题。 然后进入到/opt/soft/spark/work目录发现当前有31999个文件，而在linux文件系统中一个文件夹最多能够">
+<meta name="twitter:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511777579/spark2_mkrjds.png">
 
 
 
@@ -109,13 +113,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/14/hive中sql总结/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/11/27/记录一次spark踩坑/"/>
 
 
 
 
 
-  <title>hive中sql总结 | 花谢花开</title>
+  <title> | 花谢花开</title>
   
 
 
@@ -265,7 +269,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/hive中sql总结/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/27/记录一次spark踩坑/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="leonyoung">
@@ -282,7 +286,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">hive中sql总结</h1>
+          <h1 class="post-title" itemprop="name headline"></h1>
         
 
         <div class="post-meta">
@@ -294,8 +298,8 @@
               
                 <span class="post-meta-item-text">發表於</span>
               
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-14T12:24:47+08:00">
-                2017-09-14
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-11-27T18:27:34+08:00">
+                2017-11-27
               </time>
             
 
@@ -305,29 +309,9 @@
           </span>
 
           
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hive/" itemprop="url" rel="index">
-                    <span itemprop="name">hive</span>
-                  </a>
-                </span>
 
-                
-                
-              
-            </span>
           
-
+            
           
 
           
@@ -352,33 +336,14 @@
       
 
       
-        <h2 id="hive中sql总结"><a href="#hive中sql总结" class="headerlink" title="hive中sql总结"></a>hive中sql总结</h2><h4 id="1、对指定的某一个列去重"><a href="#1、对指定的某一个列去重" class="headerlink" title="1、对指定的某一个列去重"></a>1、对指定的某一个列去重</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">insert into table allrecord partition (year=2017, month=08, day=25) select t.id, t.tssend, t.apmac, t.mac, t.rssi from (select id, tssend, apmac ,mac, rssi, row_number() over(distribute by mac sort by tssend )as rn from allrecords) t where t.rn=1;</div></pre></td></tr></table></figure>
-<p>上面试对字段mac去重，然后对tssend排序后插入allrecord这张表</p>
-<h4 id="2、删除分区"><a href="#2、删除分区" class="headerlink" title="2、删除分区"></a>2、删除分区</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> macinfo_2017 <span class="keyword">DROP</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="keyword">PARTITION</span> (<span class="keyword">year</span>=<span class="number">2017</span>, <span class="keyword">month</span>=<span class="number">03</span>, <span class="keyword">day</span>=<span class="number">22</span>);</div></pre></td></tr></table></figure>
-<h4 id="3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。"><a href="#3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。" class="headerlink" title="3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。"></a>3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">drop</span> <span class="keyword">table</span> tablename;</div></pre></td></tr></table></figure>
-<p>若是表创建为外部表，则只会删除相应的原信息，对数据没有影响。</p>
-<h4 id="4、-创建一个partition-table002的表，使得表结构和partition-table001一样。"><a href="#4、-创建一个partition-table002的表，使得表结构和partition-table001一样。" class="headerlink" title="4、 创建一个partition_table002的表，使得表结构和partition_table001一样。"></a>4、 创建一个partition_table002的表，使得表结构和partition_table001一样。</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">create</span> <span class="keyword">table</span> <span class="keyword">if</span> <span class="keyword">not</span> <span class="keyword">exists</span> partition_table002 <span class="keyword">like</span> partition_table001;</div></pre></td></tr></table></figure>
-<h4 id="5、使用load加载数据到表中"><a href="#5、使用load加载数据到表中" class="headerlink" title="5、使用load加载数据到表中"></a>5、使用load加载数据到表中</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">load</span> <span class="keyword">data</span> <span class="keyword">local</span> inpath <span class="string">'t_student1.txt'</span> overwrite inte <span class="keyword">table</span> t_student1;</div></pre></td></tr></table></figure>
-<h4 id="6、创建外部表"><a href="#6、创建外部表" class="headerlink" title="6、创建外部表"></a>6、创建外部表</h4><pre><code class="sql"><span class="keyword">create</span> <span class="keyword">EXTERNAL</span> <span class="keyword">table</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> macinfo_20170221(
-    tssend <span class="keyword">string</span> <span class="keyword">COMMENT</span> <span class="string">'Probe upload data time'</span>,
-    apmac <span class="keyword">string</span> <span class="keyword">COMMENT</span> <span class="string">'Probe MAC address'</span>,
-    mac <span class="keyword">string</span> <span class="keyword">COMMENT</span> <span class="string">'Mobile device MAC address'</span>,
-    rssi <span class="keyword">string</span>  <span class="keyword">COMMENT</span> <span class="string">'WiFi signal strength of mobile devices'</span>)
-    partitioned <span class="keyword">by</span> (<span class="keyword">year</span> <span class="built_in">int</span>, <span class="keyword">month</span> <span class="built_in">int</span>, <span class="keyword">day</span> <span class="built_in">int</span>) 
-    <span class="keyword">ROW</span> <span class="keyword">FORMAT</span> SERDE <span class="string">'org.openx.data.jsonserde.JsonSerDe'</span>  
-    <span class="keyword">WITH</span> SERDEPROPERTIES (
-    <span class="string">"mac"</span>=<span class="string">"$.mac"</span>,
-    <span class="string">"apmac"</span>=<span class="string">"$.apmac"</span>,
-    <span class="string">"rssi"</span>=<span class="string">"$.rssi"</span>,
-    <span class="string">"tssend"</span>=<span class="string">"$.tssend"</span> 
-    )
-    <span class="keyword">STORED</span> <span class="keyword">AS</span> TEXTFILE
-    LOCATION <span class="string">'/opt/local/software/a.txt'</span>;
-</code></pre>
-<p><strong>注意：</strong>这里创建外部表时会有坑，主要是数据存储格式的问题，我的数据存储为json格式，而hive并不直接支持读取json格式数据，需要添加相应的jar包才能解析数据。</p>
-<h4 id="7、hive外部表创建分区关联相应的目录（必须是目录）"><a href="#7、hive外部表创建分区关联相应的目录（必须是目录）" class="headerlink" title="7、hive外部表创建分区关联相应的目录（必须是目录）"></a>7、hive外部表创建分区关联相应的目录（必须是目录）</h4><pre><code class="sql"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> macinfo_2017 <span class="keyword">ADD</span> <span class="keyword">PARTITION</span> (<span class="keyword">year</span> = <span class="number">2017</span>, <span class="keyword">month</span> = <span class="number">02</span>, <span class="keyword">day</span> = <span class="number">21</span>);
-</code></pre>
-<p>未完待续。。。。</p>
+        <h2 id="Application-has-been-killed-Reason-Master-removed-our-application-FAILED"><a href="#Application-has-been-killed-Reason-Master-removed-our-application-FAILED" class="headerlink" title="Application has been killed. Reason: Master removed our application: FAILED"></a>Application has been killed. Reason: Master removed our application: FAILED</h2><p> spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。</p>
+<p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511777579/spark2_mkrjds.png" alt=""></p>
+<p>查看worker运行的log，发现下面的问题。<br><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511777840/spark3_g4xgox.png" alt=""></p>
+<p>然后进入到/opt/soft/spark/work目录发现当前有31999个文件，而在linux文件系统中一个文件夹最多能够3200个子文件，包括一个当前目录、父级目录，那么操作这个数就无法在这个目录中写入文件。在linux 内核中有下面的定义：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">include/linux/ext2_fs.h:<span class="meta">#<span class="meta-keyword">define</span> EXT2_LINK_MAX           32000</span></div><div class="line">include/linux/ext3_fs.h:<span class="meta">#<span class="meta-keyword">define</span> EXT3_LINK_MAX           32000</span></div></pre></td></tr></table></figure>
+<p>所以，只能将生成的多余临时文件删除了。动手ing….</p>
+<p>删除之后，重新提交spark任务，没有问题。</p>
+<p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511778332/spark4_vnexdx.png" alt=""></p>
 
       
     </div>
@@ -403,15 +368,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/10/18/如何解决“非WeChat官方网页，继续访问将转换成......”的问题/" rel="next" title="如何解决“非WeChat官方网页，继续访问将转换成.....”的问题">
+                <i class="fa fa-chevron-left"></i> 如何解决“非WeChat官方网页，继续访问将转换成.....”的问题
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/14/hive如何实现自定义函数/" rel="prev" title="hive如何实现自定义函数">
-                hive如何实现自定义函数 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -439,6 +404,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -535,7 +504,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hive中sql总结"><span class="nav-number">1.</span> <span class="nav-text">hive中sql总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、对指定的某一个列去重"><span class="nav-number">1.0.1.</span> <span class="nav-text">1、对指定的某一个列去重</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、删除分区"><span class="nav-number">1.0.2.</span> <span class="nav-text">2、删除分区</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。"><span class="nav-number">1.0.3.</span> <span class="nav-text">3、删除一张表，如果启动了回收站功能，那么这张表会保存在回收站里，也是能够恢复信息的。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、-创建一个partition-table002的表，使得表结构和partition-table001一样。"><span class="nav-number">1.0.4.</span> <span class="nav-text">4、 创建一个partition_table002的表，使得表结构和partition_table001一样。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、使用load加载数据到表中"><span class="nav-number">1.0.5.</span> <span class="nav-text">5、使用load加载数据到表中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6、创建外部表"><span class="nav-number">1.0.6.</span> <span class="nav-text">6、创建外部表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7、hive外部表创建分区关联相应的目录（必须是目录）"><span class="nav-number">1.0.7.</span> <span class="nav-text">7、hive外部表创建分区关联相应的目录（必须是目录）</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Application-has-been-killed-Reason-Master-removed-our-application-FAILED"><span class="nav-number">1.</span> <span class="nav-text">Application has been killed. Reason: Master removed our application: FAILED</span></a></li></ol></div>
             
 
           </div>
