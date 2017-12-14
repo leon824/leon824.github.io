@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[类unix平台中几个大杀器指令]]></title>
+    <url>%2F2017%2F12%2F14%2F%E7%B1%BBunix%E5%B9%B3%E5%8F%B0%E4%B8%AD%E5%87%A0%E4%B8%AA%E5%A4%A7%E6%9D%80%E5%99%A8%E6%8C%87%E4%BB%A4%2F</url>
+    <content type="text"><![CDATA[类unix平台中几个大杀器指令 下边介绍几个“很强势”的命令行指令，能大大提高我们的工作生产效率。使用macOS Sierra作为演示环境。 1、autojump 通常我们在类unix操作系统中切换目录都是使用cd，使用这个指令如果要切换到很深的目录，是很烦恼的。那么这个时候autojump就是大杀器。 1、 在mac中安装autojump比较简单： 1brew install autojump 但是需要注意安装完并不能直接使用。在我们安装的过程中会有如下的提示： 我们只需要按照步骤操作就好：（1） 先在~/.zshrc文件或者~/.bash_profile中添加 1[ -f /usr/local/etc/profile.d/autojump.sh ] &amp;&amp; . /usr/local/etc/profile.d/autojump.sh (2) 然后source相应的文件，重新打开一个窗口。就可以使用了。 简单介绍一下autojump的简单使用可以使用下面的命令来手动添加一个目录 1$ autojump -a [目录] 如果你突然想要把当前目录变成你的最爱和使用最频繁的文件夹，你可以在该目录通过命令的参数 i 来手工增加它的权重 1$ autojump -i [权重] 这将使得该目录更可能被选择跳转。相反的例子是在该目录使用参数 d 来减少权重： 1autojump -d [权重] 要跟踪所有这些改变，输入： 1$ autojump -s 2、mycli 对于程序员来说，数据库再熟悉不过了，很多时候我们更喜欢用命令行来访问数据库，但是默认自带的mysql对操作并不是十分友好，不能自动补全，没有语法高亮。这个时候使用mycli就再合适不过了。 1、 先安装，依旧使用brew来安装管理1brew install mycli 然后使用mycli -u username进入数据库，需要注意的是这里不需要-p参数。 如下所示： 3、screen 当我们在通过ssh连接远端机器执行任务时，如果任务执行时间相对比较短还好，如果是执行hadoop的任务，很多时候回超过几个小时，那么这个时候如果ssh连接中断了，那么这个任务也会失败。所以这个时候screen就派上用场了。 1brew install screen 进入后台执行： 1screen 当开始执行任务之后使用如下指令退出： 1control + A + D 将正在执行的任务列举出来 1screen -ls 查看任务执行进度： 1screen -r 进程号 还包括axel、fasd、m-cli等等有兴趣的小伙伴可以自己研究。]]></content>
+      <categories>
+        <category>macOS</category>
+      </categories>
+  </entry>
+  <entry>
     <title><![CDATA[记录spark一次踩坑]]></title>
     <url>%2F2017%2F11%2F27%2F%E8%AE%B0%E5%BD%95%E4%B8%80%E6%AC%A1spark%E8%B8%A9%E5%9D%91%2F</url>
     <content type="text"><![CDATA[Application has been killed. Reason: Master removed our application: FAILED spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。 查看worker运行的log，发现下面的问题。 然后进入到/opt/soft/spark/work目录发现当前有31999个文件，而在linux文件系统中一个文件夹最多能够32000个子文件，包括一个当前目录、父级目录，那么操作这个数就无法在这个目录中写入文件。在linux 内核中有下面的定义： 12include/linux/ext2_fs.h:#define EXT2_LINK_MAX 32000include/linux/ext3_fs.h:#define EXT3_LINK_MAX 32000 所以，只能将生成的多余临时文件删除了。动手ing…. 删除之后，重新提交spark任务，没有问题。]]></content>
