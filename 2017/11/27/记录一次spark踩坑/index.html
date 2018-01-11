@@ -69,21 +69,22 @@
 
 
 
-<meta name="description" content="Application has been killed. Reason: Master removed our application: FAILED spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。  查看worker运行的log，发现下面的问题。 然后进入到/opt/soft/spark/work目录发现当前有31999个文件，而在linux文件系统中一个文件夹最多能够">
+<meta name="description" content="Application has been killed. Reason: Master removed our application: FAILED spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。  查看worker运行的log，发现下面的问题。  然后进入到/opt/soft/spark/work目录发现当前有31999个文件，  而在linux文件系统中一个文件夹最">
 <meta property="og:type" content="article">
 <meta property="og:title" content="记录spark一次踩坑">
 <meta property="og:url" content="http://yoursite.com/2017/11/27/记录一次spark踩坑/index.html">
 <meta property="og:site_name" content="花谢花开">
-<meta property="og:description" content="Application has been killed. Reason: Master removed our application: FAILED spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。  查看worker运行的log，发现下面的问题。 然后进入到/opt/soft/spark/work目录发现当前有31999个文件，而在linux文件系统中一个文件夹最多能够">
+<meta property="og:description" content="Application has been killed. Reason: Master removed our application: FAILED spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。  查看worker运行的log，发现下面的问题。  然后进入到/opt/soft/spark/work目录发现当前有31999个文件，  而在linux文件系统中一个文件夹最">
 <meta property="og:locale" content="zh-hk">
-<meta property="og:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511777579/spark2_mkrjds.png">
-<meta property="og:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511777840/spark3_g4xgox.png">
-<meta property="og:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511778332/spark4_vnexdx.png">
-<meta property="og:updated_time" content="2017-11-27T10:31:48.703Z">
+<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1511777579/spark2_mkrjds.png">
+<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1511777840/spark3_g4xgox.png">
+<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1511777578/spark1_mzgwvz.png">
+<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1511778332/spark4_vnexdx.png">
+<meta property="og:updated_time" content="2018-01-11T13:42:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记录spark一次踩坑">
-<meta name="twitter:description" content="Application has been killed. Reason: Master removed our application: FAILED spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。  查看worker运行的log，发现下面的问题。 然后进入到/opt/soft/spark/work目录发现当前有31999个文件，而在linux文件系统中一个文件夹最多能够">
-<meta name="twitter:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511777579/spark2_mkrjds.png">
+<meta name="twitter:description" content="Application has been killed. Reason: Master removed our application: FAILED spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。  查看worker运行的log，发现下面的问题。  然后进入到/opt/soft/spark/work目录发现当前有31999个文件，  而在linux文件系统中一个文件夹最">
+<meta name="twitter:image" content="http://res.cloudinary.com/leon824/image/upload/v1511777579/spark2_mkrjds.png">
 
 
 
@@ -357,13 +358,15 @@
 
       
         <h2 id="Application-has-been-killed-Reason-Master-removed-our-application-FAILED"><a href="#Application-has-been-killed-Reason-Master-removed-our-application-FAILED" class="headerlink" title="Application has been killed. Reason: Master removed our application: FAILED"></a>Application has been killed. Reason: Master removed our application: FAILED</h2><p> spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。</p>
-<p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511777579/spark2_mkrjds.png" alt=""></p>
-<p>查看worker运行的log，发现下面的问题。<br><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511777840/spark3_g4xgox.png" alt=""></p>
-<p>然后进入到/opt/soft/spark/work目录发现当前有31999个文件，而在linux文件系统中一个文件夹最多能够32000个子文件，包括一个当前目录、父级目录，那么操作这个数就无法在这个目录中写入文件。在linux 内核中有下面的定义：</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1511777579/spark2_mkrjds.png" width="100%" height="100%"></p>
+<p>查看worker运行的log，发现下面的问题。</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1511777840/spark3_g4xgox.png" width="100%" height="100%"></p>
+<p>然后进入到/opt/soft/spark/work目录发现当前有31999个文件，</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1511777578/spark1_mzgwvz.png" width="100%" height="100%"></p>
+<p>而在linux文件系统中一个文件夹最多能够32000个子文件，包括一个当前目录、父级目录，那么操作这个数就无法在这个目录中写入文件。在linux 内核中有下面的定义：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">include/linux/ext2_fs.h:<span class="meta">#<span class="meta-keyword">define</span> EXT2_LINK_MAX           32000</span></div><div class="line">include/linux/ext3_fs.h:<span class="meta">#<span class="meta-keyword">define</span> EXT3_LINK_MAX           32000</span></div></pre></td></tr></table></figure>
 <p>所以，只能将生成的多余临时文件删除了。动手ing….</p>
-<p>删除之后，重新提交spark任务，没有问题。</p>
-<p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511778332/spark4_vnexdx.png" alt=""></p>
+<p>删除之后，重新提交spark任务，没有问题。<br><img src="http://res.cloudinary.com/leon824/image/upload/v1511778332/spark4_vnexdx.png" width="100%" height="100%"></p>
 
       
     </div>
@@ -546,8 +549,8 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  &copy;  2017 &mdash; 
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

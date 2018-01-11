@@ -361,8 +361,7 @@
 </blockquote>
 <h4 id="1、autojump"><a href="#1、autojump" class="headerlink" title="1、autojump"></a>1、autojump</h4><p>  通常我们在类unix操作系统中切换目录都是使用cd，使用这个指令如果要切换到很深的目录，是很烦恼的。那么这个时候autojump就是大杀器。</p>
 <p>1、 在mac中安装autojump比较简单：<br> <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install autojump</div></pre></td></tr></table></figure></p>
-<p> 但是需要注意安装完并不能直接使用。在我们安装的过程中会有如下的提示：</p>
-<p> <img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1513176176/autojump_efiljd.png" width="100%" height="100%"><br> 我们只需要按照步骤操作就好：<br>（1） 先在~/.zshrc文件或者~/.bash_profile中添加</p>
+<p> 但是需要注意安装完并不能直接使用。在我们安装的过程中会有如下的提示：<br> <img src="http://res.cloudinary.com/leon824/image/upload/v1513176176/autojump_efiljd.png" width="100%" height="100%"><br> 我们只需要按照步骤操作就好：<br>（1） 先在~/.zshrc文件或者~/.bash_profile中添加</p>
  <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[ -f /usr/local/etc/profile.d/autojump.sh ] &amp;&amp; . /usr/local/etc/profile.d/autojump.sh</div></pre></td></tr></table></figure>
 <p> (2) 然后source相应的文件，重新打开一个窗口。就可以使用了。</p>
 <h4 id="简单介绍一下autojump的简单使用"><a href="#简单介绍一下autojump的简单使用" class="headerlink" title="简单介绍一下autojump的简单使用"></a>简单介绍一下autojump的简单使用</h4><p>可以使用下面的命令来手动添加一个目录</p>
@@ -378,7 +377,7 @@
 </blockquote>
 <p>1、 先安装，依旧使用brew来安装管理<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install mycli</div></pre></td></tr></table></figure></p>
 <p> 然后使用mycli -u username进入数据库，需要注意的是这里不需要-p参数。<br> 如下所示：</p>
-<p> <img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1513176886/mycli_heofoa.png" width="100%" height="100%"></p>
+<p> <img src="http://res.cloudinary.com/leon824/image/upload/v1513176886/mycli_heofoa.png" width="100%" height="100%"></p>
 <h4 id="3、screen"><a href="#3、screen" class="headerlink" title="3、screen"></a>3、screen</h4><blockquote>
 <p>当我们在通过ssh连接远端机器执行任务时，如果任务执行时间相对比较短还好，如果是执行hadoop的任务，很多时候回超过几个小时，那么这个时候如果ssh连接中断了，那么这个任务也会失败。所以这个时候screen就派上用场了。</p>
 </blockquote>
@@ -532,13 +531,15 @@
         
           
             <h2 id="Application-has-been-killed-Reason-Master-removed-our-application-FAILED"><a href="#Application-has-been-killed-Reason-Master-removed-our-application-FAILED" class="headerlink" title="Application has been killed. Reason: Master removed our application: FAILED"></a>Application has been killed. Reason: Master removed our application: FAILED</h2><p> spark从五月份开始跑到11月份一直正常，但是在最近两天报如下的错误。</p>
-<p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511777579/spark2_mkrjds.png" alt=""></p>
-<p>查看worker运行的log，发现下面的问题。<br><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511777840/spark3_g4xgox.png" alt=""></p>
-<p>然后进入到/opt/soft/spark/work目录发现当前有31999个文件，而在linux文件系统中一个文件夹最多能够32000个子文件，包括一个当前目录、父级目录，那么操作这个数就无法在这个目录中写入文件。在linux 内核中有下面的定义：</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1511777579/spark2_mkrjds.png" width="100%" height="100%"></p>
+<p>查看worker运行的log，发现下面的问题。</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1511777840/spark3_g4xgox.png" width="100%" height="100%"></p>
+<p>然后进入到/opt/soft/spark/work目录发现当前有31999个文件，</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1511777578/spark1_mzgwvz.png" width="100%" height="100%"></p>
+<p>而在linux文件系统中一个文件夹最多能够32000个子文件，包括一个当前目录、父级目录，那么操作这个数就无法在这个目录中写入文件。在linux 内核中有下面的定义：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">include/linux/ext2_fs.h:<span class="meta">#<span class="meta-keyword">define</span> EXT2_LINK_MAX           32000</span></div><div class="line">include/linux/ext3_fs.h:<span class="meta">#<span class="meta-keyword">define</span> EXT3_LINK_MAX           32000</span></div></pre></td></tr></table></figure>
 <p>所以，只能将生成的多余临时文件删除了。动手ing….</p>
-<p>删除之后，重新提交spark任务，没有问题。</p>
-<p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1511778332/spark4_vnexdx.png" alt=""></p>
+<p>删除之后，重新提交spark任务，没有问题。<br><img src="http://res.cloudinary.com/leon824/image/upload/v1511778332/spark4_vnexdx.png" width="100%" height="100%"></p>
 
           
         
@@ -679,9 +680,13 @@
         
           
             <blockquote>
-<p>我们在开发微信公众号时，使用网页工具生成自定义菜单，关联到某一个网站，当我们访问这个网页的时候就会出现如下情况：<br><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1508378939/wechat_jrovnj.png" width="50%" height="50%"></p>
-<h4 id="要解决上述问题，可以采用如下方式："><a href="#要解决上述问题，可以采用如下方式：" class="headerlink" title="要解决上述问题，可以采用如下方式："></a><strong>要解决上述问题，可以采用如下方式：</strong></h4><p>  1、登录微信公众号，进入公众号设置 –&gt; 功能设置，进入到下面的页面中，然后点击设置。<br><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1508337467/WX20171018-223644_2x_ejzxrr.png" alt=""><br>  然后最终进入到设置的页面。有两个地方需要特别注意：（1）首先要确保设置的域名必须是备过案的。（2）同时还需要下载MP_verify_zvHGyljL5rHLDOB1.txt文件到能够访问的目录。<br><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1508337927/WX20171018-224506_2x_vuyytg.png" alt=""></p>
+<p>我们在开发微信公众号时，使用网页工具生成自定义菜单，关联到某一个网站，当我们访问这个网页的时候就会出现如下情况：</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1508378939/wechat_jrovnj.png" width="60%" height="60%"></p>
+<h4 id="要解决上述问题，可以采用如下方式："><a href="#要解决上述问题，可以采用如下方式：" class="headerlink" title="要解决上述问题，可以采用如下方式："></a><strong>要解决上述问题，可以采用如下方式：</strong></h4><p>  1、登录微信公众号，进入公众号设置 –&gt; 功能设置，进入到下面的页面中，然后点击设置。</p>
 </blockquote>
+<p> <img src="http://res.cloudinary.com/leon824/image/upload/v1508337927/WX20171018-224506_2x_vuyytg.png" width="100%" height="100%"></p>
+<p>  然后最终进入到设置的页面。有两个地方需要特别注意：（1）首先要确保设置的域名必须是备过案的。（2）同时还需要下载MP_verify_zvHGyljL5rHLDOB1.txt文件到能够访问的目录。</p>
+<p>   <img src="http://res.cloudinary.com/leon824/image/upload/v1508337467/WX20171018-223644_2x_ejzxrr.png" width="100%" height="100%"></p>
 <p>  假设是java web的项目，备案的url可以具体到访问的首页目录（WebContent目录下），那么也就可以将MP_verify_zvHGyljL5rHLDOB1.txt文件放置到WebContent目录下。<br>  通过以上的设置，过一段时间生效之后，就不会在出现安全提示了。</p>
 
           
@@ -973,15 +978,17 @@
             <h1 id="爬取猫眼电影数据-一"><a href="#爬取猫眼电影数据-一" class="headerlink" title="爬取猫眼电影数据(一)"></a>爬取猫眼电影数据(一)</h1><blockquote>
 <p>概述：近期由于业务需要，需要将爬取猫眼网站中的部分数据作为公众号数据源，猫眼的电影数据相当之全备，大概收录了几十万部电影。当然这些数据我们也没那么容易就能爬取到的。遂将整个爬取过程记录如下。</p>
 </blockquote>
-<p>1、使用chrome进入开发者模式，观察html结构、元素，找到我们所需数据，第一步我们需要现获取每一个电影的详情页面url。<br><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1506261832/2_pit2e0.png" alt=""></p>
+<p>1、使用chrome进入开发者模式，观察html结构、元素，找到我们所需数据，第一步我们需要现获取每一个电影的详情页面url。</p>
+<p> <img src="http://res.cloudinary.com/leon824/image/upload/v1506261484/1_b4qehh.png" width="100%" height="100%"></p>
 <blockquote>
 <p><strong>注意，在爬取猫眼的电影数据时并不需要登录和携带cookie去请求html</strong></p>
 </blockquote>
 <p>2、 这里我们结合BeautifulSoup和xpath来实现对数据的过滤。实现代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_detail_url</span><span class="params">(self, targetUrl)</span>:</span></div><div class="line">    <span class="string">"""从概览页面中去获取剧透影片的详情页面"""</span></div><div class="line">    html = self.getHtml(targetUrl) </div><div class="line">    <span class="keyword">print</span> html</div><div class="line">    soup = BeautifulSoup(html, <span class="string">'lxml'</span>)</div><div class="line">    urls = soup.find_all(<span class="string">'a'</span>, attrs=&#123;<span class="string">'data-act'</span>:<span class="string">'movie-click'</span>&#125;)</div><div class="line">    dd = soup.find_all(<span class="string">'dd'</span>) </div><div class="line">    <span class="keyword">print</span> dd</div><div class="line">    <span class="keyword">for</span> url <span class="keyword">in</span> urls:</div><div class="line">        detailPath = etree.HTML(str(url))</div><div class="line">        detail_url = detailPath.xpath(<span class="string">r'//a/@href'</span>)</div><div class="line">        <span class="keyword">for</span> durl <span class="keyword">in</span> detail_url:</div><div class="line">            self.getContents(<span class="string">'https://maoyan.com'</span> + durl, proxys)</div></pre></td></tr></table></figure>
-<p>然后获取到对应每一个电影的详情url，进入详情页，分析所需数据对应html元素。在这里我们只需要三个字段、电影名称、电影海报url、电影上映时间。<br><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1506262397/3_yrxyxr.png" alt=""></p>
+<p>然后获取到对应每一个电影的详情url，进入详情页，分析所需数据对应html元素。在这里我们只需要三个字段、电影名称、电影海报url、电影上映时间。</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1506262397/3_yrxyxr.png" width="100%" height="100%"></p>
 <blockquote>
-<p>提示:<em>使用xpath时，最简单的方式是在chrome中点击选中具体某一个元素，然后右键——&gt; copy –&gt; copy xpath就能获取到对应的xpath路径</em><br><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1506263006/4_bsgqfg.png" alt=""></p>
+<p>提示:<em>使用xpath时，最简单的方式是在chrome中点击选中具体某一个元素，然后右键——&gt; copy –&gt; copy xpath就能获取到对应的xpath路径</em><br><img src="http://res.cloudinary.com/leon824/image/upload/v1506263006/4_bsgqfg.png" width="100%" height="100%"></p>
 </blockquote>
 <p>实现代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getContents</span><span class="params">(self, url, proxys)</span>:</span></div><div class="line">        <span class="string">"""从详情页面中获取所需data"""</span></div><div class="line">        html  = self.getHtml(url,proxys)</div><div class="line">        detailPath = etree.HTML(html)</div><div class="line">        <span class="comment">#电影名称</span></div><div class="line">        film_name = detailPath.xpath(<span class="string">r'/html/body/div[3]/div/div[2]/div[1]/h3/text()'</span>) </div><div class="line">			<span class="comment">#图片url</span></div><div class="line">        pic_url = detailPath.xpath(<span class="string">r'/html/body/div[3]/div/div[1]/div/img/@src'</span>)</div><div class="line">         <span class="comment">#上映时间   </span></div><div class="line">        release_time = detailPath.xpath(<span class="string">r'/html/body/div[3]/div/div[2]/div[1]/ul/li[3]/text()'</span>)</div></pre></td></tr></table></figure>
@@ -1290,12 +1297,12 @@
 <blockquote>
 <p>概述：有时在我们的nexus仓库中没有项目中所需的jar包，这个时候就需要从网络中下载，然后上传到nexus仓库中，然后我们就可以嗨森的敲代码啦。</p>
 </blockquote>
-<h4 id="1、首先需要是对应的repository有上传的权限"><a href="#1、首先需要是对应的repository有上传的权限" class="headerlink" title="1、首先需要是对应的repository有上传的权限"></a>1、首先需要是对应的repository有上传的权限</h4><p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547143/haha_zqbfpz.png" alt=""></p>
-<h4 id="2、我们这里讲jar包上传到3rd-party仓库中。先点击artifact-upload然后选择GAV-definition，手动将group-id、artifact、version填入，然后packaging选择jar。"><a href="#2、我们这里讲jar包上传到3rd-party仓库中。先点击artifact-upload然后选择GAV-definition，手动将group-id、artifact、version填入，然后packaging选择jar。" class="headerlink" title="2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、artifact、version填入，然后packaging选择jar。"></a>2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、artifact、version填入，然后packaging选择jar。</h4><p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547985/4B23709_hwgqem.png" alt=""></p>
-<h4 id="3、然后点击select-artifact（s）-to-upload将本地的jar加入，点击add-artifact，然后点击upload-artifact。"><a href="#3、然后点击select-artifact（s）-to-upload将本地的jar加入，点击add-artifact，然后点击upload-artifact。" class="headerlink" title="3、然后点击select artifact（s） to upload将本地的jar加入，点击add artifact，然后点击upload artifact。"></a>3、然后点击select artifact（s） to upload将本地的jar加入，点击add artifact，然后点击upload artifact。</h4><p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547145/sb_pmqkdu.png" alt=""></p>
-<h4 id="4、最后刷新就能看到刚才加入的jar包。"><a href="#4、最后刷新就能看到刚才加入的jar包。" class="headerlink" title="4、最后刷新就能看到刚才加入的jar包。"></a>4、最后刷新就能看到刚才加入的jar包。</h4><p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547145/sb28F42D_beaise.png" alt=""></p>
+<h4 id="1、首先需要是对应的repository有上传的权限"><a href="#1、首先需要是对应的repository有上传的权限" class="headerlink" title="1、首先需要是对应的repository有上传的权限"></a>1、首先需要是对应的repository有上传的权限</h4><p><img src="http://res.cloudinary.com/leon824/image/upload/v1505547143/haha_zqbfpz.png" alt=""></p>
+<h4 id="2、我们这里讲jar包上传到3rd-party仓库中。先点击artifact-upload然后选择GAV-definition，手动将group-id、artifact、version填入，然后packaging选择jar。"><a href="#2、我们这里讲jar包上传到3rd-party仓库中。先点击artifact-upload然后选择GAV-definition，手动将group-id、artifact、version填入，然后packaging选择jar。" class="headerlink" title="2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、artifact、version填入，然后packaging选择jar。"></a>2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、artifact、version填入，然后packaging选择jar。</h4><p><img src="http://res.cloudinary.com/leon824/image/upload/v1505547985/4B23709_hwgqem.png" width="100%" height="100%"></p>
+<h4 id="3、然后点击select-artifact（s）-to-upload将本地的jar加入，点击add-artifact，然后点击upload-artifact。"><a href="#3、然后点击select-artifact（s）-to-upload将本地的jar加入，点击add-artifact，然后点击upload-artifact。" class="headerlink" title="3、然后点击select artifact（s） to upload将本地的jar加入，点击add artifact，然后点击upload artifact。"></a>3、然后点击select artifact（s） to upload将本地的jar加入，点击add artifact，然后点击upload artifact。</h4><p><img src="http://res.cloudinary.com/leon824/image/upload/v1505547145/sb_pmqkdu.png" width="100%" height="100%"></p>
+<h4 id="4、最后刷新就能看到刚才加入的jar包。"><a href="#4、最后刷新就能看到刚才加入的jar包。" class="headerlink" title="4、最后刷新就能看到刚才加入的jar包。"></a>4、最后刷新就能看到刚才加入的jar包。</h4><p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547145/sb28F42D_beaise.png" width="100%" height="100%"></p>
 <p><strong>此外需要注意的是，将入到3rd仓库之后可能对应的坐标会发生变化。如果前后坐标没有对应上，那么在pom文件中还是找不到相应的依赖。</strong></p>
-<p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547143/jiang58A_vvzx28.png" alt=""></p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1505547143/jiang58A_vvzx28.png" width="100%" height="100%"></p>
 
           
         
@@ -1755,8 +1762,8 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  &copy;  2017 &mdash; 
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

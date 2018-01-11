@@ -76,13 +76,13 @@
 <meta property="og:site_name" content="花谢花开">
 <meta property="og:description" content="类unix平台中几个大杀器指令 下边介绍几个“很强势”的命令行指令，能大大提高我们的工作生产效率。使用macOS Sierra作为演示环境。  1、autojump  通常我们在类unix操作系统中切换目录都是使用cd，使用这个指令如果要切换到很深的目录，是很烦恼的。那么这个时候autojump就是大杀器。 1、 在mac中安装autojump比较简单： 1brew install autojum">
 <meta property="og:locale" content="zh-hk">
-<meta property="og:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1513176176/autojump_efiljd.png">
-<meta property="og:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1513176886/mycli_heofoa.png">
-<meta property="og:updated_time" content="2017-12-14T13:59:55.000Z">
+<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1513176176/autojump_efiljd.png">
+<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1513176886/mycli_heofoa.png">
+<meta property="og:updated_time" content="2018-01-11T13:34:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="类unix平台中几个大杀器指令">
 <meta name="twitter:description" content="类unix平台中几个大杀器指令 下边介绍几个“很强势”的命令行指令，能大大提高我们的工作生产效率。使用macOS Sierra作为演示环境。  1、autojump  通常我们在类unix操作系统中切换目录都是使用cd，使用这个指令如果要切换到很深的目录，是很烦恼的。那么这个时候autojump就是大杀器。 1、 在mac中安装autojump比较简单： 1brew install autojum">
-<meta name="twitter:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1513176176/autojump_efiljd.png">
+<meta name="twitter:image" content="http://res.cloudinary.com/leon824/image/upload/v1513176176/autojump_efiljd.png">
 
 
 
@@ -360,8 +360,7 @@
 </blockquote>
 <h4 id="1、autojump"><a href="#1、autojump" class="headerlink" title="1、autojump"></a>1、autojump</h4><p>  通常我们在类unix操作系统中切换目录都是使用cd，使用这个指令如果要切换到很深的目录，是很烦恼的。那么这个时候autojump就是大杀器。</p>
 <p>1、 在mac中安装autojump比较简单：<br> <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install autojump</div></pre></td></tr></table></figure></p>
-<p> 但是需要注意安装完并不能直接使用。在我们安装的过程中会有如下的提示：</p>
-<p> <img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1513176176/autojump_efiljd.png" width="100%" height="100%"><br> 我们只需要按照步骤操作就好：<br>（1） 先在~/.zshrc文件或者~/.bash_profile中添加</p>
+<p> 但是需要注意安装完并不能直接使用。在我们安装的过程中会有如下的提示：<br> <img src="http://res.cloudinary.com/leon824/image/upload/v1513176176/autojump_efiljd.png" width="100%" height="100%"><br> 我们只需要按照步骤操作就好：<br>（1） 先在~/.zshrc文件或者~/.bash_profile中添加</p>
  <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[ -f /usr/local/etc/profile.d/autojump.sh ] &amp;&amp; . /usr/local/etc/profile.d/autojump.sh</div></pre></td></tr></table></figure>
 <p> (2) 然后source相应的文件，重新打开一个窗口。就可以使用了。</p>
 <h4 id="简单介绍一下autojump的简单使用"><a href="#简单介绍一下autojump的简单使用" class="headerlink" title="简单介绍一下autojump的简单使用"></a>简单介绍一下autojump的简单使用</h4><p>可以使用下面的命令来手动添加一个目录</p>
@@ -377,7 +376,7 @@
 </blockquote>
 <p>1、 先安装，依旧使用brew来安装管理<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install mycli</div></pre></td></tr></table></figure></p>
 <p> 然后使用mycli -u username进入数据库，需要注意的是这里不需要-p参数。<br> 如下所示：</p>
-<p> <img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1513176886/mycli_heofoa.png" width="100%" height="100%"></p>
+<p> <img src="http://res.cloudinary.com/leon824/image/upload/v1513176886/mycli_heofoa.png" width="100%" height="100%"></p>
 <h4 id="3、screen"><a href="#3、screen" class="headerlink" title="3、screen"></a>3、screen</h4><blockquote>
 <p>当我们在通过ssh连接远端机器执行任务时，如果任务执行时间相对比较短还好，如果是执行hadoop的任务，很多时候回超过几个小时，那么这个时候如果ssh连接中断了，那么这个任务也会失败。所以这个时候screen就派上用场了。</p>
 </blockquote>
@@ -569,8 +568,8 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  &copy;  2017 &mdash; 
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

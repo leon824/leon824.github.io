@@ -69,21 +69,21 @@
 
 
 
-<meta name="description" content="爬取猫眼电影数据(一) 概述：近期由于业务需要，需要将爬取猫眼网站中的部分数据作为公众号数据源，猫眼的电影数据相当之全备，大概收录了几十万部电影。当然这些数据我们也没那么容易就能爬取到的。遂将整个爬取过程记录如下。  1、使用chrome进入开发者模式，观察html结构、元素，找到我们所需数据，第一步我们需要现获取每一个电影的详情页面url。  注意，在爬取猫眼的电影数据时并不需要登录和携带coo">
+<meta name="description" content="爬取猫眼电影数据(一) 概述：近期由于业务需要，需要将爬取猫眼网站中的部分数据作为公众号数据源，猫眼的电影数据相当之全备，大概收录了几十万部电影。当然这些数据我们也没那么容易就能爬取到的。遂将整个爬取过程记录如下。  1、使用chrome进入开发者模式，观察html结构、元素，找到我们所需数据，第一步我们需要现获取每一个电影的详情页面url。    注意，在爬取猫眼的电影数据时并不需要登录和携带c">
 <meta property="og:type" content="article">
 <meta property="og:title" content="爬取猫眼电影数据（一）">
 <meta property="og:url" content="http://yoursite.com/2017/09/24/爬取猫眼电影数据-1/index.html">
 <meta property="og:site_name" content="花谢花开">
-<meta property="og:description" content="爬取猫眼电影数据(一) 概述：近期由于业务需要，需要将爬取猫眼网站中的部分数据作为公众号数据源，猫眼的电影数据相当之全备，大概收录了几十万部电影。当然这些数据我们也没那么容易就能爬取到的。遂将整个爬取过程记录如下。  1、使用chrome进入开发者模式，观察html结构、元素，找到我们所需数据，第一步我们需要现获取每一个电影的详情页面url。  注意，在爬取猫眼的电影数据时并不需要登录和携带coo">
+<meta property="og:description" content="爬取猫眼电影数据(一) 概述：近期由于业务需要，需要将爬取猫眼网站中的部分数据作为公众号数据源，猫眼的电影数据相当之全备，大概收录了几十万部电影。当然这些数据我们也没那么容易就能爬取到的。遂将整个爬取过程记录如下。  1、使用chrome进入开发者模式，观察html结构、元素，找到我们所需数据，第一步我们需要现获取每一个电影的详情页面url。    注意，在爬取猫眼的电影数据时并不需要登录和携带c">
 <meta property="og:locale" content="zh-hk">
-<meta property="og:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1506261832/2_pit2e0.png">
-<meta property="og:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1506262397/3_yrxyxr.png">
-<meta property="og:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1506263006/4_bsgqfg.png">
-<meta property="og:updated_time" content="2017-09-24T14:58:25.526Z">
+<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1506261484/1_b4qehh.png">
+<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1506262397/3_yrxyxr.png">
+<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1506263006/4_bsgqfg.png">
+<meta property="og:updated_time" content="2018-01-11T13:55:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="爬取猫眼电影数据（一）">
-<meta name="twitter:description" content="爬取猫眼电影数据(一) 概述：近期由于业务需要，需要将爬取猫眼网站中的部分数据作为公众号数据源，猫眼的电影数据相当之全备，大概收录了几十万部电影。当然这些数据我们也没那么容易就能爬取到的。遂将整个爬取过程记录如下。  1、使用chrome进入开发者模式，观察html结构、元素，找到我们所需数据，第一步我们需要现获取每一个电影的详情页面url。  注意，在爬取猫眼的电影数据时并不需要登录和携带coo">
-<meta name="twitter:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1506261832/2_pit2e0.png">
+<meta name="twitter:description" content="爬取猫眼电影数据(一) 概述：近期由于业务需要，需要将爬取猫眼网站中的部分数据作为公众号数据源，猫眼的电影数据相当之全备，大概收录了几十万部电影。当然这些数据我们也没那么容易就能爬取到的。遂将整个爬取过程记录如下。  1、使用chrome进入开发者模式，观察html结构、元素，找到我们所需数据，第一步我们需要现获取每一个电影的详情页面url。    注意，在爬取猫眼的电影数据时并不需要登录和携带c">
+<meta name="twitter:image" content="http://res.cloudinary.com/leon824/image/upload/v1506261484/1_b4qehh.png">
 
 
 
@@ -359,15 +359,17 @@
         <h1 id="爬取猫眼电影数据-一"><a href="#爬取猫眼电影数据-一" class="headerlink" title="爬取猫眼电影数据(一)"></a>爬取猫眼电影数据(一)</h1><blockquote>
 <p>概述：近期由于业务需要，需要将爬取猫眼网站中的部分数据作为公众号数据源，猫眼的电影数据相当之全备，大概收录了几十万部电影。当然这些数据我们也没那么容易就能爬取到的。遂将整个爬取过程记录如下。</p>
 </blockquote>
-<p>1、使用chrome进入开发者模式，观察html结构、元素，找到我们所需数据，第一步我们需要现获取每一个电影的详情页面url。<br><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1506261832/2_pit2e0.png" alt=""></p>
+<p>1、使用chrome进入开发者模式，观察html结构、元素，找到我们所需数据，第一步我们需要现获取每一个电影的详情页面url。</p>
+<p> <img src="http://res.cloudinary.com/leon824/image/upload/v1506261484/1_b4qehh.png" width="100%" height="100%"></p>
 <blockquote>
 <p><strong>注意，在爬取猫眼的电影数据时并不需要登录和携带cookie去请求html</strong></p>
 </blockquote>
 <p>2、 这里我们结合BeautifulSoup和xpath来实现对数据的过滤。实现代码如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_detail_url</span><span class="params">(self, targetUrl)</span>:</span></div><div class="line">    <span class="string">"""从概览页面中去获取剧透影片的详情页面"""</span></div><div class="line">    html = self.getHtml(targetUrl) </div><div class="line">    <span class="keyword">print</span> html</div><div class="line">    soup = BeautifulSoup(html, <span class="string">'lxml'</span>)</div><div class="line">    urls = soup.find_all(<span class="string">'a'</span>, attrs=&#123;<span class="string">'data-act'</span>:<span class="string">'movie-click'</span>&#125;)</div><div class="line">    dd = soup.find_all(<span class="string">'dd'</span>) </div><div class="line">    <span class="keyword">print</span> dd</div><div class="line">    <span class="keyword">for</span> url <span class="keyword">in</span> urls:</div><div class="line">        detailPath = etree.HTML(str(url))</div><div class="line">        detail_url = detailPath.xpath(<span class="string">r'//a/@href'</span>)</div><div class="line">        <span class="keyword">for</span> durl <span class="keyword">in</span> detail_url:</div><div class="line">            self.getContents(<span class="string">'https://maoyan.com'</span> + durl, proxys)</div></pre></td></tr></table></figure>
-<p>然后获取到对应每一个电影的详情url，进入详情页，分析所需数据对应html元素。在这里我们只需要三个字段、电影名称、电影海报url、电影上映时间。<br><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1506262397/3_yrxyxr.png" alt=""></p>
+<p>然后获取到对应每一个电影的详情url，进入详情页，分析所需数据对应html元素。在这里我们只需要三个字段、电影名称、电影海报url、电影上映时间。</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1506262397/3_yrxyxr.png" width="100%" height="100%"></p>
 <blockquote>
-<p>提示:<em>使用xpath时，最简单的方式是在chrome中点击选中具体某一个元素，然后右键——&gt; copy –&gt; copy xpath就能获取到对应的xpath路径</em><br><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1506263006/4_bsgqfg.png" alt=""></p>
+<p>提示:<em>使用xpath时，最简单的方式是在chrome中点击选中具体某一个元素，然后右键——&gt; copy –&gt; copy xpath就能获取到对应的xpath路径</em><br><img src="http://res.cloudinary.com/leon824/image/upload/v1506263006/4_bsgqfg.png" width="100%" height="100%"></p>
 </blockquote>
 <p>实现代码：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getContents</span><span class="params">(self, url, proxys)</span>:</span></div><div class="line">        <span class="string">"""从详情页面中获取所需data"""</span></div><div class="line">        html  = self.getHtml(url,proxys)</div><div class="line">        detailPath = etree.HTML(html)</div><div class="line">        <span class="comment">#电影名称</span></div><div class="line">        film_name = detailPath.xpath(<span class="string">r'/html/body/div[3]/div/div[2]/div[1]/h3/text()'</span>) </div><div class="line">			<span class="comment">#图片url</span></div><div class="line">        pic_url = detailPath.xpath(<span class="string">r'/html/body/div[3]/div/div[1]/div/img/@src'</span>)</div><div class="line">         <span class="comment">#上映时间   </span></div><div class="line">        release_time = detailPath.xpath(<span class="string">r'/html/body/div[3]/div/div[2]/div[1]/ul/li[3]/text()'</span>)</div></pre></td></tr></table></figure>
@@ -558,8 +560,8 @@
       <div class="footer-inner">
         <div class="copyright" >
   
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  &copy;  2017 &mdash; 
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
