@@ -265,6 +265,234 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/14/完整描述一次URL访问到页面加载到底都经历了些什么/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="leonyoung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花谢花开">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/14/完整描述一次URL访问到页面加载到底都经历了些什么/" itemprop="url">从输入URL到页面加载完成的过程中都发生了什么事情？</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-01-14T21:22:47+08:00">
+                2018-01-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/网络/" itemprop="url" rel="index">
+                    <span itemprop="name">网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>平时我们总是习惯了输入一个网址，然后就静静的等待着各种漂亮的网页展示在我们的面前，但是可能大多数人都没有关注这其中都经历了哪些什么。下面大致做一个总结。</p>
+</blockquote>
+<h2 id="一、首先简单介绍一下OSI七层模型："><a href="#一、首先简单介绍一下OSI七层模型：" class="headerlink" title="一、首先简单介绍一下OSI七层模型："></a>一、首先简单介绍一下OSI七层模型：</h2><blockquote>
+<p>开放式系统互联通信参考模型（英语：Open System Interconnection Reference Model，缩写为 OSI），简称为OSI模型（OSI model），一种概念模型，由国际标准化组织（ISO）提出，一个试图使各种计算机在世界范围内互连为网络的标准框架。</p>
+</blockquote>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1516269244/20180118-2_fqphi5.png" alt=""></p>
+<p>其中各层的详细内容大家可以参考<a href="https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B" target="_blank" rel="external">维基百科</a></p>
+<ul>
+<li>OSI是一个理想的分层模型，很少有完全遵守这样的分层，只会使用其中的几层而已。</li>
+</ul>
+<h2 id="二、从访问google说起"><a href="#二、从访问google说起" class="headerlink" title="二、从访问google说起"></a>二、从访问google说起</h2><p><em>这里就不讨论我们伟大的防火长城了，作为一个程序员，这是基本技能</em></p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1516268792/20180118-1_lxqlaf.png" alt=""></p>
+<p>当你单击回车键，就意味着你需要向google的服务器发送一次网页请求的数据包。下面从涉及到的协议或者服务说起。</p>
+<h4 id="1、DNS协议"><a href="#1、DNS协议" class="headerlink" title="1、DNS协议"></a>1、DNS协议</h4><p>  当我们要访问<a href="https://www.google.co.jp/时，必须要知道ip地址，但这个时候我们并不知道ip是多少。DNS服务就可以帮我们通过域名找到ip地址。它是一个存储着ip和域名映射的分布式数据库。GFW其中就有通过dns污染和dns劫持的方式使得我们无法访问到国外的某些“fd”网站。" target="_blank" rel="external">https://www.google.co.jp/时，必须要知道ip地址，但这个时候我们并不知道ip是多少。DNS服务就可以帮我们通过域名找到ip地址。它是一个存储着ip和域名映射的分布式数据库。GFW其中就有通过dns污染和dns劫持的方式使得我们无法访问到国外的某些“fd”网站。</a></p>
+<p>  这里需要注意的是，ip和域名并非一对一的关系。而是多对多，也就是说一个ip可以绑定多个域名，一个域名也可以绑定多个ip，但同一时刻只能是一对一的。</p>
+<p>ok，现在我们有了ip地址。</p>
+<h4 id="2、-子网掩码"><a href="#2、-子网掩码" class="headerlink" title="2、 子网掩码"></a>2、 子网掩码</h4><p> 全世界这么多计算机，当然不可能都在同一个子网里。那这个时候就需要确认google服务器和我们本机是否在在同一个子网里，这里用到了子网掩码。</p>
+<p> 子网掩码和ip地址一样，都是32位的二进制数，通常用4段式表示，网络位全为1，主机位全为0。将我们的目标地址和本机地址分别与子网掩码按位做and操作。如果最终结果相同那么在同一子网中。不需要将数据包转发到网关。否则，将数据包转发到网关处理。</p>
+<p> 例如：</p>
+<ul>
+<li>DNS: 255.255.255.0</li>
+<li>主机ip：10.20.0.121</li>
+<li><p>google：216.239.34.10</p>
+<p>明显不在同一个子网中</p>
+</li>
+</ul>
+<h4 id="3、http-https协议"><a href="#3、http-https协议" class="headerlink" title="3、http/https协议"></a>3、http/https协议</h4><p> 浏览器访问网页使用的是http协议，在OSI协议中属于应用层协议。<br> http请求的报文格式： 头部（request line + header） + 数据（data）</p>
+<p> 其中的请求行（request line）包括请求方法字段、URL字段和HTTP协议的版本三个字段组成</p>
+<p> GET/index.html HTTP/1.1</p>
+<p> 请求方法字段有：GET、POST、HEAD、PUT、DELETE、TRACE, 这些字段在REST ful风格中能够被充分利用，而不在使用URL来表达目的动作。</p>
+<p>  <img src="http://res.cloudinary.com/leon824/image/upload/v1516271797/20180128-3_fntrcj.png" width="40%" height="40%"></p>
+<p> 类似下面的内容：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">alt-svc:hq=":443"; ma=2592000; quic=51303431; quic=51303339; quic=51303338; quic=51303337; quic=51303335,quic=":443"; ma=2592000; v="41,39,38,37,35"</div><div class="line">cache-control:private, max-age=0</div><div class="line"><span class="attribute">content-encoding:br</span></div><div class="line">content-type:text/html; charset=UTF-8</div><div class="line">date:Thu, 18 Jan 2018 10:37:50 GMT</div><div class="line"><span class="attribute">expires:-1</span></div><div class="line">p3p:CP="This is not a P3P policy! See g.co/p3phelp for more info."</div><div class="line"><span class="attribute">server:gws</span></div><div class="line">set-cookie:1P_JAR=2018-01-18-10; expires=Sat, 17-Feb-2018 10:37:50 GMT; path=/; domain=.google.co.jp</div><div class="line">set-cookie:NID=*, 20-Jul-2018 10:37:50 GMT; path=/; domain=.google.co.jp; HttpOnly</div><div class="line"><span class="attribute">status:200</span></div><div class="line">strict-transport-security:max-age=3600</div><div class="line"><span class="attribute">x-frame-options:SAMEORIGIN</span></div><div class="line">x-xss-protection:1; mode=block</div><div class="line">Request Headers</div></pre></td></tr></table></figure>
+<h4 id="4、tcp、udp协议"><a href="#4、tcp、udp协议" class="headerlink" title="4、tcp、udp协议"></a>4、tcp、udp协议</h4><p> tcp协议是输入传输层的协议，主要作用是建立端口到端口的通信，同时保证数据的正确传输和差错处理。</p>
+<p> 同时和tcp同出于传输层协议的还有udp（用户数据报协议），这个协议比较简单，不保证数据的可靠性，数据一旦发出无法知道对方是否收到。但是优点是过程简单，节省资源。</p>
+<p> 无论是tcp还是udp协议，http的数据包都是加入到他们的数据段中。</p>
+<p>   <img src="http://res.cloudinary.com/leon824/image/upload/v1516273282/20180118-4_zzq5ot.png" width="50%" height="80%"></p>
+<p><strong>三次握手问题：</strong>所谓三次握手（Three-Way Handshake）即建立TCP连接，就是指建立一个TCP连接时，需要客户端和服务端总共发送3个包以确认连接的建立。在socket编程中，这一过程由客户端执行connect来触发。</p>
+<p>  <img src="http://res.cloudinary.com/leon824/image/upload/v1516273442/20180118-5_kmqhvo.png" width="80%" height="80%"></p>
+<p> （1）第一次握手：Client将标志位SYN置为1，随机产生一个值seq=J，并将该数据包发送给Server，Client进入SYN_SENT状态，等待Server确认。</p>
+<p>（2）第二次握手：Server收到数据包后由标志位SYN=1知道Client请求建立连接，Server将标志位SYN和ACK都置为1，ack=J+1，随机产生一个值seq=K，并将该数据包发送给Client以确认连接请求，Server进入SYN_RCVD状态。</p>
+<p>（3）第三次握手：Client收到确认后，检查ack是否为J+1，ACK是否为1，如果正确则将标志位ACK置为1，ack=K+1，并将该数据包发送给Server，Server检查ack是否为K+1，ACK是否为1，如果正确则连接建立成功，Client和Server进入ESTABLISHED状态，完成三次握手，随后Client与Server之间可以开始传输数据了。</p>
+<p>白话一点就是：</p>
+<ul>
+<li>主机： 你好，我想认识你</li>
+<li>服务器：好的，我也想认识你</li>
+<li>主机：很高兴认识你</li>
+</ul>
+<p>那为什么一定要三次握手而不是两次呢？</p>
+<p>我们假设有下面的这种情况：</p>
+<blockquote>
+<p>当客户端发送一个请求，但是由于此时网络拥塞这个包暂时没有到达服务器， 客户端等待超时之后又重新发送一个请求，此时服务器端接收到了，并正确应答，双方开始通信，通信结束后释放socket连接。<br>但这个时候，那个被拥塞的连接此时到达了服务器，服务器就将状态置为ESTABLISHED，等待着客户端发送数据，或者接受数据，但由于此时客户端进入了close状态，将导致服务器等待下去，浪费资源。</p>
+</blockquote>
+<p><strong>四次挥手：</strong><br> 首先需要知道的是tcp是全双工通信的，那么关闭就只能一个一个关闭。<br> 当客户端和服务器需要关闭socket时（socket翻译成套接字并不恰当，把它当做“插座”也许更容易理解），具体的流程如下图所示：</p>
+<p> <img src="http://res.cloudinary.com/leon824/image/upload/v1516285581/20180118-6_rvpdmv.png" width="80%" height="80%"></p>
+<ul>
+<li>假设这个时候client发起请求中断的请求，也就是发送Fin报文，告诉server：“我没有数据发给你了，但如果你还有数据要发给我，那就先不用关闭socket，发送完毕在告诉我”，此时client处于FIN_WAIT1。</li>
+<li>当server接收到了之后发送ack给client：“你的请求我收到了，但是我还没有准备好，请继续等我消息”此时client进入FIN_WAIT2状态。</li>
+<li>当server端确认数据发送完毕了，就告诉client：“好了，我这边数据发完了，准备好关闭连接了”。</li>
+<li>但是这个时候client并不相信网络，怕server端不知道要关闭，所以进入TIME_WAIT,如果server端没有收到ack则可以重传，server端收到ack后就知道可以断开了，client等待2MSL(最大报文段生存时间)之后还没有收到回复，那么久认为server端正常关闭了，client也可以关闭了。</li>
+</ul>
+<p>在这里需要注意最后client等待2MSL(最大报文段生存时间)，虽然按道理，四个报文都发送完毕，我们可以直接进入CLOSE状态了，但是我们必须假象网络是不可靠的，有可以最后一个ACK丢失。所以TIME_WAIT状态就是用来重发可能丢失的ACK报文。</p>
+<h3 id="5、IP协议，网络层"><a href="#5、IP协议，网络层" class="headerlink" title="5、IP协议，网络层"></a>5、IP协议，网络层</h3><p> 在七层网络分层中，网络层是最复杂的。负责主机到主机间的通信，其中ip协议是最重要的。 </p>
+<blockquote>
+<p>计算机若在同一个子网里边，完全可以只需要mac地址就可以通信，主机A想和主机B通信，那么只需要将请求广播到整个子网，然后各台计算机拿出目的mac地址和自己的mac地址相对比，如果相同，两台主机进行通信。但是计算机遍布全世界，不可能都在一个子网里边，若在其他子网里边怎么办呢？</p>
+</blockquote>
+<p>这个时候就必须用到ip地址了。由于ip地址分为两部分，一部分是网络段，一部分是主机段。网络段决定处于哪一个子网，主机段决定是子网的那一台机器。<br>当我们要访问google的服务器ip是216.239.34.10时，由于不在同一个子网中，需要将数据报转发给网关，然后再通过复杂的路由，最终到达服务器。</p>
+<p>ip报文将tcp的报文嵌入在数据块中</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1516288184/20180118-7_gihylp.png" width="60%" height="80%"></p>
+<h3 id="6、ARP协议、以太网协议"><a href="#6、ARP协议、以太网协议" class="headerlink" title="6、ARP协议、以太网协议"></a>6、ARP协议、以太网协议</h3><blockquote>
+<p> 最后，ip数据包嵌入到以太网数据报，以太网数据包需要设置通信双方的mac地址，发送方为本机的mac地址，接收方网卡216.239.34.1的mac地址需要用ARP协议得到。</p>
+</blockquote>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1516290169/20180118-8_kd50wc.png" width="60%" height="100%"></p>
+<p>我们需要一种机制，能够从IP地址得到MAC地址。<br>这里又可以分成两种情况。第一种情况，如果两台主机不在同一个子网络，那么事实上没有办法得到对方的MAC地址，只能把数据包传送到两个子网络连接处的”网关”（gateway），让网关去处理。</p>
+<p>第二种情况，如果两台主机在同一个子网络，那么我们可以用ARP协议，得到对方的MAC地址。ARP协议也是发出一个数据包（包含在以太网数据包中），其中包含它所要查询主机的IP地址，在对方的MAC地址这一栏，填的是FF:FF:FF:FF:FF:FF，表示这是一个”广播”地址。它所在子网络的每一台主机，都会收到这个数据包，从中取出IP地址，与自身的IP地址进行比较。如果两者相同，都做出回复，向对方报告自己的MAC地址，否则就丢弃这个包。</p>
+<p>总之，有了ARP协议之后，我们就可以得到同一个子网络内的主机MAC地址，可以把数据包发送到任意一台主机之上了。</p>
+<h3 id="7、服务器响应"><a href="#7、服务器响应" class="headerlink" title="7、服务器响应"></a>7、服务器响应</h3><p> 经过多个网关的转发，Google的服务器216.239.34.10，收到数据包之后通过解析，取出其中的请求request line，做出响应，封装成response返回给浏览器。</p>
+<h3 id="8、浏览器解析渲染页面"><a href="#8、浏览器解析渲染页面" class="headerlink" title="8、浏览器解析渲染页面"></a>8、浏览器解析渲染页面</h3><p>浏览器在收到HTML,CSS,JS文件后，它是如何把页面呈现到屏幕上的？下图对应的就是WebKit渲染的过程。<br><img src="http://res.cloudinary.com/leon824/image/upload/v1516290657/20180118-9_jr7agq.png" width="80%" height="100%"></p>
+<blockquote>
+<p>由于涉及到很多的内容，难免有偏差的地方，还请见谅。</p>
+</blockquote>
+<p>参考：</p>
+<ul>
+<li><a href="https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B" target="_blank" rel="external">https://zh.wikipedia.org/wiki/OSI%E6%A8%A1%E5%9E%8B</a></li>
+<li><a href="http://blog.csdn.net/whuslei/article/details/6667471" target="_blank" rel="external">http://blog.csdn.net/whuslei/article/details/6667471</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2012/06/internet_protocol_suite_part_ii.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2012/06/internet_protocol_suite_part_ii.html</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2012/05/internet_protocol_suite_part_i.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2012/05/internet_protocol_suite_part_i.html</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/14/类unix平台中几个大杀器指令/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1708,7 +1936,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">文章</span>
               </a>
             </div>
@@ -1719,7 +1947,7 @@
             
             <div class="site-state-item site-state-categories">
               
-                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">分類</span>
               
             </div>
