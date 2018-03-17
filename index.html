@@ -265,6 +265,198 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/17/面试总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="leonyoung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花谢花开">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/17/面试总结/" itemprop="url">大厂面试题记录</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-03-17T16:47:47+08:00">
+                2018-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>最近这两周在面试，其中面了一部分大厂，在面试中知道了自己的不足，也为接下来的学习指明了一个明确的方向，现将一部分还记得的问题贴出来分享给大家。</p>
+</blockquote>
+<p>阿里高德事业部：</p>
+<ul>
+<li>1、你们现在用的jdk是哪个版本？jdk1.8都有哪些新特性？</li>
+<li>2、如果一个线程的cpu占有率很高，怎么解决？</li>
+<li>3、volatile关键字讲一下？平时有用过吗？怎么解决的？ </li>
+<li>4、你都读过哪些源码？</li>
+<li>5、hadoop的shuffle过程讲一下？</li>
+<li>6、你读过《深入java虚拟机》，讲一下jvm主要是由哪几块构成的？CMS垃圾回收器了解吗？</li>
+<li>你们项目中用过什么数据库？在sql中使用in 关键字之后索引还有效吗？</li>
+<li>8、讲一下非聚集索引和聚集索引的区别？</li>
+<li>9、平时用过高德地图吗？有什么问题？你觉得是什么导致的？</li>
+<li>10、假设有一个二叉树,已知A、B两个节点和他们自己的父节点，找到他们所有的共同父节点。如何实现？</li>
+<li>11、写代码来实现你自己讲述的方法？</li>
+<li>12、为什么要使用innodb这个存储引擎？</li>
+<li>13、讲一下java类加载方式？双亲委派模型？如何打破双亲委派模型？</li>
+<li>14、你写python爬虫的时候遇到了什么问题？怎么解决的？</li>
+</ul>
+<p>总的来说阿里的面试体验是这些大厂里边最好的，对接人对面试者也很上心，不过我第一轮面试就迟到了😂阿里的问题更加灵活一些，看中面试者临场应变，解决问题的能力。同时需要做好手写算法题的准备。目前还不知道有没有二轮，若有还会更新。</p>
+<p>京东：</p>
+<p>   京东一下午面了三轮，第一轮、第二轮技术、第三轮boss。京东问的提问比较全面，java的各个方向都问到了，jvm、设计模式、线程池、hashmap源码、spring、mysql存储引擎、索引的原理等等。目前还在等京东走流程。</p>
+<p> 便利蜂：</p>
+<ul>
+<li>1、synchronized和volatile的区别？</li>
+<li>2、mysql的事物隔离级别？</li>
+<li>3、讲一讲hashmap？&nbsp;</li>
+<li>4、假设hashmap的中链表结构不要了，只保留数组结构，当put到hashmap的时候产生冲突了，将冲突的entryset存到数组空余的地方。问：这种方式有什么不好？</li>
+<li>5、假设定义一个数组，这个数组里边全部都是存储的数字，且其中有一个数字出现的次数比其他数字出现的次数加起来还多，怎么找到这个数字？时间复杂度是多少？空间复杂度是多少？</li>
+<li>6、java中最大的基本类型是64位的，那么如何将两个128位的数进行加减运算？</li>
+<li>7、线程池讲一下？</li>
+<li>8、年轻代为什么不用标记-整理算法？</li>
+<li><p>9、假设一个字段已经加了索引，那么对这个字段使用like的时候，这时索引还有效吗?</p>
+<p>便利蜂面了两轮，还有很多问题记不起来了</p>
+<p>链家</p>
+</li>
+<li><p>1、简单做一下自我介绍</p>
+</li>
+<li>2、 用过哪些java的api，集合框架？ List、set、map？</li>
+<li>3、知道arrayList扩容的原理吗？</li>
+<li>4、讲一下jvm的相关内容？&nbsp;</li>
+<li>5、Hashmap的线程不安全体现在哪些地方？</li>
+<li>6、jvm调优都有哪些参数？</li>
+<li>7、说明时候用索引？建立索引的时候需要考虑些什么？</li>
+<li>8、Synchronized和Static Synchronized区别 ？</li>
+<li>9、如何解决session共享的问题？</li>
+<li>10、有用过spring cloud吗？讲一下？</li>
+<li>11、当一个线程进入一个对象的一个synchronized方法后，其它线程是否可进入此对象的其它方法?</li>
+<li><p>12、如何停止一个线程？</p>
+<p>剩下的记不得了</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/17/浅析java语言中锁机制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1780,161 +1972,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/14/hive如何实现自定义函数/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="leonyoung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花谢花开">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/14/hive如何实现自定义函数/" itemprop="url">hive如何实现自定义函数</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-14T23:06:17+08:00">
-                2017-09-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/hive/" itemprop="url" rel="index">
-                    <span itemprop="name">hive</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="hive如何实现自定义函数"><a href="#hive如何实现自定义函数" class="headerlink" title="hive如何实现自定义函数"></a>hive如何实现自定义函数</h1><blockquote>
-<p>概述：我们在使用hive的时候，很多时候执行复杂的sql时，hive提供的函数无法满足我们的需求。这个时候就需要我们自己去定义一个函数。<br>幸好，hive为我们允许使用java来子线自定义函数。</p>
-</blockquote>
-<h4 id="1、实现自定义UDF函数必须满足两个条件。"><a href="#1、实现自定义UDF函数必须满足两个条件。" class="headerlink" title="1、实现自定义UDF函数必须满足两个条件。"></a>1、实现自定义UDF函数必须满足两个条件。</h4><ul>
-<li>（1） 必须是org.apache.Hadoop.hive.ql.exec.UDF的子类 </li>
-<li>（2） 必须实现evaluate函数。</li>
-</ul>
-<h4 id="2、实现方法具体如下："><a href="#2、实现方法具体如下：" class="headerlink" title="2、实现方法具体如下："></a>2、实现方法具体如下：</h4><ul>
-<li>（1）将$HIVE_HOME/lib中的两个jar包，分别是hive-contrib-2.1.1.jar和hive-exec-2.1.1.jar，把两个jar包放置到java的目录下，然后新建一个类，继承UDF。</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">package</span> org.apache.hadoop.hive.contrib.udf.example;</div><div class="line"><span class="keyword">import</span> org.apache.commons.lang.StringUtils;<span class="keyword">import</span> 	org.apache.hadoop.hive.ql.exec.UDF;</div><div class="line"><span class="keyword">import</span> java.util.Arrays;</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ReturnMin</span> <span class="keyword">extends</span> <span class="title">UDF</span></span></div><div class="line"><span class="class"></span>&#123;</div><div class="line">   	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">evaluate</span><span class="params">(String str, String separator)</span> </span>&#123;</div><div class="line">       	<span class="keyword">int</span> result = <span class="number">100</span>;       </div><div class="line">       	<span class="keyword">if</span>(StringUtils.isEmpty(str))&#123;</div><div class="line">           	<span class="keyword">return</span> result;        </div><div class="line">        	&#125;</div><div class="line">       	String[] strArray = str.split(separator);</div><div class="line">       	<span class="keyword">int</span>[] intArray = <span class="keyword">new</span> <span class="keyword">int</span>[strArray.length];        </div><div class="line">       	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; strArray.length ; i++) &#123;</div><div class="line">           	intArray[i] = Integer.parseInt(strArray[i]);        </div><div class="line">       	&#125;</div><div class="line">       	Arrays.sort(intArray);        </div><div class="line">       	<span class="keyword">return</span> intArray[<span class="number">0</span>];    </div><div class="line">   	&#125;</div></pre></td></tr></table></figure>
-<ul>
-<li><p>(2)  然后将ReturnMin.class文件拷贝到hive-contrib-2.1.1.jar\org\apache\hadoop\hive\contrib\udf\example目录中，然后替换hive select<br>在hive的cli中执行：CREATE FUNCTION ReturnMin AS ‘org.apache.hadoop.hive.contrib.udf.example.ReturnMin’;<br>然后重新进入cli中，给这个函数传递一个数字的字符串和分隔符就能够将这个字符串最小的值返回。</p>
-<p>hive删除一个自定义函数： drop function cutString;</p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1988,7 +2025,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">文章</span>
               </a>
             </div>
