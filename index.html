@@ -671,6 +671,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/17/如何将github pages映射到自己的域名/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="leonyoung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花谢花开">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/17/如何将github pages映射到自己的域名/" itemprop="url">如何将github pages映射到域名上</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-03-17T10:47:17+08:00">
+                2018-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/博客/" itemprop="url" rel="index">
+                    <span itemprop="name">博客</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>使用github pages和hexo可以轻松搭建一个属于自己的博客，但是这个博客的域名是一个<strong>github.io</strong>结尾的。看着不爽，下面讲一下具体的步骤。关于如何使用github pages和hexo搭建博客，网上有很多，这里就不介绍了。</p>
+</blockquote>
+<p><strong>将username.github.io解析到自己的域名上，首先需要将域名解析到github pages的ip上，然后在github的settings中添加一个CNAME文件。具体步骤如下</strong></p>
+<h3 id="注册域名"><a href="#注册域名" class="headerlink" title="注册域名"></a>注册域名</h3><pre><code>可以去腾讯云上边买一个域名，便宜点的就行。
+</code></pre><p><img src="http://res.cloudinary.com/leon824/image/upload/v1521195447/github1_l9ffvx.png" width="100%" height="100%"></p>
+<h3 id="解析域名"><a href="#解析域名" class="headerlink" title="解析域名"></a>解析域名</h3><pre><code>域名其实就是一个ip的重命名而已，所以解析就相当于将域名绑定到一个ip，那么以后我们就可以直接用域名来访问那个ip对应的服务器的服务。
+
+这里直接使用腾讯提供的快速解析方法,将github提供的两个ip中的一个加入就行
+</code></pre><ul>
+<li>192.30.252.153</li>
+<li>192.30.252.154</li>
+</ul>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1521195771/github2_wtaleu.png" width="100%" height="100%"></p>
+<h3 id="创建CNAME文件"><a href="#创建CNAME文件" class="headerlink" title="创建CNAME文件"></a>创建CNAME文件</h3><p>  我们打开在github中的博客目录中的settings，填入自己的域名，然后save。就可以在项目的根目录中看到一个CNAME的文件。这个文件就已经填入了我们的域名，但是当我们重新发布之后这个CNAME文件会被覆盖，所以需要source目录下创建同样的一个CNAME的文件。</p>
+<p>  <img src="http://res.cloudinary.com/leon824/image/upload/v1521270864/github3_nqeg25.png" width="100%" height="100%"></p>
+<p> 最后访问自己的域名，就能直接访问到博客了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/14/完整描述一次URL访问到页面加载到底都经历了些什么/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1823,155 +1979,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/16/上传本地jar包到nexus仓库中/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="leonyoung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花谢花开">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/16/上传本地jar包到nexus仓库中/" itemprop="url">上传本地jar包到nexus仓库中</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-16T15:40:16+08:00">
-                2017-09-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>#上传本地jar包到nexus仓库中</p>
-<blockquote>
-<p>概述：有时在我们的nexus仓库中没有项目中所需的jar包，这个时候就需要从网络中下载，然后上传到nexus仓库中，然后我们就可以嗨森的敲代码啦。</p>
-</blockquote>
-<h4 id="1、首先需要是对应的repository有上传的权限"><a href="#1、首先需要是对应的repository有上传的权限" class="headerlink" title="1、首先需要是对应的repository有上传的权限"></a>1、首先需要是对应的repository有上传的权限</h4><p><img src="http://res.cloudinary.com/leon824/image/upload/v1505547143/haha_zqbfpz.png" alt=""></p>
-<h4 id="2、我们这里讲jar包上传到3rd-party仓库中。先点击artifact-upload然后选择GAV-definition，手动将group-id、artifact、version填入，然后packaging选择jar。"><a href="#2、我们这里讲jar包上传到3rd-party仓库中。先点击artifact-upload然后选择GAV-definition，手动将group-id、artifact、version填入，然后packaging选择jar。" class="headerlink" title="2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、artifact、version填入，然后packaging选择jar。"></a>2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、artifact、version填入，然后packaging选择jar。</h4><p><img src="http://res.cloudinary.com/leon824/image/upload/v1505547985/4B23709_hwgqem.png" width="100%" height="100%"></p>
-<h4 id="3、然后点击select-artifact（s）-to-upload将本地的jar加入，点击add-artifact，然后点击upload-artifact。"><a href="#3、然后点击select-artifact（s）-to-upload将本地的jar加入，点击add-artifact，然后点击upload-artifact。" class="headerlink" title="3、然后点击select artifact（s） to upload将本地的jar加入，点击add artifact，然后点击upload artifact。"></a>3、然后点击select artifact（s） to upload将本地的jar加入，点击add artifact，然后点击upload artifact。</h4><p><img src="http://res.cloudinary.com/leon824/image/upload/v1505547145/sb_pmqkdu.png" width="100%" height="100%"></p>
-<h4 id="4、最后刷新就能看到刚才加入的jar包。"><a href="#4、最后刷新就能看到刚才加入的jar包。" class="headerlink" title="4、最后刷新就能看到刚才加入的jar包。"></a>4、最后刷新就能看到刚才加入的jar包。</h4><p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547145/sb28F42D_beaise.png" width="100%" height="100%"></p>
-<p><strong>此外需要注意的是，将入到3rd仓库之后可能对应的坐标会发生变化。如果前后坐标没有对应上，那么在pom文件中还是找不到相应的依赖。</strong></p>
-<p><img src="http://res.cloudinary.com/leon824/image/upload/v1505547143/jiang58A_vvzx28.png" width="100%" height="100%"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2025,7 +2032,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">13</span>
                 <span class="site-state-item-name">文章</span>
               </a>
             </div>
@@ -2036,7 +2043,7 @@
             
             <div class="site-state-item site-state-categories">
               
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">分類</span>
               
             </div>
