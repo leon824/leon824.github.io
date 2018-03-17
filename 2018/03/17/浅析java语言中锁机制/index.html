@@ -69,23 +69,20 @@
 
 
 
-<meta name="description" content="#上传本地jar包到nexus仓库中  概述：有时在我们的nexus仓库中没有项目中所需的jar包，这个时候就需要从网络中下载，然后上传到nexus仓库中，然后我们就可以嗨森的敲代码啦。  1、首先需要是对应的repository有上传的权限 2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、ar">
+<meta name="description" content="浅析java语言中锁机制 多任务并发已经是计算机中不可缺少的一部分了，很多时候让计算机同一时刻做几件事，不仅仅是因为运算能力提高了，还有一个重要原因就是cpu的运算速度和存储、通信子系统速度差异太大。所以不得不“压榨”运算能力。 而压榨运算能力就不得不用到多线程，在单线程的情况下运算环境较为简单，而到了多线程情况下则会产生很多意想不到的结果。要保证在多线程的情况下各个线程“相安无事”的运行，则必须">
 <meta property="og:type" content="article">
-<meta property="og:title" content="上传本地jar包到nexus仓库中">
-<meta property="og:url" content="http://yoursite.com/2017/09/16/上传本地jar包到nexus仓库中/index.html">
+<meta property="og:title" content="浅析java语言中锁机制">
+<meta property="og:url" content="http://yoursite.com/2018/03/17/浅析java语言中锁机制/index.html">
 <meta property="og:site_name" content="花谢花开">
-<meta property="og:description" content="#上传本地jar包到nexus仓库中  概述：有时在我们的nexus仓库中没有项目中所需的jar包，这个时候就需要从网络中下载，然后上传到nexus仓库中，然后我们就可以嗨森的敲代码啦。  1、首先需要是对应的repository有上传的权限 2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、ar">
+<meta property="og:description" content="浅析java语言中锁机制 多任务并发已经是计算机中不可缺少的一部分了，很多时候让计算机同一时刻做几件事，不仅仅是因为运算能力提高了，还有一个重要原因就是cpu的运算速度和存储、通信子系统速度差异太大。所以不得不“压榨”运算能力。 而压榨运算能力就不得不用到多线程，在单线程的情况下运算环境较为简单，而到了多线程情况下则会产生很多意想不到的结果。要保证在多线程的情况下各个线程“相安无事”的运行，则必须">
 <meta property="og:locale" content="zh-hk">
-<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1505547143/haha_zqbfpz.png">
-<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1505547985/4B23709_hwgqem.png">
-<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1505547145/sb_pmqkdu.png">
-<meta property="og:image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547145/sb28F42D_beaise.png">
-<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1505547143/jiang58A_vvzx28.png">
-<meta property="og:updated_time" content="2018-01-11T14:02:34.000Z">
+<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1517238864/jvmModel_umknx3.png">
+<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1517466723/jvmsuo_ber7ev.png">
+<meta property="og:updated_time" content="2018-03-17T07:33:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="上传本地jar包到nexus仓库中">
-<meta name="twitter:description" content="#上传本地jar包到nexus仓库中  概述：有时在我们的nexus仓库中没有项目中所需的jar包，这个时候就需要从网络中下载，然后上传到nexus仓库中，然后我们就可以嗨森的敲代码啦。  1、首先需要是对应的repository有上传的权限 2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、ar">
-<meta name="twitter:image" content="http://res.cloudinary.com/leon824/image/upload/v1505547143/haha_zqbfpz.png">
+<meta name="twitter:title" content="浅析java语言中锁机制">
+<meta name="twitter:description" content="浅析java语言中锁机制 多任务并发已经是计算机中不可缺少的一部分了，很多时候让计算机同一时刻做几件事，不仅仅是因为运算能力提高了，还有一个重要原因就是cpu的运算速度和存储、通信子系统速度差异太大。所以不得不“压榨”运算能力。 而压榨运算能力就不得不用到多线程，在单线程的情况下运算环境较为简单，而到了多线程情况下则会产生很多意想不到的结果。要保证在多线程的情况下各个线程“相安无事”的运行，则必须">
+<meta name="twitter:image" content="http://res.cloudinary.com/leon824/image/upload/v1517238864/jvmModel_umknx3.png">
 
 
 
@@ -115,13 +112,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/09/16/上传本地jar包到nexus仓库中/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/17/浅析java语言中锁机制/"/>
 
 
 
 
 
-  <title>上传本地jar包到nexus仓库中 | 花谢花开</title>
+  <title>浅析java语言中锁机制 | 花谢花开</title>
   
 
 
@@ -271,7 +268,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/16/上传本地jar包到nexus仓库中/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/17/浅析java语言中锁机制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="leonyoung">
@@ -288,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">上传本地jar包到nexus仓库中</h1>
+          <h1 class="post-title" itemprop="name headline">浅析java语言中锁机制</h1>
         
 
         <div class="post-meta">
@@ -300,8 +297,8 @@
               
                 <span class="post-meta-item-text">發表於</span>
               
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-16T15:40:16+08:00">
-                2017-09-16
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-03-17T15:24:47+08:00">
+                2018-03-17
               </time>
             
 
@@ -358,16 +355,81 @@
       
 
       
-        <p>#上传本地jar包到nexus仓库中</p>
-<blockquote>
-<p>概述：有时在我们的nexus仓库中没有项目中所需的jar包，这个时候就需要从网络中下载，然后上传到nexus仓库中，然后我们就可以嗨森的敲代码啦。</p>
+        <h1 id="浅析java语言中锁机制"><a href="#浅析java语言中锁机制" class="headerlink" title="浅析java语言中锁机制"></a>浅析java语言中锁机制</h1><blockquote>
+<p>多任务并发已经是计算机中不可缺少的一部分了，很多时候让计算机同一时刻做几件事，不仅仅是因为运算能力提高了，还有一个重要原因就是cpu的运算速度和存储、通信子系统速度差异太大。所以不得不“压榨”运算能力。<br> 而压榨运算能力就不得不用到多线程，在单线程的情况下运算环境较为简单，而到了多线程情况下则会产生很多意想不到的结果。要保证在多线程的情况下各个线程“相安无事”的运行，则必须用到锁机制。</p>
 </blockquote>
-<h4 id="1、首先需要是对应的repository有上传的权限"><a href="#1、首先需要是对应的repository有上传的权限" class="headerlink" title="1、首先需要是对应的repository有上传的权限"></a>1、首先需要是对应的repository有上传的权限</h4><p><img src="http://res.cloudinary.com/leon824/image/upload/v1505547143/haha_zqbfpz.png" alt=""></p>
-<h4 id="2、我们这里讲jar包上传到3rd-party仓库中。先点击artifact-upload然后选择GAV-definition，手动将group-id、artifact、version填入，然后packaging选择jar。"><a href="#2、我们这里讲jar包上传到3rd-party仓库中。先点击artifact-upload然后选择GAV-definition，手动将group-id、artifact、version填入，然后packaging选择jar。" class="headerlink" title="2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、artifact、version填入，然后packaging选择jar。"></a>2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、artifact、version填入，然后packaging选择jar。</h4><p><img src="http://res.cloudinary.com/leon824/image/upload/v1505547985/4B23709_hwgqem.png" width="100%" height="100%"></p>
-<h4 id="3、然后点击select-artifact（s）-to-upload将本地的jar加入，点击add-artifact，然后点击upload-artifact。"><a href="#3、然后点击select-artifact（s）-to-upload将本地的jar加入，点击add-artifact，然后点击upload-artifact。" class="headerlink" title="3、然后点击select artifact（s） to upload将本地的jar加入，点击add artifact，然后点击upload artifact。"></a>3、然后点击select artifact（s） to upload将本地的jar加入，点击add artifact，然后点击upload artifact。</h4><p><img src="http://res.cloudinary.com/leon824/image/upload/v1505547145/sb_pmqkdu.png" width="100%" height="100%"></p>
-<h4 id="4、最后刷新就能看到刚才加入的jar包。"><a href="#4、最后刷新就能看到刚才加入的jar包。" class="headerlink" title="4、最后刷新就能看到刚才加入的jar包。"></a>4、最后刷新就能看到刚才加入的jar包。</h4><p><img src="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505547145/sb28F42D_beaise.png" width="100%" height="100%"></p>
-<p><strong>此外需要注意的是，将入到3rd仓库之后可能对应的坐标会发生变化。如果前后坐标没有对应上，那么在pom文件中还是找不到相应的依赖。</strong></p>
-<p><img src="http://res.cloudinary.com/leon824/image/upload/v1505547143/jiang58A_vvzx28.png" width="100%" height="100%"></p>
+<h2 id="java内存模型"><a href="#java内存模型" class="headerlink" title="java内存模型"></a>java内存模型</h2><p>在讲锁机制之前，我们必须先了解jvm的内存模型。 模型图如下</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1517238864/jvmModel_umknx3.png" width="100%" height="100%"></p>
+<p>java线程读写数据是直接读写工作内存中的数据，工作内存可能并非是物理内存，为了性能很大可能是高速缓存和寄存器。线程间通信必须通过内内存来实现。假设初始值x = 0， 然后线程A将x值修改为1， 那么B要知道此时A修改过后的值就必须是A线程先将值从工作内存中写入到主内存，然后线程B再从主内存中读取x的值，如此完成线程间的通信–共享内存的方式。</p>
+<p>JVM内存模型围绕三个点进行： 原子性、可见性、有序性。</p>
+<p>原子性：不可分割，java中的基本类型的读写基本可以认为是原子操作，如果要在更大范围内保证原子性，可以是用synchronized来保证原子性。</p>
+<p>可见性：当一个线程修改共享变量的值，其他线程能够立即得知这个变化。volatile、synchronized、final都能够保证内存可见性。volatile能够保证一个被修改之后立即同步到主内存中，然后其他线程使用到被volatile修饰的变量时，必须先从主内存中同步到工作内存中。synchronized保证可见性是一个线程unlock时，必须将修改的值同步到主内存中，下一个获取到lock的线程必须先同步主内存数据，从而保证可见性。</p>
+<p>有序性：如果在本线程内观察，所有操作都是有序的；如果在另外一个线程中观察另一个线程，所有操作都是无序的。 前面半句意思是在同一个线程内表现为串行的语义，后半句是“指令重排序”现象和“工作内存与主内存之间延迟”现象。</p>
+<p>先行发生：指的是如果A先行发生于B，那么操作A的影响能够被操作B观察到，“影响”包括修改了共享内存变量的值、发送的消息、调用方法等。由于优化重排序的原因，操作之间的时间上先后执行和“先行发生”并没有关系。</p>
+<h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p>  需要注意的是volatile并不是锁，它是jvm提供的最轻量级的同步机制。大多数人对volatile的原理和使用并不清楚。volatile主要具备两个特性：</p>
+<ul>
+<li>保证内存可见性</li>
+<li>禁止指令重排序 </li>
+</ul>
+<h3 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h3><p>被volatile修饰的变量，被线程修改之后会立即从工作内存中同步到主内存中，线程若要读被volatile修饰的变量则必须先从主内存中同步最新的值，这样就保证了线程之间变量的同步。但是线程之间变量的值并非立即同步的，各个线程之间的值可能存在不一致的情况，但是由于每一次读的时候都从主内存中更新，因此也不认为存有不一致的情况。</p>
+<p>但是由于volatile只能保证可见性，并不保证原子性，所以在不符合下面的两种情况还是需要通过<strong>加锁</strong>来保证原子性。</p>
+<ul>
+<li><p>运算结果并不依赖当前值</p>
+<p>  例如： a++ 、 b += 3</p>
+</li>
+<li><p>变量不需要参加其他状态变量共同参与不变约束。</p>
+<p>   例如： low &lt; up</p>
+</li>
+</ul>
+<h3 id="禁止指令重排序"><a href="#禁止指令重排序" class="headerlink" title="禁止指令重排序"></a>禁止指令重排序</h3><p>  现代cpu为了提高执行效率，一个指令的执行被分成：取指、译码、访存、执行、写回、等若干个阶段。然后，多条指令可以同时存在于流水线中，同时被执行。但是无论怎样重排序必须要满足as-if-serial语义，这也是为什么我们在单线程的情况下编程并不需要考虑代码执行顺序的问题，因为无论怎样排序，最后执行的结果总是和顺序执行的结果一致。</p>
+<p>  禁止重排序时候通过内存屏障来实现的，即是说重排序时不能讲后面的指令重排序到内存屏障之前的位置。若只有一个cpu访问内存时并不需要内存屏障，若多个cpu访问内存时，并且一个正在观察另外一个时，就需要内存屏障来保证一致性。</p>
+<p>  下面摘自《深入理解Java虚拟机》：<br>  “观察加入volatile关键字和没有加入volatile关键字时所生成的汇编代码发现，加入volatile关键字时，会多出一个lock前缀指令”<br>lock前缀指令实际上相当于一个内存屏障（也成内存栅栏），内存屏障会提供3个功能：</p>
+<ul>
+<li><p>1、它确保指令重排序时不会把其后面的指令排到内存屏障之前的位置，也不会把前面的指令排到内存屏障的后面；即在执行到内存屏障这句指令时，在它前面的操作已经全部完成；</p>
+</li>
+<li><p>2）它会强制将对缓存的修改操作立即写入主存；</p>
+</li>
+<li><p>3）如果是写操作，它会导致其他CPU中对应的缓存行无效。</p>
+</li>
+</ul>
+<h2 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h2><blockquote>
+<p>synchronized是我们最常使用的加锁方式，也是官方推荐的方式。</p>
+</blockquote>
+<p>synchronized最常用的互斥有段，synchronized经过编译之后，会在同步块前后分别形成monitorenter和monitorexit两个字节码指令。这两个指令都需要明确指定一个引用类型的对象参数来确定需要锁定和解锁的对象。</p>
+<p>根据虚拟机的规范要求，在执行<em>monitorenter</em>指令时，首先要尝试获取对象的锁，如果对象没有被锁定，或者当前线程已经拥有那个对象的锁，把锁的计数器加1，相应的，如果执行<em>monitorexit</em>指令就会将锁计数器减1，当计数器为0时，锁就被释放。如果获取对象锁失败，那么当前线程就要一直阻塞等待，直到对象锁被另外一个线程释放为止。同时Synchronized锁是可重入的，假设对象person有两个被Synchronized修饰的同步方法M、N，当线程执行完M之后还可以接着执行N，所以这在一定程度上避免了死锁，</p>
+<p>如何保证可见性？</p>
+<p>当一个线程释放锁的时候，将自己修改的数据从工作内存更新到主内存中，获取锁那个线程也会先将主内存中的数据同步到主机的工作内存中，如此就保证了<strong>内存可见性</strong>。</p>
+<h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><blockquote>
+<p>Java的线程是映射到操作系统的原生线程之上的，如果要阻塞或唤醒一个线程，都需要操作系统来帮忙完成，这就需要从用户态转换到核心态中，因此状态装换需要耗费很多的处理器时间，对于代码简单的同步块状态转换消耗的时间有可能比用户代码执行的时间还要长。</p>
+</blockquote>
+<p>那么就可以采用自旋锁的方式，假设这个时候有A线程持有锁，B线程等待锁，若是A线程持有锁的时间并不长，那么这个时候B线程不会被阻塞而是采用“忙等”的方式等待锁被释放。从而避免了操作系统切换用户态、内核态的消耗。</p>
+<h3 id="带来的问题："><a href="#带来的问题：" class="headerlink" title="带来的问题："></a>带来的问题：</h3><p>1、可能占用太多cpu资源：</p>
+<p>若是A线程在短时间内并不释放锁，那么这种方式可能占用太多cpu时间，导致cpu资源浪费。因此jvm有一个默认自旋次数限制（默认是10次，可以使用-XX:PreBlockSpin来更改），若还是没有获取到锁，那就应该使用传统的方式去挂起线程了。</p>
+<p>2、死锁问题<br> 假设有有一个线程运行在一个处理器上， 而另外一个线程想获取这个处理器的锁， 那么他将一直持有这个cpu进行自旋操作，你的线程代码则永远无法获得机会释放锁，于是陷入死锁。</p>
+<h3 id="自适应自旋"><a href="#自适应自旋" class="headerlink" title="自适应自旋"></a>自适应自旋</h3><p> 在jdk1.6中引入了自适应的自旋锁。自适应意味着自旋的时间不在固定了，而是由前一次在同一个锁上的自旋时间及锁的拥有者的状态来实现。如果在同一个锁对象刚刚成功获取到了锁，并且持有锁的线程正在运行中，那么jvm久认为这次也能够获取成功，那么久可能多尝试几次来获取，比方说50次。若是对于某一个锁，自适应锁很少成功过，那么jvm可能就忽略掉自旋的过程而直接挂起。</p>
+<h2 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h2><blockquote>
+<p>锁消除是Java虚拟机在JIT编译是，通过对运行上下文的扫描，去除不可能存在共享资源竞争的锁，通过锁消除，可以节省毫无意义的请求锁时间。</p>
+</blockquote>
+<p>　    在动态编译同步块的时候，JIT编译器可以借助一种被称为逃逸分析（Escape Analysis）的技术来判断同步块所使用的锁对象是否只能够被一个线程访问而没有被发布到其他线程。如果同步块所使用的锁对象通过这种分析被证实只能够被一个线程访问，那么JIT编译器在编译这个同步块的时候并不生成synchronized所表示的锁的申请与释放对应的机器码，而仅生成原临界区代码对应的机器码，这就造成了被动态编译的字节码就像是不包含monitorenter（申请锁）和monitorexit（释放锁）这两个字节码指令一样，即消除了锁的使用。这种编译器优化就被称为锁消除（Lock Elision），它使得特定情况下我们可以完全消除锁的开销。</p>
+<p>示意图：</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1517466723/jvmsuo_ber7ev.png" width="100%" height="100%"></p>
+<h2 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a>锁粗化</h2><blockquote>
+<p>锁粗化（Lock Coarsening/Lock Merging）是JIT编译器对内部锁的具体实现所做的一种优化。</p>
+</blockquote>
+<p>一般来说，我们加锁会尽量锁住更小的代码块， 这样使得需要同步的操作数量尽可能小，如果存在竞争那么也能尽快拿到锁。在通常情况下这都是正确的，但是如果反复对同一个对象加锁，甚至加锁操作出现在了循环体中，频繁的进行互斥操作也会导致不必要的性能损耗。<br>如果虚拟机探测到有这样的情况的话，会把加锁同步的范围扩展到整个操作序列的外部，这样的一个锁范围扩展的操作就称之为锁粗化。</p>
+<h2 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h2><blockquote>
+<p>它的目的是消除数据在无竞争情况下的同步原语，进一步提高程序性能。如果说轻量级锁是在无竞争的情况下使用CAS操作去消除同步使用的互斥量，那偏向锁就是在无竞争的情况下把整个同步都消除掉，连CAS都不做。</p>
+</blockquote>
+<p>偏向锁会偏向于第一个获得它的线程，如果在接下来的执行过程中，该锁没有被其他的线程获取，则持有偏向锁的线程将永远不需要同步。大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程多次获得，为了让线程获得锁的代价更低而引入了偏向锁。</p>
+<p>当锁对象第一次被线程获取的时候，线程使用CAS操作把这个锁的线程ID记录再对象Mark Word之中，同时置偏向标志位1。以后该线程在进入和退出同步块时不需要进行CAS操作来加锁和解锁，只需要简单地测试一下对象头的Mark Word里是否存储着指向当前线程的偏向锁。如果测试成功，表示线程已经获得了锁</p>
+<p>参考：</p>
+<p>-《深入理解java虚拟机》</p>
+<p><a href="http://blog.csdn.net/u013256816/article/details/51008443" target="_blank" rel="external">http://blog.csdn.net/u013256816/article/details/51008443</a></p>
+<p><a href="https://segmentfault.com/a/1190000009828216" target="_blank" rel="external">https://segmentfault.com/a/1190000009828216</a></p>
+<p><a href="https://www.jianshu.com/p/dfbe0ebfec95" target="_blank" rel="external">https://www.jianshu.com/p/dfbe0ebfec95</a></p>
+<p><a href="http://www.importnew.com/19472.html" target="_blank" rel="external">http://www.importnew.com/19472.html</a></p>
+<p><a href="http://traxexer.iteye.com/blog/1846344" target="_blank" rel="external">http://traxexer.iteye.com/blog/1846344</a></p>
+<p><a href="http://www.broadview.com.cn/article/789" target="_blank" rel="external">http://www.broadview.com.cn/article/789</a></p>
 
       
     </div>
@@ -392,8 +454,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/14/hive如何实现自定义函数/" rel="next" title="hive如何实现自定义函数">
-                <i class="fa fa-chevron-left"></i> hive如何实现自定义函数
+              <a href="/2018/01/14/完整描述一次URL访问到页面加载到底都经历了些什么/" rel="next" title="从输入URL到页面加载完成的过程中都发生了什么事情？">
+                <i class="fa fa-chevron-left"></i> 从输入URL到页面加载完成的过程中都发生了什么事情？
               </a>
             
           </div>
@@ -401,10 +463,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/09/18/python爬虫如何获取到只需要的数据/" rel="prev" title="python爬虫如何获取到只需要的数据">
-                python爬虫如何获取到只需要的数据 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -528,7 +586,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、首先需要是对应的repository有上传的权限"><span class="nav-number">1.</span> <span class="nav-text">1、首先需要是对应的repository有上传的权限</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、我们这里讲jar包上传到3rd-party仓库中。先点击artifact-upload然后选择GAV-definition，手动将group-id、artifact、version填入，然后packaging选择jar。"><span class="nav-number">2.</span> <span class="nav-text">2、我们这里讲jar包上传到3rd party仓库中。先点击artifact upload然后选择GAV definition，手动将group id、artifact、version填入，然后packaging选择jar。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、然后点击select-artifact（s）-to-upload将本地的jar加入，点击add-artifact，然后点击upload-artifact。"><span class="nav-number">3.</span> <span class="nav-text">3、然后点击select artifact（s） to upload将本地的jar加入，点击add artifact，然后点击upload artifact。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、最后刷新就能看到刚才加入的jar包。"><span class="nav-number">4.</span> <span class="nav-text">4、最后刷新就能看到刚才加入的jar包。</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#浅析java语言中锁机制"><span class="nav-number">1.</span> <span class="nav-text">浅析java语言中锁机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#java内存模型"><span class="nav-number">1.1.</span> <span class="nav-text">java内存模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile"><span class="nav-number">1.2.</span> <span class="nav-text">volatile</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存可见性"><span class="nav-number">1.2.1.</span> <span class="nav-text">内存可见性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#禁止指令重排序"><span class="nav-number">1.2.2.</span> <span class="nav-text">禁止指令重排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#synchronized"><span class="nav-number">1.3.</span> <span class="nav-text">synchronized</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自旋锁"><span class="nav-number">1.4.</span> <span class="nav-text">自旋锁</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#带来的问题："><span class="nav-number">1.4.1.</span> <span class="nav-text">带来的问题：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自适应自旋"><span class="nav-number">1.4.2.</span> <span class="nav-text">自适应自旋</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#锁消除"><span class="nav-number">1.5.</span> <span class="nav-text">锁消除</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#锁粗化"><span class="nav-number">1.6.</span> <span class="nav-text">锁粗化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#偏向锁"><span class="nav-number">1.7.</span> <span class="nav-text">偏向锁</span></a></li></ol></li></ol></div>
             
 
           </div>
