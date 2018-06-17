@@ -78,7 +78,7 @@
 <meta property="og:locale" content="zh-hk">
 <meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1517238864/jvmModel_umknx3.png">
 <meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1517466723/jvmsuo_ber7ev.png">
-<meta property="og:updated_time" content="2018-03-17T07:33:57.000Z">
+<meta property="og:updated_time" content="2018-06-17T08:29:50.482Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浅析java语言中锁机制">
 <meta name="twitter:description" content="浅析java语言中锁机制 多任务并发已经是计算机中不可缺少的一部分了，很多时候让计算机同一时刻做几件事，不仅仅是因为运算能力提高了，还有一个重要原因就是cpu的运算速度和存储、通信子系统速度差异太大。所以不得不“压榨”运算能力。 而压榨运算能力就不得不用到多线程，在单线程的情况下运算环境较为简单，而到了多线程情况下则会产生很多意想不到的结果。要保证在多线程的情况下各个线程“相安无事”的运行，则必须">
@@ -360,7 +360,7 @@
 </blockquote>
 <h2 id="java内存模型"><a href="#java内存模型" class="headerlink" title="java内存模型"></a>java内存模型</h2><p>在讲锁机制之前，我们必须先了解jvm的内存模型。 模型图如下</p>
 <p><img src="http://res.cloudinary.com/leon824/image/upload/v1517238864/jvmModel_umknx3.png" width="100%" height="100%"></p>
-<p>java线程读写数据是直接读写工作内存中的数据，工作内存可能并非是物理内存，为了性能很大可能是高速缓存和寄存器。线程间通信必须通过内内存来实现。假设初始值x = 0， 然后线程A将x值修改为1， 那么B要知道此时A修改过后的值就必须是A线程先将值从工作内存中写入到主内存，然后线程B再从主内存中读取x的值，如此完成线程间的通信–共享内存的方式。</p>
+<p>java线程读写数据是直接读写工作内存中的数据，工作内存可能并非是物理内存，为了性能很大可能是高速缓存和寄存器。线程间通信必须通过共享内存来实现。假设初始值x = 0， 然后线程A将x值修改为1， 那么B要知道此时A修改过后的值就必须是A线程先将值从工作内存中写入到主内存，然后线程B再从主内存中读取x的值，如此完成线程间的通信–共享内存的方式。</p>
 <p>JVM内存模型围绕三个点进行： 原子性、可见性、有序性。</p>
 <p>原子性：不可分割，java中的基本类型的读写基本可以认为是原子操作，如果要在更大范围内保证原子性，可以是用synchronized来保证原子性。</p>
 <p>可见性：当一个线程修改共享变量的值，其他线程能够立即得知这个变化。volatile、synchronized、final都能够保证内存可见性。volatile能够保证一个被修改之后立即同步到主内存中，然后其他线程使用到被volatile修饰的变量时，必须先从主内存中同步到工作内存中。synchronized保证可见性是一个线程unlock时，必须将修改的值同步到主内存中，下一个获取到lock的线程必须先同步主内存数据，从而保证可见性。</p>
