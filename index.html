@@ -559,10 +559,10 @@
 <h2 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h2><blockquote>
 <p>synchronized是我们最常使用的加锁方式，也是官方推荐的方式。</p>
 </blockquote>
-<p>synchronized最常用的互斥有段，synchronized经过编译之后，会在同步块前后分别形成monitorenter和monitorexit两个字节码指令。这两个指令都需要明确指定一个引用类型的对象参数来确定需要锁定和解锁的对象。</p>
+<p>synchronized是最常用的互斥手段，synchronized经过编译之后，会在同步块前后分别形成monitorenter和monitorexit两个字节码指令。这两个指令都需要明确指定一个引用类型的对象参数来确定需要锁定和解锁的对象。</p>
 <p>根据虚拟机的规范要求，在执行<em>monitorenter</em>指令时，首先要尝试获取对象的锁，如果对象没有被锁定，或者当前线程已经拥有那个对象的锁，把锁的计数器加1，相应的，如果执行<em>monitorexit</em>指令就会将锁计数器减1，当计数器为0时，锁就被释放。如果获取对象锁失败，那么当前线程就要一直阻塞等待，直到对象锁被另外一个线程释放为止。同时Synchronized锁是可重入的，假设对象person有两个被Synchronized修饰的同步方法M、N，当线程执行完M之后还可以接着执行N，所以这在一定程度上避免了死锁，</p>
 <p>如何保证可见性？</p>
-<p>当一个线程释放锁的时候，将自己修改的数据从工作内存更新到主内存中，获取锁那个线程也会先将主内存中的数据同步到主机的工作内存中，如此就保证了<strong>内存可见性</strong>。</p>
+<p>当一个线程释放锁的时候，将自己修改的数据从工作内存更新到主内存中，获取锁那个线程也会先将主内存中的数据同步到自己的工作内存中，如此就保证了<strong>内存可见性</strong>。</p>
 <h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><blockquote>
 <p>Java的线程是映射到操作系统的原生线程之上的，如果要阻塞或唤醒一个线程，都需要操作系统来帮忙完成，这就需要从用户态转换到核心态中，因此状态装换需要耗费很多的处理器时间，对于代码简单的同步块状态转换消耗的时间有可能比用户代码执行的时间还要长。</p>
 </blockquote>
