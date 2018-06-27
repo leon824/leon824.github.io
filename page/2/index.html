@@ -265,6 +265,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/18/python爬虫如何获取到只需要的数据/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="leonyoung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花谢花开">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/18/python爬虫如何获取到只需要的数据/" itemprop="url">python爬虫如何获取到只需要的数据</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-18T12:24:47+08:00">
+                2017-09-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="python爬虫如何获取到只需要的数据"><a href="#python爬虫如何获取到只需要的数据" class="headerlink" title="python爬虫如何获取到只需要的数据"></a>python爬虫如何获取到只需要的数据</h3><blockquote>
+<p>概述：在爬虫的学习过程中，最麻烦的也许就是如何从一大堆html标签中过滤出我们所需要的，在这里有三种方法：re正则表达式、BeautifulSoup、使用lxml中的xpath。</p>
+</blockquote>
+<h4 id="1-、先介绍如何使用lxml中的xpath"><a href="#1-、先介绍如何使用lxml中的xpath" class="headerlink" title="1 、先介绍如何使用lxml中的xpath"></a>1 、先介绍如何使用lxml中的xpath</h4><p>(1)  我们需要安装相应的依赖，然后在项目中导入相应的模块</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from lxml import etree</div><div class="line">import lxml</div></pre></td></tr></table></figure>
+<p>(2) 之后再代码中转化成xpath<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">detailPath = etree.HTML(html)</div><div class="line">        questions_titile = detailPath.xpath(<span class="string">'//ul[@class="list-group"]/li/div/div[@class="question-title"]/a/text()'</span>)</div></pre></td></tr></table></figure></p>
+<p>注意上边的两个单引号之间的一串，前面两个’//‘是表示从这里开始，然后一级一级的去寻找所需要的元素，如果想获取属性值，例如是图片的url，最后可以使用<br>@href，如果想获取里边的文本值，那就使用text()。</p>
+<p>(3) 特殊用法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">from lxml import etree</div><div class="line">html=&quot;&quot;&quot;</div><div class="line">    &lt;body&gt;</div><div class="line">        &lt;div id=&quot;aa&quot;&gt;aa&lt;/div&gt;</div><div class="line">        &lt;div id=&quot;ab&quot;&gt;ab&lt;/div&gt;</div><div class="line">        &lt;div id=&quot;ac&quot;&gt;ac&lt;/div&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">    &quot;&quot;&quot;</div><div class="line">selector=etree.HTML(html)</div><div class="line">content=selector.xpath(&apos;//div[starts-with(@id,&quot;a&quot;)]/text()&apos;) #这里使用starts-with方法提取div的id标签属性值开头为a的div标签</div></pre></td></tr></table></figure></p>
+<p>这篇文章有简单应用：<a href="http://blog.csdn.net/winterto1990/article/details/47903653介绍" target="_blank" rel="external">http://blog.csdn.net/winterto1990/article/details/47903653介绍</a>    </p>
+<p><strong>最后一个大绝招：直接在chrome中开发者模式，右键找到你想寻找的元素标签，copy xpath就能将这个元素对应的xpath找到！</strong>    </p>
+<h4 id="1-、python中提供的re模块"><a href="#1-、python中提供的re模块" class="headerlink" title="1 、python中提供的re模块"></a>1 、python中提供的re模块</h4><blockquote>
+<p>正则表达式是一种更为强大的字符串匹配、字符串查找、字符串替换等操作工具。上篇讲解了正则表达式的基本概念和语法以及re模块的基本使用方式，这节来详细说说 re 模块作为 Python 正则表达式引擎提供了哪些便利性操作。<br>正则表达式的所有操作都是围绕着匹配对象(Match)进行的，只有表达式与字符串匹配才有可能进行后续操作。判断匹配与否有两个方法，分别是 re.match() 和 re.search()，两者有什么区别呢？</p>
+</blockquote>
+<p>区别：<br>match 方法从字符串的起始位置开始检查，如果刚好有一个子字符串与正则表达式相匹配，则返回一个Match对象，只要起始位置不匹配则退出，不再往后检查了，返回 None</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; re.match(r&quot;b.r&quot;, &quot;foobar&quot;)   # 不匹配</div><div class="line">&gt;&gt;&gt; re.match(r&quot;b.r&quot;, &quot;barfoo&quot;)   # 匹配</div><div class="line">&lt;_sre.SRE_Match object at 0x102f05b28&gt;</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
+<p>search 方法虽然也是从起始位置开始检查，但是它在起始位置不匹配的时候会一直尝试往后检查，直到匹配为止，如果到字符串的末尾还没有匹配，则返回 None<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; re.search(r&quot;b.r&quot;, &quot;foobar&quot;) # 匹配</div><div class="line">&lt;_sre.SRE_Match object at 0x000000000254D578&gt;</div><div class="line">&gt;&gt;&gt; re.match(r&quot;b.r&quot;, &quot;foobr&quot;)  # 不匹配</div></pre></td></tr></table></figure></p>
+<p>但是二者都是匹配到就停止匹配了，哪怕还有更多能匹配的也不管。</p>
+<p>参考：<a href="https://foofish.net/re-tutorial.html" target="_blank" rel="external">https://foofish.net/re-tutorial.html</a>    、<a href="https://foofish.net/crawler-re-second.html" target="_blank" rel="external">https://foofish.net/crawler-re-second.html</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/16/上传本地jar包到nexus仓库中/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -775,7 +932,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">文章</span>
               </a>
             </div>

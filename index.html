@@ -265,6 +265,187 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/01/Guava初探/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="leonyoung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花谢花开">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/01/Guava初探/" itemprop="url">Guava Cache初探</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-06-01T15:22:37+08:00">
+                2018-06-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="缓存的类别、应用场景"><a href="#缓存的类别、应用场景" class="headerlink" title="缓存的类别、应用场景"></a>缓存的类别、应用场景</h3><blockquote>
+<p>高速缓存简称缓存，原始意义是指访问速度比一般随机存取存储器（RAM）快的一种RAM，通常它不像系统主存那样使用DRAM技术，而使用昂贵但较快速的SRAM技术。当CPU处理数据时，它会先到Cache中去寻找，如果数据因之前的操作已经读取而被暂存其中，就不需要再从随机存取存储器（Main memory）中读取数据——由于CPU的运行速度一般比主内存的读取速度快，主存储器周期（访问主存储器所需要的时间）为数个时钟周期。因此若要访问主内存的话，就必须等待数个CPU周期从而造成浪费。</p>
+<p>现在的缓存概念不仅仅是CPU和主存之间有Cache，而且在内存和硬盘之间也有缓存（<strong>磁盘缓存</strong>），乃至在硬盘与网络之间也有某种意义上的Cache──称为Internet临时文件夹或网络内容缓存等。凡是位于速度相差较大的两种硬件之间，用于协调两者数据传输速度差异的结构，均可称之为Cache。</p>
+</blockquote>
+<p>摘录自<a href="https://zh.wikipedia.org/wiki/%E7%BC%93%E5%AD%98" target="_blank" rel="external">维基百科</a></p>
+<p>在这里我们讨论的是磁盘缓存，当我们在实际开发中遇到查询远远比更新、插入操作更多的时候就可以考虑使用缓存，用空间来换取时间的策略。</p>
+<h4 id="JVM缓存"><a href="#JVM缓存" class="headerlink" title="JVM缓存"></a>JVM缓存</h4><p>我们平常使用的Map、List都属于 JVM缓存，使用JVM缓存的优势在于简单，但是也存在一些问题</p>
+<ul>
+<li>只能显式的写入、清理数据</li>
+<li>不能按照一定的规则淘汰数据，如（LRU）、先进先出算法（FIFO）、最近最少使用算法（LFU）、非最近使用算法（NMRU）</li>
+</ul>
+<p>而本文提到的Guava Cache有如下的优势：</p>
+<ul>
+<li>当缓存的数据已经超过预先设置的最大值时，使用LRU算法移除一些数据;<br>由于GuavaCahce是基于JVM的缓存方式，所以它缓存的大小对于我们自己应用的本身有很大的影响，所以在必要的时候需要对它进行部分控制和淘汰，在Guava中采用LRU算法。</li>
+<li><p>具备根据entry节点上次被访问或者写入的时间来计算过期机制；<br>例如在初始化loadingCache对象的时候我们可以指定写入的节点经过多长时间没有更新操作，就会被淘汰（expireAfterWrite）</p>
+</li>
+<li><p>缓存的key被封装在WeakReference引用内;<br>同样为了让缓存不会影响到自己的应用，Guava引入了软、弱引用；当缓存太大，或者缓存在GC的时候无法被回收掉，这个时候可以直接将这部分数据回收掉。</p>
+</li>
+<li><p>移除entry节点，可以触发监听器通知事件；<br>一般在Guava Cache中删除entry对于我们是透明的，但是Guava为我们提供了removeLinstener，这样我们在删除entry的时候对我们可见。</p>
+</li>
+<li><p>统计缓存使用过程中命中率/异常率/未命中率等数据。</p>
+</li>
+</ul>
+<p>同时，<em>Guava Cache</em>和<em>ConcurrentHashMap</em> 的核心数据结构一致，实际上Guava的核心类LocalCache实现了ConcurrentMap，所以Guava Cache Cache和ConcurrentHashMap是有<strong>“一样的血统”</strong>，但是在具体功能上还有有一些区别，<em>ConcurrentHashMap</em> 会一致保存所有添加的元素，直到显式的移除，而<em>Guava Cache</em>则在创建对象的时候就需要设置自动回收元素的方式。</p>
+<h4 id="分布式缓存"><a href="#分布式缓存" class="headerlink" title="分布式缓存"></a>分布式缓存</h4><p>上面的几种放缓方式都只能是在单节点中使用，而对于在分布式的环境下则需要使用<strong>Redis、Memcached</strong>这样的缓存中间件了。</p>
+<h3 id="如何使用Guava-Cache"><a href="#如何使用Guava-Cache" class="headerlink" title="如何使用Guava Cache"></a>如何使用Guava Cache</h3><p>首先我们需要在pom文件加入相关的依赖</p>
+<pre><code><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">         <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.guava<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">         <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>guava<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">         <span class="tag">&lt;<span class="name">version</span>&gt;</span>21.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">     <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
+</code></pre><p>然后我们可以初始化一个LoadingCache对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">private LoadingCache&lt;String, String&gt; loadingCache ;</div><div class="line">private void init() throws InterruptedException &#123;</div><div class="line">        loadingCache = CacheBuilder.newBuilder()</div><div class="line">                // 若在2秒以内没有被更新就会expire</div><div class="line">                .expireAfterWrite(2, TimeUnit.SECONDS)</div><div class="line">                //当entries接近maximumSize的时候就会驱赶出一个最近最少用的entry</div><div class="line">                .maximumSize(1000)</div><div class="line">                .build(new CacheLoader&lt;String, String&gt;() &#123;</div><div class="line">                    @Override</div><div class="line">                    public String load(String key) &#123;</div><div class="line">                        return &quot;kobe&quot;;</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">        for (int i = 10; i &lt; 15; i++) &#123;</div><div class="line">            QUEUE.put(&quot;jordan&quot; + i);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">private void testCache() &#123;</div><div class="line">    try &#123;</div><div class="line">        TimeUnit.SECONDS.sleep(3);</div><div class="line">        logger.info(&quot;当前缓存值 : &#123;&#125;,缓存大小 : &#123;&#125;&quot;, loadingCache.get(KEY), loadingCache.size());</div><div class="line">        loadingCache.get(key);</div><div class="line">    &#125; catch (ExecutionException e ) &#123;</div><div class="line">        logger.error(&quot;Exception&quot;, e);</div><div class="line">    &#125; catch (InterruptedException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上边初始化是给定2秒钟内若没有被更新就失效，而我们调用testCache方法中先sleep了3秒，所以此时缓存中的值一定是失效都清除掉了。下面我们可以通过debug一步一步看看loadingCache.get(key)这个方法到底是怎样获取到对应的值的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function">V <span class="title">get</span><span class="params">(K key, CacheLoader&lt;? <span class="keyword">super</span> K, V&gt; loader)</span> <span class="keyword">throws</span> ExecutionException </span>&#123;</div><div class="line">   <span class="keyword">int</span> hash = hash(checkNotNull(key));</div><div class="line">   <span class="keyword">return</span> segmentFor(hash).get(key, hash, loader);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
+<p>首先可以看到将key哈希一次，通过hash和<strong>segmentShift</strong>、<strong>segmentMask</strong>做位运算得到对应的下标。在这一点和<em>ConcurrentHashMap</em> 是一致的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function">V <span class="title">get</span><span class="params">(K key, <span class="keyword">int</span> hash, CacheLoader&lt;? <span class="keyword">super</span> K, V&gt; loader)</span> <span class="keyword">throws</span> ExecutionException </span>&#123;</div><div class="line">      checkNotNull(key);</div><div class="line">      checkNotNull(loader);</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">        <span class="keyword">if</span> (count != <span class="number">0</span>) &#123; <span class="comment">// read-volatile</span></div><div class="line">          <span class="comment">// don't call getLiveEntry, which would ignore loading values</span></div><div class="line">          ReferenceEntry&lt;K, V&gt; e = getEntry(key, hash);</div><div class="line">          <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">long</span> now = map.ticker.read();</div><div class="line">            <span class="comment">// 获取没有失效、过期的entry</span></div><div class="line">           V value = getLiveValue(e, now);</div><div class="line">            <span class="keyword">if</span> (value != <span class="keyword">null</span>) &#123;</div><div class="line">              recordRead(e, now);</div><div class="line">              statsCounter.recordHits(<span class="number">1</span>);</div><div class="line">              <span class="keyword">return</span> scheduleRefresh(e, key, hash, value, now, loader);</div><div class="line">            &#125;</div><div class="line">            ValueReference&lt;K, V&gt; valueReference = e.getValueReference();</div><div class="line">            <span class="keyword">if</span> (valueReference.isLoading()) &#123;</div><div class="line">              <span class="keyword">return</span> waitForLoadingValue(e, key, valueReference);</div><div class="line">            &#125;</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">       ...</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>在上面方法里边比较关键的是<em>V value = getLiveValue(e, now);</em>这行，去获取仍然有效的value，继续追踪</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function">V <span class="title">getLiveValue</span><span class="params">(ReferenceEntry&lt;K, V&gt; entry, <span class="keyword">long</span> now)</span> </span>&#123;</div><div class="line">      <span class="keyword">if</span> (entry.getKey() == <span class="keyword">null</span>) &#123;</div><div class="line">        tryDrainReferenceQueues();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">      &#125;</div><div class="line">      V value = entry.getValueReference().get();</div><div class="line">      <span class="keyword">if</span> (value == <span class="keyword">null</span>) &#123;</div><div class="line">        tryDrainReferenceQueues();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">if</span> (map.isExpired(entry, now)) &#123;</div><div class="line">        tryExpireEntries(now);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> value;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>从<em>if (map.isExpired(entry, now))</em>这行可以看到是否过期是通过时间来判断的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">boolean isExpired(ReferenceEntry&lt;K, V&gt; entry, long now) &#123;</div><div class="line">    checkNotNull(entry);</div><div class="line">    if (expiresAfterAccess() &amp;&amp; (now - entry.getAccessTime() &gt;= expireAfterAccessNanos)) &#123;</div><div class="line">      return true;</div><div class="line">    &#125;</div><div class="line">    if (expiresAfterWrite() &amp;&amp; (now - entry.getWriteTime() &gt;= expireAfterWriteNanos)) &#123;</div><div class="line">      return true;</div><div class="line">    &#125;</div><div class="line">    return false;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<h3 id="建造者模式"><a href="#建造者模式" class="headerlink" title="建造者模式"></a>建造者模式</h3><p>上边我们在初始化loadingCache对象时，自主选择性的初始化了自己的参数。采用建造者模式赋予的灵活性对于初始化参数较多、自定义程度高的对象时一个很好的选择。 guava cache为我们提供了下面这些初始化方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> CacheBuilder&lt;K, V&gt; <span class="title">maximumSize</span><span class="params">(<span class="keyword">long</span> size)</span></span></div><div class="line"><span class="function"><span class="keyword">public</span> CacheBuilder&lt;K, V&gt; <span class="title">initialCapacity</span><span class="params">(<span class="keyword">int</span> initialCapacity)</span></span></div><div class="line"><span class="function"><span class="keyword">public</span> CacheBuilder&lt;K, V&gt; <span class="title">maximumWeight</span><span class="params">(<span class="keyword">long</span> weight)</span></span></div><div class="line"><span class="function"><span class="keyword">public</span> CacheBuilder&lt;K, V&gt; <span class="title">refreshAfterWrite</span><span class="params">(<span class="keyword">long</span> duration, TimeUnit unit)</span></span></div><div class="line"><span class="function">CacheBuilder&lt;K, V&gt; <span class="title">setValueStrength</span><span class="params">(Strength strength)</span></span></div><div class="line"><span class="function"><span class="keyword">public</span> CacheBuilder&lt;K, V&gt; <span class="title">softValues</span><span class="params">()</span></span></div><div class="line"><span class="function">	....</span></div></pre></td></tr></table></figure>
+<p>参考：</p>
+<p><a href="https://crossoverjie.top/2018/06/13/guava/guava-cache/" target="_blank" rel="external">Guava 源码分析（Cache 原理）</a></p>
+<p><a href="https://www.jianshu.com/p/2502e8301ec7" target="_blank" rel="external">guava Cache源码分析（二）</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/01/如何在ubuntu16.04中搭建redis集群/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1793,163 +1974,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/18/python爬虫如何获取到只需要的数据/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="leonyoung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花谢花开">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/18/python爬虫如何获取到只需要的数据/" itemprop="url">python爬虫如何获取到只需要的数据</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-09-18T12:24:47+08:00">
-                2017-09-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="python爬虫如何获取到只需要的数据"><a href="#python爬虫如何获取到只需要的数据" class="headerlink" title="python爬虫如何获取到只需要的数据"></a>python爬虫如何获取到只需要的数据</h3><blockquote>
-<p>概述：在爬虫的学习过程中，最麻烦的也许就是如何从一大堆html标签中过滤出我们所需要的，在这里有三种方法：re正则表达式、BeautifulSoup、使用lxml中的xpath。</p>
-</blockquote>
-<h4 id="1-、先介绍如何使用lxml中的xpath"><a href="#1-、先介绍如何使用lxml中的xpath" class="headerlink" title="1 、先介绍如何使用lxml中的xpath"></a>1 、先介绍如何使用lxml中的xpath</h4><p>(1)  我们需要安装相应的依赖，然后在项目中导入相应的模块</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">from lxml import etree</div><div class="line">import lxml</div></pre></td></tr></table></figure>
-<p>(2) 之后再代码中转化成xpath<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">detailPath = etree.HTML(html)</div><div class="line">        questions_titile = detailPath.xpath(<span class="string">'//ul[@class="list-group"]/li/div/div[@class="question-title"]/a/text()'</span>)</div></pre></td></tr></table></figure></p>
-<p>注意上边的两个单引号之间的一串，前面两个’//‘是表示从这里开始，然后一级一级的去寻找所需要的元素，如果想获取属性值，例如是图片的url，最后可以使用<br>@href，如果想获取里边的文本值，那就使用text()。</p>
-<p>(3) 特殊用法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">from lxml import etree</div><div class="line">html=&quot;&quot;&quot;</div><div class="line">    &lt;body&gt;</div><div class="line">        &lt;div id=&quot;aa&quot;&gt;aa&lt;/div&gt;</div><div class="line">        &lt;div id=&quot;ab&quot;&gt;ab&lt;/div&gt;</div><div class="line">        &lt;div id=&quot;ac&quot;&gt;ac&lt;/div&gt;</div><div class="line">    &lt;/body&gt;</div><div class="line">    &quot;&quot;&quot;</div><div class="line">selector=etree.HTML(html)</div><div class="line">content=selector.xpath(&apos;//div[starts-with(@id,&quot;a&quot;)]/text()&apos;) #这里使用starts-with方法提取div的id标签属性值开头为a的div标签</div></pre></td></tr></table></figure></p>
-<p>这篇文章有简单应用：<a href="http://blog.csdn.net/winterto1990/article/details/47903653介绍" target="_blank" rel="external">http://blog.csdn.net/winterto1990/article/details/47903653介绍</a>    </p>
-<p><strong>最后一个大绝招：直接在chrome中开发者模式，右键找到你想寻找的元素标签，copy xpath就能将这个元素对应的xpath找到！</strong>    </p>
-<h4 id="1-、python中提供的re模块"><a href="#1-、python中提供的re模块" class="headerlink" title="1 、python中提供的re模块"></a>1 、python中提供的re模块</h4><blockquote>
-<p>正则表达式是一种更为强大的字符串匹配、字符串查找、字符串替换等操作工具。上篇讲解了正则表达式的基本概念和语法以及re模块的基本使用方式，这节来详细说说 re 模块作为 Python 正则表达式引擎提供了哪些便利性操作。<br>正则表达式的所有操作都是围绕着匹配对象(Match)进行的，只有表达式与字符串匹配才有可能进行后续操作。判断匹配与否有两个方法，分别是 re.match() 和 re.search()，两者有什么区别呢？</p>
-</blockquote>
-<p>区别：<br>match 方法从字符串的起始位置开始检查，如果刚好有一个子字符串与正则表达式相匹配，则返回一个Match对象，只要起始位置不匹配则退出，不再往后检查了，返回 None</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; re.match(r&quot;b.r&quot;, &quot;foobar&quot;)   # 不匹配</div><div class="line">&gt;&gt;&gt; re.match(r&quot;b.r&quot;, &quot;barfoo&quot;)   # 匹配</div><div class="line">&lt;_sre.SRE_Match object at 0x102f05b28&gt;</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure>
-<p>search 方法虽然也是从起始位置开始检查，但是它在起始位置不匹配的时候会一直尝试往后检查，直到匹配为止，如果到字符串的末尾还没有匹配，则返回 None<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; re.search(r&quot;b.r&quot;, &quot;foobar&quot;) # 匹配</div><div class="line">&lt;_sre.SRE_Match object at 0x000000000254D578&gt;</div><div class="line">&gt;&gt;&gt; re.match(r&quot;b.r&quot;, &quot;foobr&quot;)  # 不匹配</div></pre></td></tr></table></figure></p>
-<p>但是二者都是匹配到就停止匹配了，哪怕还有更多能匹配的也不管。</p>
-<p>参考：<a href="https://foofish.net/re-tutorial.html" target="_blank" rel="external">https://foofish.net/re-tutorial.html</a>    、<a href="https://foofish.net/crawler-re-second.html" target="_blank" rel="external">https://foofish.net/crawler-re-second.html</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2003,7 +2027,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">文章</span>
               </a>
             </div>
