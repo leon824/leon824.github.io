@@ -265,6 +265,230 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/25/ELK+KAFKA详解(二)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="leonyoung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花谢花开">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/25/ELK+KAFKA详解(二)/" itemprop="url">ELK+KAFKA详解(二)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-08-25T13:42:14+08:00">
+                2018-08-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ELK/" itemprop="url" rel="index">
+                    <span itemprop="name">ELK</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p> 上一篇文章我们已经将filebeat、kafka、zookeeper、logstash安装配置完毕了。接下来主要是索引数据、展示数据阶段。</p>
+</blockquote>
+<hr>
+<h2 id="安装Elasticsearch"><a href="#安装Elasticsearch" class="headerlink" title="安装Elasticsearch"></a>安装Elasticsearch</h2><p>首先到官网下载5.3.3版本的安装包</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> axel -n 5 https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.3.3.tar.gz</div></pre></td></tr></table></figure>
+<p>然后在ES的根目录下创建两个目录data、logs，用来保存索引数据、日志等等</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> mkdir logs</div><div class="line"><span class="meta">&gt;</span> mkdir data</div></pre></td></tr></table></figure>
+<p>进入<code>config</code>目录编辑<code>elasticsearch.yml</code>文件，这种以.yml类型结尾的文件要注意缩进。</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></div><div class="line"><span class="string">path.data:</span> <span class="string">/opt/soft/elasticsearch-5.5.3/data</span></div><div class="line"><span class="comment">#</span></div><div class="line"><span class="comment"># Path to log files:</span></div><div class="line"><span class="string">path.logs:</span> <span class="string">/opt/soft/elasticsearch-5.5.3/logs</span></div><div class="line"><span class="comment"># 绑定一个指定的ip</span></div><div class="line"><span class="comment"># network.host: 0.0.0.0</span></div><div class="line"><span class="string">http.port:</span> <span class="number">9200</span></div><div class="line"><span class="comment"># 后边使用插件的时候需要使用到下边两个配置。</span></div><div class="line"><span class="string">http.cors.enabled:</span> <span class="literal">true</span></div><div class="line"><span class="string">http.cors.allow-origin:</span> <span class="string">"*"</span></div></pre></td></tr></table></figure>
+<p>上边是一些主要的配置，然后可以直接启动ES了</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> ./bin/elasticsearch ^</div></pre></td></tr></table></figure>
+<p>上边我们是已经启动了，但是我们还不知道数据是否通过<code>logstash</code>写入到ES中，所以我们还需要两个步骤来确保我们安装配置是没有问题的：</p>
+<ul>
+<li>创建一个索引（ES中的索引类似于数据库中的一个数据库实例） 。</li>
+<li>安装<code>head</code>插件，查看ES情况</li>
+</ul>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>在这之前我们需要了解ES中的三个基本概念：</p>
+<ul>
+<li>index：ES管理数据的最顶层单位，类似于单个数据库的概念。</li>
+<li>document ：ES的index中单条数据被称为document</li>
+<li>type：document可以分组，分组就叫type</li>
+</ul>
+<p>通过指定一个文件的方式创建一个索引：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span>  curl -XPUT 'http://localhost:9200/nginx_log_index/test_log/1?pretty' -H 'Content-Type: application/json' -d '/opt/soft/logstash-5.5.3/output/es_template.json'</div></pre></td></tr></table></figure>
+<p>删除索引：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span>  curl -X DELETE 'localhost:9200/nginx_log_index'</div></pre></td></tr></table></figure>
+<h3 id="安装head插件"><a href="#安装head插件" class="headerlink" title="安装head插件"></a>安装head插件</h3><p>head插件运行需要node环境，这里就不讨论如何安装node了，网上资料比较多。</p>
+<p>使用git下载head源码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> git clone git://github.com/mobz/elasticsearch-head.git</div></pre></td></tr></table></figure>
+<p>然后进入head的目录执行指令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> npm install</div></pre></td></tr></table></figure>
+<p>启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; npm run start</div></pre></td></tr></table></figure>
+<p>若是ES使用的都是默认端口，那么<code>head</code>插件就不需要修改配置。</p>
+<p>在浏览器中访问<code>http://ip:9100/</code>就可以看到ES的情况</p>
+<p><img src="https://res.cloudinary.com/leon824/image/upload/v1535186203/head_yvixk7.png" width="80%" height="80%"></p>
+<h3 id="ES补充"><a href="#ES补充" class="headerlink" title="ES补充"></a>ES补充</h3><p>Elasticsearch是一个搜索引擎，我们可以通过它提供的查询语句实现类似sql的查询功能，为我们展示数据提供便利，下面列举一个常用的查询。</p>
+<p>1、指定一个index，搜索其下所有type的数据</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> curl -X GET 'http://localhost:9200/nginx-log/_search?pretty' -H 'Content-Type: application/json' -d '  </div><div class="line">&#123;</div><div class="line">  "query": &#123;</div><div class="line">    "match_all": &#123;&#125;</div><div class="line">  &#125;</div><div class="line">&#125;'</div></pre></td></tr></table></figure>
+<p>上边的nginx-log就是我们想要查询的index</p>
+<p>2、查看每个index所包含的type</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> curl 'localhost:9200/_mapping?pretty=true'</div></pre></td></tr></table></figure>
+<p>3、查看当前节点的所有Index</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> curl -X GET 'http://localhost:9200/_cat/indices?v'</div></pre></td></tr></table></figure>
+<p>4、根据某个字段进行分组后统计，实现类似于<code>sql</code>里边的功能</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> table_name <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">field</span>;</div></pre></td></tr></table></figure>
+<p>下面的ES查询语句功能和上边的sql是类似的</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> curl -X POST 'http://localhost:9200/nginx-log/nginxlog/_search?pretty' -H 'Content-Type: application/json' -d'</div><div class="line">&#123;	</div><div class="line">	"size": 0,</div><div class="line">	"aggs": &#123;</div><div class="line">	"group_by_service_name": &#123;</div><div class="line">		"terms": &#123; </div><div class="line">		"field": "service_name.keyword"</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;'</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="安装kibana"><a href="#安装kibana" class="headerlink" title="安装kibana"></a>安装kibana</h2><p>下载：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> axel -n 5 https://artifacts.elastic.co/downloads/kibana/kibana-5.5.3-linux-x86_64.tar.gz</div></pre></td></tr></table></figure>
+<p>kibana的安装配置较为简单，只需要在config目录中的kibana.yml文件配置两个字段</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Kibana is served by a back end server. This setting specifies the port to use.</span></div><div class="line"><span class="string">server.port:</span> <span class="number">5601</span></div><div class="line"><span class="comment"># The URL of the Elasticsearch instance to use for all your queries.</span></div><div class="line"><span class="string">elasticsearch.url:</span> <span class="string">"http://localhost:9200"</span></div></pre></td></tr></table></figure>
+<p>然后启动</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> ./bin/kibana &amp;</div></pre></td></tr></table></figure>
+<p>在第一次启动kibana的时候，需要手动配置一个index，然后kibana会通过这个index去ES中查询并展示。</p>
+<p><img src="https://res.cloudinary.com/leon824/image/upload/v1535187828/kiaban_bozs2a.png" width="70%" height="70%"></p>
+<p>我们将刚才创建的index加入到里边，然后点击<code>Discover</code>选择刚才配置的index，在选择时间，就能够看到数据已经被展示出来了。</p>
+<p><img src="https://res.cloudinary.com/leon824/image/upload/v1535203571/discoey_g4ltbs.png" width="70%" height="70%"></p>
+<p>上图中的左侧可以选择在右侧展示哪些字段。</p>
+<h3 id="使用kibana绘图"><a href="#使用kibana绘图" class="headerlink" title="使用kibana绘图"></a>使用kibana绘图</h3><p>在kibana中也是可以完成一些绘图的，但是由于kibana没有相应权限控制，并且kibana的颜值是没有Grafana高，所以我们还是用Grafana来展示图表，kibana查询日志。下面就来探讨一下Grafana相关内容</p>
+<hr>
+<h2 id="Grafana相关"><a href="#Grafana相关" class="headerlink" title="Grafana相关"></a>Grafana相关</h2><p>我们先进入Grafana的<a href="https://grafana.com/grafana/download" target="_blank" rel="external">官网</a>，里边有介绍如何安装，也很简单。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_5.2.2_amd64.deb </div><div class="line"><span class="meta">&gt;</span> sudo dpkg -i grafana_5.2.2_amd64.deb</div></pre></td></tr></table></figure>
+<p>然后启动</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> sudo /bin/systemctl start grafana-server</div></pre></td></tr></table></figure>
+<p>访问<code>http://localhost:3000</code>然后使用admin登录进去，密码默认也是admin。进去后需要先配置数据源。</p>
+<p><img src="https://res.cloudinary.com/leon824/image/upload/v1535204856/gra_ihk0b2.png" width="50%" height="50%"></p>
+<p>  上边有几个地方需要注意：</p>
+<ul>
+<li>type：由于我们是使用ES作为数据源，所以这里一定要选择<code>elasticsearch</code></li>
+<li>url : 连接elasticsearch服务的地址</li>
+<li>Access：需要选择具体某种连接方式，两种方式是不同的，具体不同这里不详细描述</li>
+<li>Auth：ES若是安装了相应密码权限，这里需要正确配置之后才能访问。</li>
+<li>Index name ： 这里是填在ES中创建的index，但是要注意，若是index name包含了日志，那么后边的pattern就不要选择任何日期了。</li>
+<li>Version ： 需要选择和安装的ES匹配的版本</li>
+</ul>
+<p>然后保存，然后就可以创建DashBoard、panel。grafana绘图、查询相关内容较多，后边若有时间还会探讨一下grafana绘图相关。</p>
+<hr>
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><ul>
+<li><a href="https://www.cnblogs.com/hupengcool/p/4031543.html" target="_blank" rel="external">elasticsearch 创建索引，以及检索一条数据</a></li>
+<li><a href="https://grafana.com/grafana/download" target="_blank" rel="external">grafana官网</a></li>
+<li><a href="https://groups.io/g/grafana/topic/tutorial_for_elasticsearch/716433?p=,,,20,0,0,0" target="_blank" rel="external">groups.io</a></li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/22/ELK+KAFKA详解（一）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -368,13 +592,14 @@
 <li>警告－能够提供错误报告，监控机制</li>
 </ul>
 <p>本文采用ELK + FILEBEAT + KAFKA的架构搭建日志收集系统。架构图如下：</p>
-<p>  <img src="https://res.cloudinary.com/leon824/image/upload/v1534768618/elk_ra8nw8.png" width="80%" height="80%"></p>
+<p>  <img src="https://res.cloudinary.com/leon824/image/upload/v1535176986/geranal_eugyfc.png" width="80%" height="80%"></p>
 <hr>
 <h3 id="环境、版本"><a href="#环境、版本" class="headerlink" title="环境、版本"></a>环境、版本</h3><ul>
 <li>JDK 1.8</li>
 <li>OS : ubuntu18.04</li>
 <li>filebeat、logstash、elasticsearch、kibana（5.3.3）</li>
 <li>kafka_2.11-0.10.0.1</li>
+<li>Grafana ：Latest version</li>
 </ul>
 <hr>
 <h3 id="filebeat安装"><a href="#filebeat安装" class="headerlink" title="filebeat安装"></a>filebeat安装</h3><blockquote>
@@ -383,7 +608,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> axel -n 5 https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-5.3.3-linux-x86_64.tar.gz</div><div class="line"><span class="meta">&gt;</span> tar -zxvf  filebeat-5.5.3-linux-x86_64.tar.gz</div><div class="line"><span class="meta">&gt;</span> mv filebeat-5.5.3-linux-x86_64 filebeat-5.5.3</div></pre></td></tr></table></figure>
 <p>然后进入目录中复制一份cp filebeat.yml filebeat-kafka.yml，修改文件中相应的地方。</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#指定输入类型</span></div><div class="line"><span class="attr">- input_type:</span> <span class="string">log</span> </div><div class="line"><span class="comment"># 需要监控的文件目录，也可以使用通配符对整个目录监控</span></div><div class="line"><span class="attr">  paths:</span></div><div class="line"><span class="bullet">    -</span> <span class="string">/opt/soft/logs/platform.pro.access.log</span></div><div class="line"><span class="comment">#定义kafka为输出目的地</span></div><div class="line"><span class="string">output.kafka:</span></div><div class="line">  <span class="comment"># Array of hosts to connect to.</span></div><div class="line"><span class="attr">  hosts:</span> <span class="string">["ip:9092"]</span></div><div class="line">  <span class="comment">#kafka的主题</span></div><div class="line"><span class="attr">  topic:</span> <span class="string">nginx_log</span></div></pre></td></tr></table></figure>
-<p>以上配置就算安装完成了，接着启动</p>
+<p>上边需要注意一定需要将output输出目的从默认的<strong>ElasticSearch</strong>修改成<strong>kafka</strong>，以上配置就算安装完成了，<br>接着启动.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> ./filebeat -e -c filebeat-kafka.yml</div></pre></td></tr></table></figure>
 <hr>
 <h3 id="kafka安装配置"><a href="#kafka安装配置" class="headerlink" title="kafka安装配置"></a>kafka安装配置</h3><p>  kafka的运行依赖zookeeper，所以安装kafka之前需要先安装zookeeper，这里不用kafka自身带有的zookeeper。</p>
@@ -394,14 +619,13 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> cp zoo_sample.cfg zoo.cfg</div></pre></td></tr></table></figure>
 <p>  打开zoo.cfg，修改需要配置的地方</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">tickTime=2000</div><div class="line">initLimit=10</div><div class="line">syncLimit=5</div><div class="line">dataDir=/opt/soft/zookeeper-3.4.6/data</div><div class="line">dataLogDir=/opt/soft/zookeeper-3.4.6/logs</div><div class="line">clientPort=2181</div></pre></td></tr></table></figure>
-<pre><code>在/root/elk/zookeeper-3.4.6/data目录下创建一个myid文件。
-</code></pre><p>由于我们这里只是单点环境下，所以只需要在文件里边写入server.1。</p>
+<p>在/root/elk/zookeeper-3.4.6/data目录下创建一个myid文件。由于我们这里只是单点环境下，所以只需要在文件里边写入server.1。</p>
 <p> 最后将zk的路径添加到相关的环境变量中，并添加PATH,然后启动</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> zkServer.sh start</div></pre></td></tr></table></figure>
 <p>最后查看zk是否启动成功</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> zkServer.sh status</div></pre></td></tr></table></figure>
-<h4 id="kafka配置"><a href="#kafka配置" class="headerlink" title="kafka配置"></a>kafka配置</h4><p> 安装kafka的时候需要注意和logstash之间版本匹配的问题，logstash5.x以上必须使用kakfa 0.10以上版本，否则无法正常运行。</p>
- <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> axel -n 5 https://archive.apache.org/dist/kafka/0.10.0.1/kafka_2.11-0.10.0.1.tgz</div></pre></td></tr></table></figure>
+<h4 id="kafka配置"><a href="#kafka配置" class="headerlink" title="kafka配置"></a>kafka配置</h4><p>安装kafka的时候需要注意和logstash之间版本匹配的问题，logstash5.x以上必须使用kakfa 0.10以上版本，否则无法正常运行。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> axel -n 5 https://archive.apache.org/dist/kafka/0.10.0.1/kafka_2.11-0.10.0.1.tgz</div></pre></td></tr></table></figure>
 <p>下载完成之后解压、进入kafka根目录创建logs目录,然后打开config目录下的server.properties修改一些参数</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">log.dirs=/opt/soft/kafka_2.11-0.10.0.1/logs</div><div class="line">zookeeper.connect=ip:2181</div><div class="line">其他项根据需要自行修改....</div></pre></td></tr></table></figure>
 <p>然后可以启动kafka</p>
@@ -444,7 +668,16 @@
 <p>但是需要注意上边的template指定的文件，在es_template.json这个文件中定义了filter模块解析出来的字段名称、类型。</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attr">"template"</span>:<span class="string">"nginx-index-%&#123;+yyyy.MM.dd&#125;"</span>,</div><div class="line">    <span class="attr">"settings"</span>:&#123;</div><div class="line">        <span class="attr">"index.refresh_interval"</span>:<span class="string">"5s"</span>,</div><div class="line">        <span class="attr">"index.number_of_replicas"</span>:<span class="string">"1"</span></div><div class="line">    &#125;,</div><div class="line">    <span class="attr">"analysis"</span>:&#123;</div><div class="line">        <span class="attr">"analyzer"</span>:&#123;</div><div class="line">            <span class="attr">"default"</span>:&#123;</div><div class="line">                <span class="attr">"type"</span>:<span class="string">"standard"</span>,</div><div class="line">                <span class="attr">"stopwords"</span>:<span class="string">"_none_"</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;,</div><div class="line">    <span class="attr">"mappings"</span>:&#123;</div><div class="line">        <span class="attr">"nginx_log"</span>:&#123;</div><div class="line">            <span class="attr">"_all"</span>:&#123;</div><div class="line">                <span class="attr">"enabled"</span>:<span class="literal">false</span></div><div class="line">            &#125;,</div><div class="line">            <span class="attr">"properties"</span>:&#123;</div><div class="line">                <span class="attr">"remote_addr"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"ip"</span></div><div class="line">                &#125;,</div><div class="line">                <span class="attr">"time_local"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"date"</span>,</div><div class="line">                    <span class="attr">"format"</span>:<span class="string">"dd/MMM/yyyy:HH:mm:ss Z"</span></div><div class="line">                &#125;,</div><div class="line">                <span class="attr">"host"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"string"</span></div><div class="line">                &#125;,</div><div class="line">                <span class="attr">"request"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"string"</span></div><div class="line">                &#125;,</div><div class="line">                <span class="attr">"http_status"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"integer"</span></div><div class="line">                &#125;,</div><div class="line">                <span class="attr">"body_bytes_sent"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"integer"</span></div><div class="line">                &#125;,</div><div class="line">                <span class="attr">"http_referer"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"string"</span></div><div class="line">                &#125;,</div><div class="line">                <span class="attr">"http_x_forwarded_for"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"ip"</span></div><div class="line">                &#125;,</div><div class="line">                <span class="attr">"user_agent"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"string"</span></div><div class="line">                &#125;,</div><div class="line">                <span class="attr">"request_time"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"float"</span></div><div class="line">                &#125;,</div><div class="line">                <span class="attr">"upstream_response_time"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"float"</span></div><div class="line">                &#125;,</div><div class="line">                <span class="attr">"service_name"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"string"</span></div><div class="line">                &#125;,</div><div class="line">                <span class="attr">"request_url"</span>:&#123;</div><div class="line">                    <span class="attr">"type"</span>:<span class="string">"string"</span></div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>最终形成的配置文件就是这样的</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div></pre></td><td class="code"><pre><div class="line">input&#123;</div><div class="line">        kafka&#123;</div><div class="line">            group_id =&gt; <span class="string">"kafka-consumer-group"</span></div><div class="line">            topics =&gt; [<span class="string">"elk_log"</span>] </div><div class="line">            type =&gt; <span class="string">"nginx-access"</span> </div><div class="line">            bootstrap_servers =&gt; <span class="string">"localhost:9092"</span></div><div class="line">        &#125;</div><div class="line">&#125;</div><div class="line">filter &#123;</div><div class="line">    grok &#123;</div><div class="line">          patterns_dir =&gt; <span class="string">"/opt/soft/logstash-5.5.3/patterns/nginx_pattern"</span> </div><div class="line">          match =&gt; &#123;</div><div class="line">             <span class="string">"message"</span> =&gt; <span class="string">"%&#123;NGINXACCESS&#125;"</span></div><div class="line">         &#125;</div><div class="line">      &#125;</div><div class="line">    <span class="keyword">if</span> [request] &#123;</div><div class="line">        ruby &#123;</div><div class="line">            init =&gt; <span class="string">"@kname = ['method','uri','verb']"</span></div><div class="line">            code =&gt; <span class="string">"</span></div><div class="line"><span class="string">                new_event = LogStash::Event.new(Hash[@kname.zip(event.get('request').split(' '))]) </span></div><div class="line"><span class="string">                new_event.remove('@timestamp')</span></div><div class="line"><span class="string">                event.append(new_event)</span></div><div class="line"><span class="string">            "</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> [uri] &#123;</div><div class="line">            ruby &#123;</div><div class="line">                init =&gt; <span class="string">"@kname = ['url_path','url_args']"</span></div><div class="line">                code =&gt; <span class="string">"</span></div><div class="line"><span class="string">                    new_event = LogStash::Event.new(Hash[@kname.zip(event.get('uri').split('?'))])</span></div><div class="line"><span class="string">                    new_event.remove('@timestamp')</span></div><div class="line"><span class="string">                    event.append(new_event)</span></div><div class="line"><span class="string">                "</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    </div><div class="line">   <span class="keyword">if</span> [url_path] &#123;</div><div class="line">            ruby &#123;</div><div class="line">                init =&gt; <span class="string">"@kname = ['service_name', 'url_path']"</span></div><div class="line">                code =&gt; <span class="string">"</span></div><div class="line"><span class="string">                    new_event = LogStash::Event.new(Hash[@kname.zip(event.get('uri').split('/'))])</span></div><div class="line"><span class="string">                    new_event.remove('@timestamp')</span></div><div class="line"><span class="string">                    event.append(new_event)</span></div><div class="line"><span class="string">                "</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;   </div><div class="line">    mutate &#123;</div><div class="line">            rename =&gt; [<span class="string">"url_path[1]"</span>, <span class="string">"service_name"</span>]</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> [service_name] == <span class="string">"monitor"</span> <span class="keyword">or</span> [service_name] == <span class="string">"weixin"</span> <span class="keyword">or</span> [method] == <span class="string">"OPTIONS"</span> &#123;</div><div class="line">            drop &#123;&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">output &#123;</div><div class="line">        elasticsearch&#123;</div><div class="line">        hosts =&gt; [<span class="string">"ip:9200"</span>]</div><div class="line">        index =&gt; <span class="string">"nginx-log"</span></div><div class="line">        template_overwrite =&gt; <span class="literal">true</span></div><div class="line">        template =&gt; <span class="string">"/opt/soft/logstash-5.5.3/output/es_template.json"</span></div><div class="line">        &#125;</div><div class="line">        stdout&#123;codec =&gt; rubydebug&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line">input&#123;</div><div class="line">        kafka&#123;</div><div class="line">            group_id =&gt; <span class="string">"kafka-consumer-group"</span></div><div class="line">            topics =&gt; [<span class="string">"elk_log"</span>] </div><div class="line">            type =&gt; <span class="string">"nginx-access"</span> </div><div class="line">            bootstrap_servers =&gt; <span class="string">"localhost:9092"</span></div><div class="line">        &#125;</div><div class="line">&#125;</div><div class="line">filter &#123;</div><div class="line">    grok &#123;</div><div class="line">          patterns_dir =&gt; <span class="string">"/opt/soft/logstash-5.5.3/patterns/nginx_pattern"</span> </div><div class="line">          match =&gt; &#123;</div><div class="line">             <span class="string">"message"</span> =&gt; <span class="string">"%&#123;NGINXACCESS&#125;"</span></div><div class="line">         &#125;</div><div class="line">      &#125;</div><div class="line">    <span class="keyword">if</span> [request] &#123;</div><div class="line">        ruby &#123;</div><div class="line">            init =&gt; <span class="string">"@kname = ['method','uri','verb']"</span></div><div class="line">            code =&gt; <span class="string">"</span></div><div class="line"><span class="string">                new_event = LogStash::Event.new(Hash[@kname.zip(event.get('request').split(' '))]) </span></div><div class="line"><span class="string">                new_event.remove('@timestamp')</span></div><div class="line"><span class="string">                event.append(new_event)</span></div><div class="line"><span class="string">            "</span></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span> [uri] &#123;</div><div class="line">            ruby &#123;</div><div class="line">                init =&gt; <span class="string">"@kname = ['url_path','url_args']"</span></div><div class="line">                code =&gt; <span class="string">"</span></div><div class="line"><span class="string">                    new_event = LogStash::Event.new(Hash[@kname.zip(event.get('uri').split('?'))])</span></div><div class="line"><span class="string">                    new_event.remove('@timestamp')</span></div><div class="line"><span class="string">                    event.append(new_event)</span></div><div class="line"><span class="string">                "</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">   <span class="keyword">if</span> [url_path] &#123;</div><div class="line">            ruby &#123;</div><div class="line">                init =&gt; <span class="string">"@kname = ['service_name', 'url_path']"</span></div><div class="line">                code =&gt; <span class="string">"</span></div><div class="line"><span class="string">                    new_event = LogStash::Event.new(Hash[@kname.zip(event.get('uri').split('/'))])</span></div><div class="line"><span class="string">                    new_event.remove('@timestamp')</span></div><div class="line"><span class="string">                    event.append(new_event)</span></div><div class="line"><span class="string">                "</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;   </div><div class="line">    mutate &#123;</div><div class="line">            rename =&gt; [<span class="string">"url_path[1]"</span>, <span class="string">"service_name"</span>]</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> [service_name] == <span class="string">"monitor"</span> <span class="keyword">or</span> [service_name] == <span class="string">"weixin"</span> <span class="keyword">or</span> [method] == <span class="string">"OPTIONS"</span> &#123;</div><div class="line">            drop &#123;&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">output &#123;</div><div class="line">        elasticsearch&#123;</div><div class="line">        hosts =&gt; [<span class="string">"ip:9200"</span>]</div><div class="line">        index =&gt; <span class="string">"nginx-log"</span></div><div class="line">        template_overwrite =&gt; <span class="literal">true</span></div><div class="line">        template =&gt; <span class="string">"/opt/soft/logstash-5.5.3/output/es_template.json"</span></div><div class="line">        &#125;</div><div class="line">        stdout&#123;codec =&gt; rubydebug&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上边已经整个环境搭建完成了一大半了，接下来就是安装Elasticsearch和kibana、Grafana。</p>
+<h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><ul>
+<li><a href="https://segmentfault.com/a/1190000011263254" target="_blank" rel="external">ELK初体验-Nginx日志实时分析</a></li>
+<li><a href="http://blog.51cto.com/zero01/2079879" target="_blank" rel="external">搭建ELK日志分析平台（上）</a></li>
+<li><a href="https://www.jianshu.com/p/6b7f0488ddff" target="_blank" rel="external">elk搭建实战</a></li>
+<li><p><a href="https://my.oschina.net/itblog/blog/547250" target="_blank" rel="external">ELK(ElasticSearch, Logstash, Kibana)搭建实时日志分析平台</a></p>
+<p>  ……</p>
+</li>
+</ul>
 
           
         
@@ -1978,154 +2211,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/如何解决“非WeChat官方网页，继续访问将转换成......”的问题/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="leonyoung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="http://res.cloudinary.com/dxxvv37m3/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花谢花开">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/18/如何解决“非WeChat官方网页，继续访问将转换成......”的问题/" itemprop="url">如何解决“非WeChat官方网页，继续访问将转换成.....”的问题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-10-18T22:47:47+08:00">
-                2017-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>我们在开发微信公众号时，使用网页工具生成自定义菜单，关联到某一个网站，当我们访问这个网页的时候就会出现如下情况：</p>
-<p><img src="http://res.cloudinary.com/leon824/image/upload/v1508378939/wechat_jrovnj.png" width="60%" height="60%"></p>
-<h4 id="要解决上述问题，可以采用如下方式："><a href="#要解决上述问题，可以采用如下方式：" class="headerlink" title="要解决上述问题，可以采用如下方式："></a><strong>要解决上述问题，可以采用如下方式：</strong></h4><p>  1、登录微信公众号，进入公众号设置 –&gt; 功能设置，进入到下面的页面中，然后点击设置。</p>
-</blockquote>
-<p> <img src="http://res.cloudinary.com/leon824/image/upload/v1508337927/WX20171018-224506_2x_vuyytg.png" width="100%" height="100%"></p>
-<p>  然后最终进入到设置的页面。有两个地方需要特别注意：（1）首先要确保设置的域名必须是备过案的。（2）同时还需要下载MP_verify_zvHGyljL5rHLDOB1.txt文件到能够访问的目录。</p>
-<p>   <img src="http://res.cloudinary.com/leon824/image/upload/v1508337467/WX20171018-223644_2x_ejzxrr.png" width="100%" height="100%"></p>
-<p>  假设是java web的项目，备案的url可以具体到访问的首页目录（WebContent目录下），那么也就可以将MP_verify_zvHGyljL5rHLDOB1.txt文件放置到WebContent目录下。<br>  通过以上的设置，过一段时间生效之后，就不会在出现安全提示了。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2179,7 +2264,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">16</span>
+                <span class="site-state-item-count">17</span>
                 <span class="site-state-item-name">文章</span>
               </a>
             </div>
