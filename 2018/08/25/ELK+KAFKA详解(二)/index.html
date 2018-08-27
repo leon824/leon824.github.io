@@ -80,7 +80,7 @@
 <meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1535187828/kiaban_bozs2a.png">
 <meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1535203571/discoey_g4ltbs.png">
 <meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1535204856/gra_ihk0b2.png">
-<meta property="og:updated_time" content="2018-08-25T14:02:18.000Z">
+<meta property="og:updated_time" content="2018-08-27T08:46:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ELK+KAFKA详解(二)">
 <meta name="twitter:description" content="上一篇文章我们已经将filebeat、kafka、zookeeper、logstash安装配置完毕了。接下来主要是索引数据、展示数据阶段。   安装Elasticsearch首先到官网下载5.3.3版本的安装包 1&amp;gt; axel -n 5 https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.3.3.tar">
@@ -418,7 +418,7 @@
 <p>我们将刚才创建的index加入到里边，然后点击<code>Discover</code>选择刚才配置的index，在选择时间，就能够看到数据已经被展示出来了。</p>
 <p><img src="https://res.cloudinary.com/leon824/image/upload/v1535203571/discoey_g4ltbs.png" width="70%" height="70%"></p>
 <p>上图中的左侧可以选择在右侧展示哪些字段。</p>
-<h3 id="使用kibana绘图"><a href="#使用kibana绘图" class="headerlink" title="使用kibana绘图"></a>使用kibana绘图</h3><p>在kibana中也是可以完成一些绘图的，但是由于kibana没有相应权限控制，并且kibana的颜值是没有Grafana高，所以我们还是用Grafana来展示图表，kibana查询日志。下面就来探讨一下Grafana相关内容</p>
+<h3 id="使用kibana绘图"><a href="#使用kibana绘图" class="headerlink" title="使用kibana绘图"></a>使用kibana绘图</h3><p>&emsp;&emsp;&ensp;在kibana中也是可以完成一些绘图的，但是由于kibana没有相应权限控制，并且kibana的颜值是没有Grafana高，所以我们还是用Grafana来展示图表，kibana查询日志。下面就来探讨一下Grafana相关内容</p>
 <hr>
 <h2 id="Grafana相关"><a href="#Grafana相关" class="headerlink" title="Grafana相关"></a>Grafana相关</h2><p>我们先进入Grafana的<a href="https://grafana.com/grafana/download" target="_blank" rel="external">官网</a>，里边有介绍如何安装，也很简单。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_5.2.2_amd64.deb </div><div class="line"><span class="meta">&gt;</span> sudo dpkg -i grafana_5.2.2_amd64.deb</div></pre></td></tr></table></figure>

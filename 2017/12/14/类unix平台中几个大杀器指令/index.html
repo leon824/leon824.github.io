@@ -76,13 +76,13 @@
 <meta property="og:site_name" content="花谢花开">
 <meta property="og:description" content="类unix平台中几个大杀器指令 下边介绍几个“很强势”的命令行指令，能大大提高我们的工作生产效率。使用macOS Sierra作为演示环境。  1、autojump  通常我们在类unix操作系统中切换目录都是使用cd，使用这个指令如果要切换到很深的目录，是很烦恼的。那么这个时候autojump就是大杀器。 1、 在mac中安装autojump比较简单： 1brew install autojum">
 <meta property="og:locale" content="zh-hk">
-<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1513176176/autojump_efiljd.png">
-<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1513176886/mycli_heofoa.png">
-<meta property="og:updated_time" content="2018-01-11T13:34:40.000Z">
+<meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1513176176/autojump_efiljd.png">
+<meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1513176886/mycli_heofoa.png">
+<meta property="og:updated_time" content="2018-08-27T08:53:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="类unix平台中几个大杀器指令">
 <meta name="twitter:description" content="类unix平台中几个大杀器指令 下边介绍几个“很强势”的命令行指令，能大大提高我们的工作生产效率。使用macOS Sierra作为演示环境。  1、autojump  通常我们在类unix操作系统中切换目录都是使用cd，使用这个指令如果要切换到很深的目录，是很烦恼的。那么这个时候autojump就是大杀器。 1、 在mac中安装autojump比较简单： 1brew install autojum">
-<meta name="twitter:image" content="http://res.cloudinary.com/leon824/image/upload/v1513176176/autojump_efiljd.png">
+<meta name="twitter:image" content="https://res.cloudinary.com/leon824/image/upload/v1513176176/autojump_efiljd.png">
 
 
 
@@ -360,35 +360,36 @@
 </blockquote>
 <h4 id="1、autojump"><a href="#1、autojump" class="headerlink" title="1、autojump"></a>1、autojump</h4><p>  通常我们在类unix操作系统中切换目录都是使用cd，使用这个指令如果要切换到很深的目录，是很烦恼的。那么这个时候autojump就是大杀器。</p>
 <p>1、 在mac中安装autojump比较简单：<br> <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install autojump</div></pre></td></tr></table></figure></p>
-<p> 但是需要注意安装完并不能直接使用。在我们安装的过程中会有如下的提示：<br> <img src="http://res.cloudinary.com/leon824/image/upload/v1513176176/autojump_efiljd.png" width="100%" height="100%"><br> 我们只需要按照步骤操作就好：<br>（1） 先在~/.zshrc文件或者~/.bash_profile中添加</p>
+<p> 但是需要注意安装完并不能直接使用。在我们安装的过程中会有如下的提示：</p>
+<p> <img src="https://res.cloudinary.com/leon824/image/upload/v1513176176/autojump_efiljd.png" width="100%" height="100%"><br> 我们只需要按照步骤操作就好：<br><br>（1） 先在~/.zshrc文件或者~/.bash_profile中添加</p>
  <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[ -f /usr/local/etc/profile.d/autojump.sh ] &amp;&amp; . /usr/local/etc/profile.d/autojump.sh</div></pre></td></tr></table></figure>
 <p> (2) 然后source相应的文件，重新打开一个窗口。就可以使用了。</p>
 <h4 id="简单介绍一下autojump的简单使用"><a href="#简单介绍一下autojump的简单使用" class="headerlink" title="简单介绍一下autojump的简单使用"></a>简单介绍一下autojump的简单使用</h4><p>可以使用下面的命令来手动添加一个目录</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> autojump -a [目录]</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> autojump -a [目录]</div></pre></td></tr></table></figure>
 <p>如果你突然想要把当前目录变成你的最爱和使用最频繁的文件夹，你可以在该目录通过命令的参数 i 来手工增加它的权重</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> autojump -i [权重]</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> autojump -i [权重]</div></pre></td></tr></table></figure>
 <p>这将使得该目录更可能被选择跳转。相反的例子是在该目录使用参数 d 来减少权重：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">autojump -d [权重]</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> autojump -d [权重]</div></pre></td></tr></table></figure>
 <p>要跟踪所有这些改变，输入：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> autojump -s</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span>  autojump -s</div></pre></td></tr></table></figure>
 <h4 id="2、mycli"><a href="#2、mycli" class="headerlink" title="2、mycli"></a>2、mycli</h4><blockquote>
-<p>对于程序员来说，数据库再熟悉不过了，很多时候我们更喜欢用命令行来访问数据库，但是默认自带的mysql对操作并不是十分友好，不能自动补全，没有语法高亮。<br>这个时候使用mycli就再合适不过了。</p>
+<p>&emsp;&emsp; 对于程序员来说，数据库再熟悉不过了，很多时候我们更喜欢用命令行来访问数据库，但是默认自带的mysql对操作并不是十分友好，不能自动补全，没有语法高亮。<br>这个时候使用mycli就再合适不过了。</p>
 </blockquote>
 <p>1、 先安装，依旧使用brew来安装管理<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install mycli</div></pre></td></tr></table></figure></p>
 <p> 然后使用mycli -u username进入数据库，需要注意的是这里不需要-p参数。<br> 如下所示：</p>
-<p> <img src="http://res.cloudinary.com/leon824/image/upload/v1513176886/mycli_heofoa.png" width="100%" height="100%"></p>
+<p> <img src="https://res.cloudinary.com/leon824/image/upload/v1513176886/mycli_heofoa.png" width="100%" height="100%"></p>
 <h4 id="3、screen"><a href="#3、screen" class="headerlink" title="3、screen"></a>3、screen</h4><blockquote>
 <p>当我们在通过ssh连接远端机器执行任务时，如果任务执行时间相对比较短还好，如果是执行hadoop的任务，很多时候回超过几个小时，那么这个时候如果ssh连接中断了，那么这个任务也会失败。所以这个时候screen就派上用场了。</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install screen</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> brew install screen</div></pre></td></tr></table></figure>
 <p>进入后台执行：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">screen</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> screen</div></pre></td></tr></table></figure>
 <p>当开始执行任务之后使用如下指令退出：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">control + A + D</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> control + A + D</div></pre></td></tr></table></figure>
 <p>将正在执行的任务列举出来</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">screen -ls</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> screen -ls</div></pre></td></tr></table></figure>
 <p>查看任务执行进度：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">screen -r 进程号</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> screen -r 进程号</div></pre></td></tr></table></figure>
 <p>还包括axel、fasd、m-cli等等有兴趣的小伙伴可以自己研究。</p>
 
       
