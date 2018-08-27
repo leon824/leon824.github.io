@@ -85,7 +85,7 @@
 <meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1516288184/20180118-7_gihylp.png">
 <meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1516290169/20180118-8_kd50wc.png">
 <meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1516290657/20180118-9_jr7agq.png">
-<meta property="og:updated_time" content="2018-08-27T08:50:23.000Z">
+<meta property="og:updated_time" content="2018-08-27T10:37:50.446Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从输入URL到页面加载完成的过程中都发生了什么事情？">
 <meta name="twitter:description" content="从输入URL到页面加载完成的过程中都发生了什么事情？ &amp;emsp;&amp;emsp;平时我们总是习惯了输入一个网址，然后就静静的等待着各种漂亮的网页展示在我们的面前，但是可能大多数人都没有关注这其中都经历了哪些什么。下面大致做一个总结。  一、首先简单介绍一下OSI七层模型： &amp;emsp;&amp;emsp;开放式系统互联通信参考模型（英语：Open System Interconnection Referen">
@@ -376,11 +376,11 @@
 <h2 id="二、从访问google说起"><a href="#二、从访问google说起" class="headerlink" title="二、从访问google说起"></a>二、从访问google说起</h2><p><em>这里就不讨论我们伟大的防火长城了，作为一个程序员，这是基本技能</em></p>
 <p><img src="http://res.cloudinary.com/leon824/image/upload/v1516268792/20180118-1_lxqlaf.png" alt=""></p>
 <p>当你单击回车键，就意味着你需要向google的服务器发送一次网页请求的数据包。下面从涉及到的协议或者服务说起。</p>
-<h4 id="1、DNS协议"><a href="#1、DNS协议" class="headerlink" title="1、DNS协议"></a>1、DNS协议</h4><p>&emsp;&emsp;&ensp;当我们要访问<a href="https://www.google.co.jp/时，必须要知道ip地址，但这个时候我们并不知道ip是多少。DNS服务就可以帮我们通过域名找到ip地址。它是一个存储着ip和域名映射的分布式数据库。GFW其中就有通过dns污染和dns劫持的方式使得我们无法访问到国外的某些“fd”网站。" target="_blank" rel="external">https://www.google.co.jp/时，必须要知道ip地址，但这个时候我们并不知道ip是多少。DNS服务就可以帮我们通过域名找到ip地址。它是一个存储着ip和域名映射的分布式数据库。GFW其中就有通过dns污染和dns劫持的方式使得我们无法访问到国外的某些“fd”网站。</a></p>
+<h4 id="1、DNS协议"><a href="#1、DNS协议" class="headerlink" title="1、DNS协议"></a>1、DNS协议</h4><p>&emsp;&emsp;当我们要访问<a href="https://www.google.co.jp/时，必须要知道ip地址，但这个时候我们并不知道ip是多少。DNS服务就可以帮我们通过域名找到ip地址。它是一个存储着ip和域名映射的分布式数据库。GFW其中就有通过dns污染和dns劫持的方式使得我们无法访问到国外的某些“fd”网站。" target="_blank" rel="external">https://www.google.co.jp/时，必须要知道ip地址，但这个时候我们并不知道ip是多少。DNS服务就可以帮我们通过域名找到ip地址。它是一个存储着ip和域名映射的分布式数据库。GFW其中就有通过dns污染和dns劫持的方式使得我们无法访问到国外的某些“fd”网站。</a></p>
 <p>  这里需要注意的是，ip和域名并非一对一的关系。而是多对多，也就是说一个ip可以绑定多个域名，一个域名也可以绑定多个ip，但同一时刻只能是一对一的。</p>
 <p>ok，现在我们有了ip地址。</p>
-<h4 id="2、-子网掩码"><a href="#2、-子网掩码" class="headerlink" title="2、 子网掩码"></a>2、 子网掩码</h4><p> &emsp;&emsp;&ensp;全世界这么多计算机，当然不可能都在同一个子网里。那这个时候就需要确认google服务器和我们本机是否在在同一个子网里，这里用到了子网掩码。</p>
-<p> &emsp;&emsp;&ensp;子网掩码和ip地址一样，都是32位的二进制数，通常用4段式表示，网络位全为1，主机位全为0。将我们的目标地址和本机地址分别与子网掩码按位做and操作。如果最终结果相同那么在同一子网中。不需要将数据包转发到网关。否则，将数据包转发到网关处理。</p>
+<h4 id="2、-子网掩码"><a href="#2、-子网掩码" class="headerlink" title="2、 子网掩码"></a>2、 子网掩码</h4><p> &emsp;&emsp;全世界这么多计算机，当然不可能都在同一个子网里。那这个时候就需要确认google服务器和我们本机是否在在同一个子网里，这里用到了子网掩码。</p>
+<p> &emsp;&emsp;子网掩码和ip地址一样，都是32位的二进制数，通常用4段式表示，网络位全为1，主机位全为0。将我们的目标地址和本机地址分别与子网掩码按位做and操作。如果最终结果相同那么在同一子网中。不需要将数据包转发到网关。否则，将数据包转发到网关处理。</p>
 <p> 例如：</p>
 <ul>
 <li>DNS: 255.255.255.0</li>
@@ -424,20 +424,20 @@
 <li>当server端确认数据发送完毕了，就告诉client：“好了，我这边数据发完了，准备好关闭连接了”。</li>
 <li>但是这个时候client并不相信网络，怕server端不知道要关闭，所以进入TIME_WAIT,如果server端没有收到ack则可以重传，server端收到ack后就知道可以断开了，client等待2MSL(最大报文段生存时间)之后还没有收到回复，那么久认为server端正常关闭了，client也可以关闭了。</li>
 </ul>
-<p>&emsp;&emsp;&ensp;在这里需要注意最后client等待2MSL(最大报文段生存时间)，虽然按道理，四个报文都发送完毕，我们可以直接进入CLOSE状态了，但是我们必须假象网络是不可靠的，有可以最后一个ACK丢失。所以TIME_WAIT状态就是用来重发可能丢失的ACK报文。</p>
+<p>&emsp;&emsp;在这里需要注意最后client等待2MSL(最大报文段生存时间)，虽然按道理，四个报文都发送完毕，我们可以直接进入CLOSE状态了，但是我们必须假象网络是不可靠的，有可以最后一个ACK丢失。所以TIME_WAIT状态就是用来重发可能丢失的ACK报文。</p>
 <h3 id="5、IP协议，网络层"><a href="#5、IP协议，网络层" class="headerlink" title="5、IP协议，网络层"></a>5、IP协议，网络层</h3><p> 在七层网络分层中，网络层是最复杂的。负责主机到主机间的通信，其中ip协议是最重要的。</p>
 <blockquote>
 <p>计算机若在同一个子网里边，完全可以只需要mac地址就可以通信，主机A想和主机B通信，那么只需要将请求广播到整个子网，然后各台计算机拿出目的mac地址和自己的mac地址相对比，如果相同，两台主机进行通信。但是计算机遍布全世界，不可能都在一个子网里边，若在其他子网里边怎么办呢？</p>
 </blockquote>
-<p>&emsp;&emsp;&ensp;这个时候就必须用到ip地址了。由于ip地址分为两部分，一部分是网络段，一部分是主机段。网络段决定处于哪一个子网，主机段决定是子网的那一台机器。<br>当我们要访问google的服务器ip是216.239.34.10时，由于不在同一个子网中，需要将数据报转发给网关，然后再通过复杂的路由，最终到达服务器。</p>
+<p>&emsp;&emsp;这个时候就必须用到ip地址了。由于ip地址分为两部分，一部分是网络段，一部分是主机段。网络段决定处于哪一个子网，主机段决定是子网的那一台机器。<br>当我们要访问google的服务器ip是216.239.34.10时，由于不在同一个子网中，需要将数据报转发给网关，然后再通过复杂的路由，最终到达服务器。</p>
 <p>ip报文将tcp的报文嵌入在数据块中</p>
 <p><img src="http://res.cloudinary.com/leon824/image/upload/v1516288184/20180118-7_gihylp.png" width="60%" height="80%"></p>
 <h3 id="6、ARP协议、以太网协议"><a href="#6、ARP协议、以太网协议" class="headerlink" title="6、ARP协议、以太网协议"></a>6、ARP协议、以太网协议</h3><blockquote>
 <p> 最后，ip数据包嵌入到以太网数据报，以太网数据包需要设置通信双方的mac地址，发送方为本机的mac地址，接收方网卡216.239.34.1的mac地址需要用ARP协议得到。</p>
 </blockquote>
 <p><img src="http://res.cloudinary.com/leon824/image/upload/v1516290169/20180118-8_kd50wc.png" width="60%" height="100%"></p>
-<p>&emsp;&emsp;&ensp;我们需要一种机制，能够从IP地址得到MAC地址。<br>这里又可以分成两种情况。第一种情况，如果两台主机不在同一个子网络，那么事实上没有办法得到对方的MAC地址，只能把数据包传送到两个子网络连接处的”网关”（gateway），让网关去处理。</p>
-<p>&emsp;&emsp;&ensp;第二种情况，如果两台主机在同一个子网络，那么我们可以用ARP协议，得到对方的MAC地址。ARP协议也是发出一个数据包（包含在以太网数据包中），其中包含它所要查询主机的IP地址，在对方的MAC地址这一栏，填的是FF:FF:FF:FF:FF:FF，表示这是一个”广播”地址。它所在子网络的每一台主机，都会收到这个数据包，从中取出IP地址，与自身的IP地址进行比较。如果两者相同，都做出回复，向对方报告自己的MAC地址，否则就丢弃这个包。</p>
+<p>&emsp;&emsp;我们需要一种机制，能够从IP地址得到MAC地址。<br>这里又可以分成两种情况。第一种情况，如果两台主机不在同一个子网络，那么事实上没有办法得到对方的MAC地址，只能把数据包传送到两个子网络连接处的”网关”（gateway），让网关去处理。</p>
+<p>&emsp;&emsp;第二种情况，如果两台主机在同一个子网络，那么我们可以用ARP协议，得到对方的MAC地址。ARP协议也是发出一个数据包（包含在以太网数据包中），其中包含它所要查询主机的IP地址，在对方的MAC地址这一栏，填的是FF:FF:FF:FF:FF:FF，表示这是一个”广播”地址。它所在子网络的每一台主机，都会收到这个数据包，从中取出IP地址，与自身的IP地址进行比较。如果两者相同，都做出回复，向对方报告自己的MAC地址，否则就丢弃这个包。</p>
 <p>总之，有了ARP协议之后，我们就可以得到同一个子网络内的主机MAC地址，可以把数据包发送到任意一台主机之上了。</p>
 <h3 id="7、服务器响应"><a href="#7、服务器响应" class="headerlink" title="7、服务器响应"></a>7、服务器响应</h3><p> 经过多个网关的转发，Google的服务器216.239.34.10，收到数据包之后通过解析，取出其中的请求request line，做出响应，封装成response返回给浏览器。</p>
 <h3 id="8、浏览器解析渲染页面"><a href="#8、浏览器解析渲染页面" class="headerlink" title="8、浏览器解析渲染页面"></a>8、浏览器解析渲染页面</h3><p>浏览器在收到HTML,CSS,JS文件后，它是如何把页面呈现到屏幕上的？下图对应的就是WebKit渲染的过程。<br><img src="http://res.cloudinary.com/leon824/image/upload/v1516290657/20180118-9_jr7agq.png" width="80%" height="100%"></p>
