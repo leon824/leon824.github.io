@@ -1108,7 +1108,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  1,696
+                  1,695
                 </span>
               
 
@@ -1148,24 +1148,24 @@
         
           
             <h3 id="缓存的类别、应用场景"><a href="#缓存的类别、应用场景" class="headerlink" title="缓存的类别、应用场景"></a>缓存的类别、应用场景</h3><blockquote>
-<p>&emsp;&emsp;高速缓存简称缓存，原始意义是指访问速度比一般随机存取存储器（RAM）快的一种RAM，通常它不像系统主存那样使用DRAM技术，而使用昂贵但较快速的SRAM技术。当CPU处理数据时，它会先到Cache中去寻找，如果数据因之前的操作已经读取而被暂存其中，就不需要再从随机存取存储器（Main memory）中读取数据——由于CPU的运行速度一般比主内存的读取速度快，主存储器周期（访问主存储器所需要的时间）为数个时钟周期。因此若要访问主内存的话，就必须等待数个CPU周期从而造成浪费。</p>
-<p>&emsp;&emsp; 现在的缓存概念不仅仅是CPU和主存之间有Cache，而且在内存和硬盘之间也有缓存（<strong>磁盘缓存</strong>），乃至在硬盘与网络之间也有某种意义上的Cache──称为Internet临时文件夹或网络内容缓存等。凡是位于速度相差较大的两种硬件之间，用于协调两者数据传输速度差异的结构，均可称之为Cache。</p>
+<p>&emsp;&emsp;高速缓存简称缓存，原始意义是指访问速度比一般随机存取存储器（RAM）快的一种RAM，通常它不像系统主存那样使用<code>DRAM</code>技术，而使用昂贵但较快速的<code>SRAM</code>技术。当<code>CPU</code>处理数据时，它会先到<code>Cache</code>中去寻找，如果数据因之前的操作已经读取而被暂存其中，就不需要再从随机存取存储器（Main memory）中读取数据——由于<code>CPU</code>的运行速度一般比主内存的读取速度快，主存储器周期（访问主存储器所需要的时间）为数个时钟周期。因此若要访问主内存的话，就必须等待数个<code>CPU</code>周期从而造成浪费。</p>
+<p>&emsp;&emsp; 现在的缓存概念不仅仅是<code>CPU</code>和主存之间有<code>Cache</code>，而且在内存和硬盘之间也有缓存（<strong>磁盘缓存</strong>），乃至在硬盘与网络之间也有某种意义上的<code>Cache</code>──称为<code>Internet</code>临时文件夹或网络内容缓存等。凡是位于速度相差较大的两种硬件之间，用于协调两者数据传输速度差异的结构，均可称之为<code>Cache</code>。</p>
 </blockquote>
 <p>摘录自<a href="https://zh.wikipedia.org/wiki/%E7%BC%93%E5%AD%98" target="_blank" rel="external">维基百科</a></p>
-<p>&emsp;&emsp;&ensp;在这里我们讨论的是磁盘缓存，当我们在实际开发中遇到查询远远比更新、插入操作更多的时候就可以考虑使用缓存，用空间来换取时间的策略。</p>
-<h4 id="JVM缓存"><a href="#JVM缓存" class="headerlink" title="JVM缓存"></a>JVM缓存</h4><p>我们平常使用的Map、List都属于 JVM缓存，使用JVM缓存的优势在于简单，但是也存在一些问题</p>
+<p>&emsp;&emsp;在这里我们讨论的是磁盘缓存，当我们在实际开发中遇到查询远远比更新、插入操作更多的时候就可以考虑使用缓存，用空间来换取时间的策略。</p>
+<h4 id="JVM缓存"><a href="#JVM缓存" class="headerlink" title="JVM缓存"></a>JVM缓存</h4><p>我们平常使用的<code>Map</code>、<code>List</code>都属于<code>JVM</code>缓存，使用<code>JVM</code>缓存的优势在于简单，但是也存在一些问题</p>
 <ul>
 <li>只能显式的写入、清理数据</li>
-<li>不能按照一定的规则淘汰数据，如（LRU）、先进先出算法（FIFO）、最近最少使用算法（LFU）、非最近使用算法（NMRU）</li>
+<li>不能按照一定的规则淘汰数据，如（<code>LRU</code>）、先进先出算法（<code>FIFO</code>）、最近最少使用算法（<code>LFU</code>）、非最近使用算法（<code>NMRU</code>）</li>
 </ul>
-<p>而本文提到的Guava Cache有如下的优势：</p>
+<p>而本文提到的<code>Guava Cache</code>有如下的优势：</p>
 <ul>
-<li>当缓存的数据已经超过预先设置的最大值时，使用LRU算法移除一些数据;<br>由于GuavaCahce是基于JVM的缓存方式，所以它缓存的大小对于我们自己应用的本身有很大的影响，所以在必要的时候需要对它进行部分控制和淘汰，在Guava中采用LRU算法。</li>
-<li><p>具备根据entry节点上次被访问或者写入的时间来计算过期机制；<br>例如在初始化loadingCache对象的时候我们可以指定写入的节点经过多长时间没有更新操作，就会被淘汰（expireAfterWrite）</p>
+<li>当缓存的数据已经超过预先设置的最大值时，使用<code>LRU</code>算法移除一些数据;<br>由于<code>GuavaCahce</code>是基于<code>JVM</code>的缓存方式，所以它缓存的大小对于我们自己应用的本身有很大的影响，所以在必要的时候需要对它进行部分控制和淘汰，在<code>Guava</code>中采用<code>LRU</code>算法。</li>
+<li><p>具备根据<code>entry</code>节点上次被访问或者写入的时间来计算过期机制；<br>例如在初始化<code>loadingCache</code>对象的时候我们可以指定写入的节点经过多长时间没有更新操作，就会被淘汰（<code>expireAfterWrite</code>）</p>
 </li>
-<li><p>缓存的key被封装在WeakReference引用内;<br>同样为了让缓存不会影响到自己的应用，Guava引入了软、弱引用；当缓存太大，或者缓存在GC的时候无法被回收掉，这个时候可以直接将这部分数据回收掉。</p>
+<li><p>缓存的key被封装在<code>WeakReference</code>引用内;<br>同样为了让缓存不会影响到自己的应用，<code>Guava</code>引入了软、弱引用；当缓存太大，或者缓存在GC的时候无法被回收掉，这个时候可以直接将这部分数据回收掉。</p>
 </li>
-<li><p>移除entry节点，可以触发监听器通知事件；<br>一般在Guava Cache中删除entry对于我们是透明的，但是Guava为我们提供了removeLinstener，这样我们在删除entry的时候对我们可见。</p>
+<li><p>移除entry节点，可以触发监听器通知事件；<br>一般在<code>Guava Cache</code>中删除<code>entry</code>对于我们是透明的，但是<code>Guava</code>为我们提供了<code>removeLinstener</code>，这样我们在删除<code>entry</code>的时候对我们可见。</p>
 </li>
 <li><p>统计缓存使用过程中命中率/异常率/未命中率等数据。</p>
 </li>
@@ -1176,15 +1176,15 @@
 <pre><code><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></div><div class="line">         <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.guava<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></div><div class="line">         <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>guava<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></div><div class="line">         <span class="tag">&lt;<span class="name">version</span>&gt;</span>21.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></div><div class="line">     <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></div></pre></td></tr></table></figure>
 </code></pre><p>然后我们可以初始化一个LoadingCache对象</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">ul</span>&gt;</span></div><div class="line">         <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"item-0"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"link1.html"</span>&gt;</span>first item<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">         <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"item-1"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"link2.html"</span>&gt;</span>second item<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">         <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"item-inactive"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"link3.html"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"bold"</span>&gt;</span>third item<span class="tag">&lt;/<span class="name">span</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">         <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"item-1"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"link4.html"</span>&gt;</span>fourth item<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">         <span class="tag">&lt;<span class="name">li</span> <span class="attr">class</span>=<span class="string">"item-0"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"link5.html"</span>&gt;</span>fifth item<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></div><div class="line">     <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></div><div class="line"> <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">private LoadingCache&lt;String, String&gt; loadingCache ;</div><div class="line">private void init() throws InterruptedException &#123;</div><div class="line">        loadingCache = CacheBuilder.newBuilder()</div><div class="line">                // 若在2秒以内没有被更新就会expire</div><div class="line">                .expireAfterWrite(2, TimeUnit.SECONDS)</div><div class="line">                //当entries接近maximumSize的时候就会驱赶出一个最近最少用的entry</div><div class="line">                .maximumSize(1000)</div><div class="line">                .build(new CacheLoader&lt;String, String&gt;() &#123;</div><div class="line">                    @Override</div><div class="line">                    public String load(String key) &#123;</div><div class="line">                        return &quot;kobe&quot;;</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">        for (int i = 10; i &lt; 15; i++) &#123;</div><div class="line">            QUEUE.put(&quot;jordan&quot; + i);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">private void testCache() &#123;</div><div class="line">    try &#123;</div><div class="line">        TimeUnit.SECONDS.sleep(3);</div><div class="line">        logger.info(&quot;当前缓存值 : &#123;&#125;,缓存大小 : &#123;&#125;&quot;, loadingCache.get(KEY), loadingCache.size());</div><div class="line">        loadingCache.get(key);</div><div class="line">    &#125; catch (ExecutionException e ) &#123;</div><div class="line">        logger.error(&quot;Exception&quot;, e);</div><div class="line">    &#125; catch (InterruptedException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>上边初始化是给定2秒钟内若没有被更新就失效，而我们调用testCache方法中先sleep了3秒，所以此时缓存中的值一定是失效都清除掉了。下面我们可以通过debug一步一步看看loadingCache.get(key)这个方法到底是怎样获取到对应的值的。</p>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> LoadingCache&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt; loadingCache ;</div><div class="line"><span class="keyword">private</span> <span class="keyword">void</span> init() <span class="keyword">throws</span> InterruptedException &#123;</div><div class="line">        loadingCache = CacheBuilder.newBuilder()</div><div class="line">                <span class="comment">// 若在2秒以内没有被更新就会expire</span></div><div class="line">                .expireAfterWrite(<span class="number">2</span>, TimeUnit.SECONDS)</div><div class="line">                <span class="comment">//当entries接近maximumSize的时候就会驱赶出一个最近最少用的entry</span></div><div class="line">                .maximumSize(<span class="number">1000</span>)</div><div class="line">                .build(<span class="keyword">new</span> CacheLoader&lt;<span class="keyword">String</span>, <span class="keyword">String</span>&gt;() &#123;</div><div class="line">                    @Override</div><div class="line">                    <span class="keyword">public</span> <span class="keyword">String</span> load(<span class="keyword">String</span> <span class="built_in">key</span>) &#123;</div><div class="line">                        <span class="keyword">return</span> <span class="string">"kobe"</span>;</div><div class="line">                    &#125;</div><div class="line">                &#125;);</div><div class="line">        <span class="keyword">for</span> (<span class="built_in">int</span> i = <span class="number">10</span>; i &lt; <span class="number">15</span>; i++) &#123;</div><div class="line">            QUEUE.put(<span class="string">"jordan"</span> + i);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"><span class="keyword">private</span> <span class="keyword">void</span> testCache() &#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        TimeUnit.SECONDS.sleep(<span class="number">3</span>);</div><div class="line">        logger.info(<span class="string">"当前缓存值 : &#123;&#125;,缓存大小 : &#123;&#125;"</span>, loadingCache.<span class="built_in">get</span>(KEY), loadingCache.<span class="built_in">size</span>());</div><div class="line">        loadingCache.<span class="built_in">get</span>(<span class="built_in">key</span>);</div><div class="line">    &#125; <span class="keyword">catch</span> (ExecutionException e ) &#123;</div><div class="line">        logger.error(<span class="string">"Exception"</span>, e);</div><div class="line">    &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">        e.printStackTrace();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>上边初始化是给定2秒钟内若没有被更新就失效，而我们调用<code>testCache</code>方法中先sleep了3秒，所以此时缓存中的值一定是失效都清除掉了。下面我们可以通过debug一步一步看看<code>loadingCache.get(key)</code>这个方法到底是怎样获取到对应的值的。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function">V <span class="title">get</span><span class="params">(K key, CacheLoader&lt;? <span class="keyword">super</span> K, V&gt; loader)</span> <span class="keyword">throws</span> ExecutionException </span>&#123;</div><div class="line">   <span class="keyword">int</span> hash = hash(checkNotNull(key));</div><div class="line">   <span class="keyword">return</span> segmentFor(hash).get(key, hash, loader);</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
 <p>首先可以看到将key哈希一次，通过hash和<strong>segmentShift</strong>、<strong>segmentMask</strong>做位运算得到对应的下标。在这一点和<em>ConcurrentHashMap</em> 是一致的。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="function">V <span class="title">get</span><span class="params">(K key, <span class="keyword">int</span> hash, CacheLoader&lt;? <span class="keyword">super</span> K, V&gt; loader)</span> <span class="keyword">throws</span> ExecutionException </span>&#123;</div><div class="line">      checkNotNull(key);</div><div class="line">      checkNotNull(loader);</div><div class="line">      <span class="keyword">try</span> &#123;</div><div class="line">        <span class="keyword">if</span> (count != <span class="number">0</span>) &#123; <span class="comment">// read-volatile</span></div><div class="line">          <span class="comment">// don't call getLiveEntry, which would ignore loading values</span></div><div class="line">          ReferenceEntry&lt;K, V&gt; e = getEntry(key, hash);</div><div class="line">          <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</div><div class="line">            <span class="keyword">long</span> now = map.ticker.read();</div><div class="line">            <span class="comment">// 获取没有失效、过期的entry</span></div><div class="line">           V value = getLiveValue(e, now);</div><div class="line">            <span class="keyword">if</span> (value != <span class="keyword">null</span>) &#123;</div><div class="line">              recordRead(e, now);</div><div class="line">              statsCounter.recordHits(<span class="number">1</span>);</div><div class="line">              <span class="keyword">return</span> scheduleRefresh(e, key, hash, value, now, loader);</div><div class="line">            &#125;</div><div class="line">            ValueReference&lt;K, V&gt; valueReference = e.getValueReference();</div><div class="line">            <span class="keyword">if</span> (valueReference.isLoading()) &#123;</div><div class="line">              <span class="keyword">return</span> waitForLoadingValue(e, key, valueReference);</div><div class="line">            &#125;</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">       ...</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p>在上面方法里边比较关键的是<em>V value = getLiveValue(e, now);</em>这行，去获取仍然有效的value，继续追踪</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function">V <span class="title">getLiveValue</span><span class="params">(ReferenceEntry&lt;K, V&gt; entry, <span class="keyword">long</span> now)</span> </span>&#123;</div><div class="line">      <span class="keyword">if</span> (entry.getKey() == <span class="keyword">null</span>) &#123;</div><div class="line">        tryDrainReferenceQueues();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">      &#125;</div><div class="line">      V value = entry.getValueReference().get();</div><div class="line">      <span class="keyword">if</span> (value == <span class="keyword">null</span>) &#123;</div><div class="line">        tryDrainReferenceQueues();</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">if</span> (map.isExpired(entry, now)) &#123;</div><div class="line">        tryExpireEntries(now);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">return</span> value;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
 <p>从<em>if (map.isExpired(entry, now))</em>这行可以看到是否过期是通过时间来判断的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">boolean isExpired(ReferenceEntry&lt;K, V&gt; entry, long now) &#123;</div><div class="line">    checkNotNull(entry);</div><div class="line">    if (expiresAfterAccess() &amp;&amp; (now - entry.getAccessTime() &gt;= expireAfterAccessNanos)) &#123;</div><div class="line">      return true;</div><div class="line">    &#125;</div><div class="line">    if (expiresAfterWrite() &amp;&amp; (now - entry.getWriteTime() &gt;= expireAfterWriteNanos)) &#123;</div><div class="line">      return true;</div><div class="line">    &#125;</div><div class="line">    return false;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">boolean isExpired(ReferenceEntry&lt;K, V&gt; <span class="keyword">entry</span>, long now) &#123;</div><div class="line">    checkNotNull(<span class="keyword">entry</span>);</div><div class="line">    <span class="keyword">if</span> (expiresAfterAccess() &amp;&amp; (now - <span class="keyword">entry</span>.getAccessTime() &gt;= expireAfterAccessNanos)) &#123;</div><div class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (expiresAfterWrite() &amp;&amp; (now - <span class="keyword">entry</span>.getWriteTime() &gt;= expireAfterWriteNanos)) &#123;</div><div class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
 <h3 id="建造者模式"><a href="#建造者模式" class="headerlink" title="建造者模式"></a>建造者模式</h3><p>上边我们在初始化loadingCache对象时，自主选择性的初始化了自己的参数。采用建造者模式赋予的灵活性对于初始化参数较多、自定义程度高的对象时一个很好的选择。 guava cache为我们提供了下面这些初始化方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> CacheBuilder&lt;K, V&gt; <span class="title">maximumSize</span><span class="params">(<span class="keyword">long</span> size)</span></span></div><div class="line"><span class="function"><span class="keyword">public</span> CacheBuilder&lt;K, V&gt; <span class="title">initialCapacity</span><span class="params">(<span class="keyword">int</span> initialCapacity)</span></span></div><div class="line"><span class="function"><span class="keyword">public</span> CacheBuilder&lt;K, V&gt; <span class="title">maximumWeight</span><span class="params">(<span class="keyword">long</span> weight)</span></span></div><div class="line"><span class="function"><span class="keyword">public</span> CacheBuilder&lt;K, V&gt; <span class="title">refreshAfterWrite</span><span class="params">(<span class="keyword">long</span> duration, TimeUnit unit)</span></span></div><div class="line"><span class="function">CacheBuilder&lt;K, V&gt; <span class="title">setValueStrength</span><span class="params">(Strength strength)</span></span></div><div class="line"><span class="function"><span class="keyword">public</span> CacheBuilder&lt;K, V&gt; <span class="title">softValues</span><span class="params">()</span></span></div><div class="line"><span class="function">	....</span></div></pre></td></tr></table></figure>
 <p>参考：</p>
@@ -1555,14 +1555,14 @@
         
           
             <h1 id="浅析java语言中锁机制"><a href="#浅析java语言中锁机制" class="headerlink" title="浅析java语言中锁机制"></a>浅析java语言中锁机制</h1><blockquote>
-<p>&emsp;&emsp;多任务并发已经是计算机中不可缺少的一部分了，很多时候让计算机同一时刻做几件事，不仅仅是因为运算能力提高了，还有一个重要原因就是cpu的运算速度和存储、通信子系统速度差异太大。所以不得不“压榨”运算能力。<br> 而压榨运算能力就不得不用到多线程，在单线程的情况下运算环境较为简单，而到了多线程情况下则会产生很多意想不到的结果。要保证在多线程的情况下各个线程“相安无事”的运行，则必须用到锁机制。</p>
+<p>&emsp;&emsp;多任务并发已经是计算机中不可缺少的一部分了，很多时候让计算机同一时刻做几件事，不仅仅是因为运算能力提高了，还有一个重要原因就是<code>cpu</code>的运算速度和存储、通信子系统速度差异太大。所以不得不“压榨”运算能力。<br> 而压榨运算能力就不得不用到多线程，在单线程的情况下运算环境较为简单，而到了多线程情况下则会产生很多意想不到的结果。要保证在多线程的情况下各个线程“相安无事”的运行，则必须用到锁机制。</p>
 </blockquote>
-<h2 id="java内存模型"><a href="#java内存模型" class="headerlink" title="java内存模型"></a>java内存模型</h2><p>在讲锁机制之前，我们必须先了解jvm的内存模型。 模型图如下</p>
-<p><img src="http://res.cloudinary.com/leon824/image/upload/v1517238864/jvmModel_umknx3.png" width="90%" height="90%"></p>
-<p>&emsp;&emsp; java线程读写数据是直接读写工作内存中的数据，工作内存可能并非是物理内存，为了性能很大可能是高速缓存和寄存器。线程间通信必须通过内内存来实现。假设初始值x = 0， 然后线程A将x值修改为1， 那么B要知道此时A修改过后的值就必须是A线程先将值从工作内存中写入到主内存，然后线程B再从主内存中读取x的值，如此完成线程间的通信–共享内存的方式。</p>
+<h2 id="java内存模型"><a href="#java内存模型" class="headerlink" title="java内存模型"></a>java内存模型</h2><p>在讲锁机制之前，我们必须先了解<code>jvm</code>的内存模型。 模型图如下</p>
+<p><img src="https://res.cloudinary.com/leon824/image/upload/v1536114662/pic93_wxozba.png" width="90%" height="90%"></p>
+<p>&emsp;&emsp;java线程读写数据是直接读写工作内存中的数据，工作内存可能并非是物理内存，为了性能很大可能是高速缓存和寄存器。线程间通信必须通过内内存来实现。假设初始值x = 0， 然后线程A将x值修改为1， 那么B要知道此时A修改过后的值就必须是A线程先将值从工作内存中写入到主内存，然后线程B再从主内存中读取x的值，如此完成线程间的通信–共享内存的方式。</p>
 <p>JVM内存模型围绕三个点进行： 原子性、可见性、有序性。</p>
-<p>原子性：不可分割，java中的基本类型的读写基本可以认为是原子操作，如果要在更大范围内保证原子性，可以是用synchronized来保证原子性。</p>
-<p>可见性：当一个线程修改共享变量的值，其他线程能够立即得知这个变化。volatile、synchronized、final都能够保证内存可见性。volatile能够保证一个被修改之后立即同步到主内存中，然后其他线程使用到被volatile修饰的变量时，必须先从主内存中同步到工作内存中。synchronized保证可见性是一个线程unlock时，必须将修改的值同步到主内存中，下一个获取到lock的线程必须先同步主内存数据，从而保证可见性。</p>
+<p>原子性：不可分割，java中的基本类型的读写基本可以认为是原子操作，如果要在更大范围内保证原子性，可以是用<code>synchronized</code>来保证原子性。</p>
+<p>可见性：当一个线程修改共享变量的值，其他线程能够立即得知这个变化。<code>volatile</code>、<code>synchronized</code>、<code>final</code>都能够保证内存可见性。<code>volatile</code>能够保证一个被修改之后立即同步到主内存中，然后其他线程使用到被<code>volatile</code>修饰的变量时，必须先从主内存中同步到工作内存中。<code>synchronized</code>保证可见性是一个线程<code>unlock</code>时，必须将修改的值同步到主内存中，下一个获取到lock的线程必须先同步主内存数据，从而保证可见性。</p>
 <p>有序性：如果在本线程内观察，所有操作都是有序的；如果在另外一个线程中观察另一个线程，所有操作都是无序的。 前面半句意思是在同一个线程内表现为串行的语义，后半句是“指令重排序”现象和“工作内存与主内存之间延迟”现象。</p>
 <p>先行发生：指的是如果A先行发生于B，那么操作A的影响能够被操作B观察到，“影响”包括修改了共享内存变量的值、发送的消息、调用方法等。由于优化重排序的原因，操作之间的时间上先后执行和“先行发生”并没有关系。</p>
 <h2 id="volatile"><a href="#volatile" class="headerlink" title="volatile"></a>volatile</h2><p>  需要注意的是volatile并不是锁，它是jvm提供的最轻量级的同步机制。大多数人对volatile的原理和使用并不清楚。volatile主要具备两个特性：</p>
@@ -1570,7 +1570,7 @@
 <li>保证内存可见性</li>
 <li>禁止指令重排序 </li>
 </ul>
-<h3 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h3><p>&emsp;&emsp; 被volatile修饰的变量，被线程修改之后会立即从工作内存中同步到主内存中，线程若要读被volatile修饰的变量则必须先从主内存中同步最新的值，这样就保证了线程之间变量的同步。但是线程之间变量的值并非立即同步的，各个线程之间的值可能存在不一致的情况，但是由于每一次读的时候都从主内存中更新，因此也不认为存有不一致的情况。</p>
+<h3 id="内存可见性"><a href="#内存可见性" class="headerlink" title="内存可见性"></a>内存可见性</h3><p>&emsp;&emsp;被<code>volatile</code>修饰的变量，被线程修改之后会立即从工作内存中同步到主内存中，线程若要读被volatile修饰的变量则必须先从主内存中同步最新的值，这样就保证了线程之间变量的同步。但是线程之间变量的值并非立即同步的，各个线程之间的值可能存在不一致的情况，但是由于每一次读的时候都从主内存中更新，因此也不认为存有不一致的情况。</p>
 <p>但是由于volatile只能保证可见性，并不保证原子性，所以在不符合下面的两种情况还是需要通过<strong>加锁</strong>来保证原子性。</p>
 <ul>
 <li><p>运算结果并不依赖当前值</p>
@@ -1580,9 +1580,9 @@
 <p>   例如： low &lt; up</p>
 </li>
 </ul>
-<h3 id="禁止指令重排序"><a href="#禁止指令重排序" class="headerlink" title="禁止指令重排序"></a>禁止指令重排序</h3><p> &emsp;&emsp; 现代cpu为了提高执行效率，一个指令的执行被分成：取指、译码、访存、执行、写回、等若干个阶段。然后，多条指令可以同时存在于流水线中，同时被执行。但是无论怎样重排序必须要满足as-if-serial语义，这也是为什么我们在单线程的情况下编程并不需要考虑代码执行顺序的问题，因为无论怎样排序，最后执行的结果总是和顺序执行的结果一致。</p>
-<p>&emsp;&emsp; 禁止重排序时候通过内存屏障来实现的，即是说重排序时不能讲后面的指令重排序到内存屏障之前的位置。若只有一个cpu访问内存时并不需要内存屏障，若多个cpu访问内存时，并且一个正在观察另外一个时，就需要内存屏障来保证一致性。</p>
-<p> &emsp;&emsp; 下面摘自《深入理解Java虚拟机》：<br>  “观察加入volatile关键字和没有加入volatile关键字时所生成的汇编代码发现，加入volatile关键字时，会多出一个lock前缀指令”<br>lock前缀指令实际上相当于一个内存屏障（也成内存栅栏），内存屏障会提供3个功能：</p>
+<h3 id="禁止指令重排序"><a href="#禁止指令重排序" class="headerlink" title="禁止指令重排序"></a>禁止指令重排序</h3><p> &emsp;&emsp;现代cpu为了提高执行效率，一个指令的执行被分成：取指、译码、访存、执行、写回、等若干个阶段。然后，多条指令可以同时存在于流水线中，同时被执行。但是无论怎样重排序必须要满足<code>as-if-serial</code>语义，这也是为什么我们在单线程的情况下编程并不需要考虑代码执行顺序的问题，因为无论怎样排序，最后执行的结果总是和顺序执行的结果一致。</p>
+<p>&emsp;&emsp;&ensp; 禁止重排序时候通过内存屏障来实现的，即是说重排序时不能讲后面的指令重排序到内存屏障之前的位置。若只有一个cpu访问内存时并不需要内存屏障，若多个cpu访问内存时，并且一个正在观察另外一个时，就需要内存屏障来保证一致性。</p>
+<p> &emsp;&emsp;&ensp; 下面摘自《深入理解Java虚拟机》：<br>  “观察加入<code>volatile</code>关键字和没有加入<code>volatile</code>关键字时所生成的汇编代码发现，加入<code>volatile</code>关键字时，会多出一个<code>lock</code>前缀指令”<br>lock前缀指令实际上相当于一个内存屏障（也成内存栅栏），内存屏障会提供3个功能：</p>
 <ul>
 <li><p>1、它确保指令重排序时不会把其后面的指令排到内存屏障之前的位置，也不会把前面的指令排到内存屏障的后面；即在执行到内存屏障这句指令时，在它前面的操作已经全部完成；</p>
 </li>
@@ -1594,40 +1594,40 @@
 <h2 id="synchronized"><a href="#synchronized" class="headerlink" title="synchronized"></a>synchronized</h2><blockquote>
 <p>synchronized是我们最常使用的加锁方式，也是官方推荐的方式。</p>
 </blockquote>
-<p>&emsp;&emsp; synchronized最常用的互斥有段，synchronized经过编译之后，会在同步块前后分别形成monitorenter和monitorexit两个字节码指令。这两个指令都需要明确指定一个引用类型的对象参数来确定需要锁定和解锁的对象。</p>
-<p>&emsp;&emsp; 根据虚拟机的规范要求，在执行<em>monitorenter</em>指令时，首先要尝试获取对象的锁，如果对象没有被锁定，或者当前线程已经拥有那个对象的锁，把锁的计数器加1，相应的，如果执行<em>monitorexit</em>指令就会将锁计数器减1，当计数器为0时，锁就被释放。如果获取对象锁失败，那么当前线程就要一直阻塞等待，直到对象锁被另外一个线程释放为止。同时Synchronized锁是可重入的，假设对象person有两个被Synchronized修饰的同步方法M、N，当线程执行完M之后还可以接着执行N，所以这在一定程度上避免了死锁，</p>
+<p>&emsp;&emsp;<code>synchronized</code>最常用的互斥有段，<code>synchronized</code>经过编译之后，会在同步块前后分别形成<code>monitorenter</code>和<code>monitorexit</code>两个字节码指令。这两个指令都需要明确指定一个引用类型的对象参数来确定需要锁定和解锁的对象。</p>
+<p>&emsp;&emsp;&ensp; 根据虚拟机的规范要求，在执行<em>monitorenter</em>指令时，首先要尝试获取对象的锁，如果对象没有被锁定，或者当前线程已经拥有那个对象的锁，把锁的计数器加1，相应的，如果执行<em>monitorexit</em>指令就会将锁计数器减1，当计数器为0时，锁就被释放。如果获取对象锁失败，那么当前线程就要一直阻塞等待，直到对象锁被另外一个线程释放为止。同时<code>Synchronized</code>锁是可重入的，假设对象<code>person</code>有两个被<code>Synchronized</code>修饰的同步方法M、N，当线程执行完M之后还可以接着执行N，所以这在一定程度上避免了死锁，</p>
 <p>如何保证可见性？</p>
-<p>&emsp;&emsp; 当一个线程释放锁的时候，将自己修改的数据从工作内存更新到主内存中，获取锁那个线程也会先将主内存中的数据同步到主机的工作内存中，如此就保证了<strong>内存可见性</strong>。</p>
+<p>&emsp;&emsp;&ensp; 当一个线程释放锁的时候，将自己修改的数据从工作内存更新到主内存中，获取锁那个线程也会先将主内存中的数据同步到主机的工作内存中，如此就保证了<strong>内存可见性</strong>。</p>
 <h2 id="ReentrantLock"><a href="#ReentrantLock" class="headerlink" title="ReentrantLock"></a>ReentrantLock</h2><blockquote>
-<p> ReentrantLock 类实现了 Lock，它拥有与 synchronized 相同的并发性和内存语义，但是添加了类似公平锁、轮询锁、定时锁等候和可中断锁等候的一些特性。此外，它还提供了在激烈争用情况下更佳的性能。</p>
+<p> <code>ReentrantLock</code> 类实现了<code>Lock</code>，它拥有与 <code>synchronized</code>相同的并发性和内存语义，但是添加了类似公平锁、轮询锁、定时锁等候和可中断锁等候的一些特性。此外，它还提供了在激烈争用情况下更佳的性能。</p>
 </blockquote>
-<p>&emsp;&emsp; 但相比synchronized锁来说，Lock锁使用需要手动获取、手动释放。我们在创建Lock实例的时候可以指定使用公平锁还是非公平锁，非公平锁性能会更好一下(公平锁需要维护公平所需要的记账和同步)，所以我们通常时候时都是用非公平锁。</p>
+<p>&emsp;&emsp;&ensp; 但相比<code>synchronized</code>锁来说，<code>Lock</code>锁使用需要手动获取、手动释放。我们在创建<code>Lock</code>实例的时候可以指定使用公平锁还是非公平锁，非公平锁性能会更好一下(公平锁需要维护公平所需要的记账和同步)，所以我们通常时候时都是用非公平锁。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="title">ReentrantLock</span><span class="params">(<span class="keyword">boolean</span> fair)</span> </span>&#123;</div><div class="line">       sync = fair ? <span class="keyword">new</span> FairSync() : <span class="keyword">new</span> NonfairSync();</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
-<p>这里FairSync和NonfairSync都继承了Sync。而公平锁和非公平锁的区别在于获取锁的方式。<br>非公平锁：</p>
+<p>这里<code>FairSync</code>和<code>NonfairSync</code>都继承了<code>Sync</code>。而公平锁和非公平锁的区别在于获取锁的方式。<br>非公平锁：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">()</span> </span>&#123;</div><div class="line">				<span class="comment">// 先判断此时锁是否有其他线程持有，没有的话通过CAS更新锁状态</span></div><div class="line">            <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, <span class="number">1</span>)) </div><div class="line">                setExclusiveOwnerThread(Thread.currentThread());</div><div class="line">            <span class="keyword">else</span></div><div class="line">                acquire(<span class="number">1</span>);</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
 <h2 id="自旋锁"><a href="#自旋锁" class="headerlink" title="自旋锁"></a>自旋锁</h2><blockquote>
 <p>Java的线程是映射到操作系统的原生线程之上的，如果要阻塞或唤醒一个线程，都需要操作系统来帮忙完成，这就需要从用户态转换到核心态中，因此状态装换需要耗费很多的处理器时间，对于代码简单的同步块状态转换消耗的时间有可能比用户代码执行的时间还要长。</p>
 </blockquote>
-<p>&emsp;&emsp; 那么就可以采用自旋锁的方式，假设这个时候有A线程持有锁，B线程等待锁，若是A线程持有锁的时间并不长，那么这个时候B线程不会被阻塞而是采用“忙等”的方式等待锁被释放。从而避免了操作系统切换用户态、内核态的消耗。</p>
+<p>&emsp;&emsp;&ensp; 那么就可以采用自旋锁的方式，假设这个时候有A线程持有锁，B线程等待锁，若是A线程持有锁的时间并不长，那么这个时候B线程不会被阻塞而是采用“忙等”的方式等待锁被释放。从而避免了操作系统切换用户态、内核态的消耗。</p>
 <h3 id="带来的问题："><a href="#带来的问题：" class="headerlink" title="带来的问题："></a>带来的问题：</h3><p>1、可能占用太多cpu资源：</p>
-<p>&emsp;&emsp; 若是A线程在短时间内并不释放锁，那么这种方式可能占用太多cpu时间，导致cpu资源浪费。因此jvm有一个默认自旋次数限制（默认是10次，可以使用-XX:PreBlockSpin来更改），若还是没有获取到锁，那就应该使用传统的方式去挂起线程了。</p>
-<p>2、死锁问题<br> &emsp;&emsp; 假设有有一个线程运行在一个处理器上， 而另外一个线程想获取这个处理器的锁， 那么他将一直持有这个cpu进行自旋操作，你的线程代码则永远无法获得机会释放锁，于是陷入死锁。</p>
-<h3 id="自适应自旋"><a href="#自适应自旋" class="headerlink" title="自适应自旋"></a>自适应自旋</h3><p>&emsp;&emsp;  在jdk1.6中引入了自适应的自旋锁。自适应意味着自旋的时间不在固定了，而是由前一次在同一个锁上的自旋时间及锁的拥有者的状态来实现。如果在同一个锁对象刚刚成功获取到了锁，并且持有锁的线程正在运行中，那么jvm久认为这次也能够获取成功，那么久可能多尝试几次来获取，比方说50次。若是对于某一个锁，自适应锁很少成功过，那么jvm可能就忽略掉自旋的过程而直接挂起。</p>
+<p>&emsp;&emsp;&ensp; 若是A线程在短时间内并不释放锁，那么这种方式可能占用太多cpu时间，导致cpu资源浪费。因此jvm有一个默认自旋次数限制（默认是10次，可以使用-XX:PreBlockSpin来更改），若还是没有获取到锁，那就应该使用传统的方式去挂起线程了。</p>
+<p>2、死锁问题<br> &emsp;&emsp;&ensp; 假设有有一个线程运行在一个处理器上， 而另外一个线程想获取这个处理器的锁， 那么他将一直持有这个cpu进行自旋操作，你的线程代码则永远无法获得机会释放锁，于是陷入死锁。</p>
+<h3 id="自适应自旋"><a href="#自适应自旋" class="headerlink" title="自适应自旋"></a>自适应自旋</h3><p>&emsp;&emsp;&ensp;  在jdk1.6中引入了自适应的自旋锁。自适应意味着自旋的时间不在固定了，而是由前一次在同一个锁上的自旋时间及锁的拥有者的状态来实现。如果在同一个锁对象刚刚成功获取到了锁，并且持有锁的线程正在运行中，那么<code>jvm</code>久认为这次也能够获取成功，那么久可能多尝试几次来获取，比方说50次。若是对于某一个锁，自适应锁很少成功过，那么<code>jvm</code>可能就忽略掉自旋的过程而直接挂起。</p>
 <h2 id="锁消除"><a href="#锁消除" class="headerlink" title="锁消除"></a>锁消除</h2><blockquote>
-<p>锁消除是Java虚拟机在JIT编译是，通过对运行上下文的扫描，去除不可能存在共享资源竞争的锁，通过锁消除，可以节省毫无意义的请求锁时间。</p>
+<p>锁消除是Java虚拟机在<code>JIT</code>编译是，通过对运行上下文的扫描，去除不可能存在共享资源竞争的锁，通过锁消除，可以节省毫无意义的请求锁时间。</p>
 </blockquote>
-<p>&emsp;&emsp; 在动态编译同步块的时候，JIT编译器可以借助一种被称为逃逸分析（Escape Analysis）的技术来判断同步块所使用的锁对象是否只能够被一个线程访问而没有被发布到其他线程。如果同步块所使用的锁对象通过这种分析被证实只能够被一个线程访问，那么JIT编译器在编译这个同步块的时候并不生成synchronized所表示的锁的申请与释放对应的机器码，而仅生成原临界区代码对应的机器码，这就造成了被动态编译的字节码就像是不包含monitorenter（申请锁）和monitorexit（释放锁）这两个字节码指令一样，即消除了锁的使用。这种编译器优化就被称为锁消除（Lock Elision），它使得特定情况下我们可以完全消除锁的开销。</p>
+<p>&emsp;&emsp;&ensp; 在动态编译同步块的时候，JIT编译器可以借助一种被称为逃逸分析（Escape Analysis）的技术来判断同步块所使用的锁对象是否只能够被一个线程访问而没有被发布到其他线程。如果同步块所使用的锁对象通过这种分析被证实只能够被一个线程访问，那么JIT编译器在编译这个同步块的时候并不生成<code>synchronized</code>所表示的锁的申请与释放对应的机器码，而仅生成原临界区代码对应的机器码，这就造成了被动态编译的字节码就像是不包含<code>monitorenter</code>（申请锁）和<code>monitorexit</code>（释放锁）这两个字节码指令一样，即消除了锁的使用。这种编译器优化就被称为锁消除（<code>Lock Elision</code>），它使得特定情况下我们可以完全消除锁的开销。</p>
 <p>示意图：</p>
 <p><img src="http://res.cloudinary.com/leon824/image/upload/v1517466723/jvmsuo_ber7ev.png" width="100%" height="100%"></p>
 <h2 id="锁粗化"><a href="#锁粗化" class="headerlink" title="锁粗化"></a>锁粗化</h2><blockquote>
 <p>锁粗化（Lock Coarsening/Lock Merging）是JIT编译器对内部锁的具体实现所做的一种优化。</p>
 </blockquote>
-<p>&emsp;&emsp; 一般来说，我们加锁会尽量锁住更小的代码块， 这样使得需要同步的操作数量尽可能小，如果存在竞争那么也能尽快拿到锁。在通常情况下这都是正确的，但是如果反复对同一个对象加锁，甚至加锁操作出现在了循环体中，频繁的进行互斥操作也会导致不必要的性能损耗。<br>如果虚拟机探测到有这样的情况的话，会把加锁同步的范围扩展到整个操作序列的外部，这样的一个锁范围扩展的操作就称之为锁粗化。</p>
+<p>&emsp;&emsp;一般来说，我们加锁会尽量锁住更小的代码块， 这样使得需要同步的操作数量尽可能小，如果存在竞争那么也能尽快拿到锁。在通常情况下这都是正确的，但是如果反复对同一个对象加锁，甚至加锁操作出现在了循环体中，频繁的进行互斥操作也会导致不必要的性能损耗。<br>如果虚拟机探测到有这样的情况的话，会把加锁同步的范围扩展到整个操作序列的外部，这样的一个锁范围扩展的操作就称之为锁粗化。</p>
 <h2 id="偏向锁"><a href="#偏向锁" class="headerlink" title="偏向锁"></a>偏向锁</h2><blockquote>
-<p>它的目的是消除数据在无竞争情况下的同步原语，进一步提高程序性能。如果说轻量级锁是在无竞争的情况下使用CAS操作去消除同步使用的互斥量，那偏向锁就是在无竞争的情况下把整个同步都消除掉，连CAS都不做。</p>
+<p>它的目的是消除数据在无竞争情况下的同步原语，进一步提高程序性能。如果说轻量级锁是在无竞争的情况下使用<code>CAS</code>操作去消除同步使用的互斥量，那偏向锁就是在无竞争的情况下把整个同步都消除掉，连CAS都不做。</p>
 </blockquote>
-<p>&emsp;&emsp; 偏向锁会偏向于第一个获得它的线程，如果在接下来的执行过程中，该锁没有被其他的线程获取，则持有偏向锁的线程将永远不需要同步。大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程多次获得，为了让线程获得锁的代价更低而引入了偏向锁。</p>
-<p>&emsp;&emsp; 当锁对象第一次被线程获取的时候，线程使用CAS操作把这个锁的线程ID记录再对象Mark Word之中，同时置偏向标志位1。以后该线程在进入和退出同步块时不需要进行CAS操作来加锁和解锁，只需要简单地测试一下对象头的Mark Word里是否存储着指向当前线程的偏向锁。如果测试成功，表示线程已经获得了锁</p>
+<p>&emsp;&emsp;偏向锁会偏向于第一个获得它的线程，如果在接下来的执行过程中，该锁没有被其他的线程获取，则持有偏向锁的线程将永远不需要同步。大多数情况下，锁不仅不存在多线程竞争，而且总是由同一线程多次获得，为了让线程获得锁的代价更低而引入了偏向锁。</p>
+<p>&emsp;&emsp;当锁对象第一次被线程获取的时候，线程使用<code>CAS</code>操作把这个锁的线程<code>ID</code>记录再对象<code>Mark Word</code>之中，同时置偏向标志位1。以后该线程在进入和退出同步块时不需要进行<code>CAS</code>操作来加锁和解锁，只需要简单地测试一下对象头的<code>Mark Word</code>里是否存储着指向当前线程的偏向锁。如果测试成功，表示线程已经获得了锁</p>
 <p>参考：</p>
 <p>-《深入理解java虚拟机》</p>
 <p><a href="http://blog.csdn.net/u013256816/article/details/51008443" target="_blank" rel="external">http://blog.csdn.net/u013256816/article/details/51008443</a></p>
@@ -1810,8 +1810,8 @@
 <p>使用github pages和hexo可以轻松搭建一个属于自己的博客，但是这个博客的域名是一个<strong>github.io</strong>结尾的。看着不爽，下面讲一下具体的步骤。关于如何使用github pages和hexo搭建博客，网上有很多，这里就不介绍了。</p>
 </blockquote>
 <p><strong>将username.github.io解析到自己的域名上，首先需要将域名解析到github pages的ip上，然后在github的settings中添加一个CNAME文件。具体步骤如下</strong></p>
-<h3 id="注册域名"><a href="#注册域名" class="headerlink" title="注册域名"></a>注册域名</h3><pre><code>可以去腾讯云上边买一个域名，便宜点的就行。
-</code></pre><p><img src="http://res.cloudinary.com/leon824/image/upload/v1521195447/github1_l9ffvx.png" width="100%" height="100%"></p>
+<h3 id="注册域名"><a href="#注册域名" class="headerlink" title="注册域名"></a>注册域名</h3><p>可以去腾讯云上边买一个域名，便宜点的就行。</p>
+<p><img src="http://res.cloudinary.com/leon824/image/upload/v1521195447/github1_l9ffvx.png" width="100%" height="100%"></p>
 <h3 id="解析域名"><a href="#解析域名" class="headerlink" title="解析域名"></a>解析域名</h3><pre><code>域名其实就是一个ip的重命名而已，所以解析就相当于将域名绑定到一个ip，那么以后我们就可以直接用域名来访问那个ip对应的服务器的服务。
 
 这里直接使用腾讯提供的快速解析方法,将github提供的两个ip中的一个加入就行
@@ -1820,7 +1820,7 @@
 <li>192.30.252.154</li>
 </ul>
 <p><img src="http://res.cloudinary.com/leon824/image/upload/v1521195771/github2_wtaleu.png" width="100%" height="100%"></p>
-<h3 id="创建CNAME文件"><a href="#创建CNAME文件" class="headerlink" title="创建CNAME文件"></a>创建CNAME文件</h3><p>  我们打开在github中的博客目录中的settings，填入自己的域名，然后save。就可以在项目的根目录中看到一个CNAME的文件。这个文件就已经填入了我们的域名，但是当我们重新发布之后这个CNAME文件会被覆盖，所以需要source目录下创建同样的一个CNAME的文件。</p>
+<h3 id="创建CNAME文件"><a href="#创建CNAME文件" class="headerlink" title="创建CNAME文件"></a>创建CNAME文件</h3><p>  我们打开在github中的博客目录中的<code>settings</code>，填入自己的域名，然后<code>save</code>。就可以在项目的根目录中看到一个<code>CNAME</code>的文件。这个文件就已经填入了我们的域名，但是当我们重新发布之后这个<code>CNAME</code>文件会被覆盖，所以需要<code>source</code>目录下创建同样的一个<code>CNAME</code>的文件。</p>
 <p>  <img src="http://res.cloudinary.com/leon824/image/upload/v1521270864/github3_nqeg25.png" width="100%" height="100%"></p>
 <p> 最后访问自己的域名，就能直接访问到博客了。</p>
 
@@ -2255,39 +2255,39 @@
             <h2 id="类unix平台中几个大杀器指令"><a href="#类unix平台中几个大杀器指令" class="headerlink" title="类unix平台中几个大杀器指令"></a>类unix平台中几个大杀器指令</h2><blockquote>
 <p>下边介绍几个“很强势”的命令行指令，能大大提高我们的工作生产效率。使用macOS Sierra作为演示环境。</p>
 </blockquote>
-<h4 id="1、autojump"><a href="#1、autojump" class="headerlink" title="1、autojump"></a>1、autojump</h4><p>  通常我们在类unix操作系统中切换目录都是使用cd，使用这个指令如果要切换到很深的目录，是很烦恼的。那么这个时候autojump就是大杀器。</p>
-<p>1、 在mac中安装autojump比较简单：<br> <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install autojump</div></pre></td></tr></table></figure></p>
+<h4 id="1、autojump"><a href="#1、autojump" class="headerlink" title="1、autojump"></a>1、autojump</h4><p>  通常我们在类<code>unix</code>操作系统中切换目录都是使用cd，使用这个指令如果要切换到很深的目录，是很烦恼的。那么这个时候<code>autojump</code>就是大杀器。</p>
+<p>1、 在<code>mac</code>中安装<code>autojump</code>比较简单：<br> <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install autojump</div></pre></td></tr></table></figure></p>
 <p> 但是需要注意安装完并不能直接使用。在我们安装的过程中会有如下的提示：</p>
 <p> <img src="https://res.cloudinary.com/leon824/image/upload/v1513176176/autojump_efiljd.png" width="100%" height="100%"><br> 我们只需要按照步骤操作就好：<br><br>（1） 先在~/.zshrc文件或者~/.bash_profile中添加</p>
  <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[ -f /usr/local/etc/profile.d/autojump.sh ] &amp;&amp; . /usr/local/etc/profile.d/autojump.sh</div></pre></td></tr></table></figure>
 <p> (2) 然后source相应的文件，重新打开一个窗口。就可以使用了。</p>
-<h4 id="简单介绍一下autojump的简单使用"><a href="#简单介绍一下autojump的简单使用" class="headerlink" title="简单介绍一下autojump的简单使用"></a>简单介绍一下autojump的简单使用</h4><p>可以使用下面的命令来手动添加一个目录</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> autojump -a [目录]</div></pre></td></tr></table></figure>
+<h4 id="简单介绍一下autojump的简单使用"><a href="#简单介绍一下autojump的简单使用" class="headerlink" title="简单介绍一下autojump的简单使用"></a>简单介绍一下<code>autojump</code>的简单使用</h4><p>可以使用下面的命令来手动添加一个目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> autojump -a [目录]</span></div></pre></td></tr></table></figure>
 <p>如果你突然想要把当前目录变成你的最爱和使用最频繁的文件夹，你可以在该目录通过命令的参数 i 来手工增加它的权重</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> autojump -i [权重]</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> autojump -i [权重]</span></div></pre></td></tr></table></figure>
 <p>这将使得该目录更可能被选择跳转。相反的例子是在该目录使用参数 d 来减少权重：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> autojump -d [权重]</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> autojump -d [权重]</span></div></pre></td></tr></table></figure>
 <p>要跟踪所有这些改变，输入：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span>  autojump -s</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash">  autojump -s</span></div></pre></td></tr></table></figure>
 <h4 id="2、mycli"><a href="#2、mycli" class="headerlink" title="2、mycli"></a>2、mycli</h4><blockquote>
-<p>&emsp;&emsp; 对于程序员来说，数据库再熟悉不过了，很多时候我们更喜欢用命令行来访问数据库，但是默认自带的mysql对操作并不是十分友好，不能自动补全，没有语法高亮。<br>这个时候使用mycli就再合适不过了。</p>
+<p>&emsp;&emsp; 对于程序员来说，数据库再熟悉不过了，很多时候我们更喜欢用命令行来访问数据库，但是默认自带的<code>mysql</code>对操作并不是十分友好，不能自动补全，没有语法高亮。<br>这个时候使用<code>mycli</code>就再合适不过了。</p>
 </blockquote>
-<p>1、 先安装，依旧使用brew来安装管理<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install mycli</div></pre></td></tr></table></figure></p>
-<p> 然后使用mycli -u username进入数据库，需要注意的是这里不需要-p参数。<br> 如下所示：</p>
+<p>1、 先安装，依旧使用<code>brew</code>来安装管理<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install mycli</div></pre></td></tr></table></figure></p>
+<p> 然后使用<code>mycli -u username</code>进入数据库，需要注意的是这里不需要-p参数。<br> 如下所示：</p>
 <p> <img src="https://res.cloudinary.com/leon824/image/upload/v1513176886/mycli_heofoa.png" width="100%" height="100%"></p>
 <h4 id="3、screen"><a href="#3、screen" class="headerlink" title="3、screen"></a>3、screen</h4><blockquote>
-<p>当我们在通过ssh连接远端机器执行任务时，如果任务执行时间相对比较短还好，如果是执行hadoop的任务，很多时候回超过几个小时，那么这个时候如果ssh连接中断了，那么这个任务也会失败。所以这个时候screen就派上用场了。</p>
+<p>当我们在通过<code>ssh</code>连接远端机器执行任务时，如果任务执行时间相对比较短还好，如果是执行<code>hadoop</code>的任务，很多时候回超过几个小时，那么这个时候如果<code>ssh</code>连接中断了，那么这个任务也会失败。所以这个时候<code>screen</code>就派上用场了。</p>
 </blockquote>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> brew install screen</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> brew install screen</span></div></pre></td></tr></table></figure>
 <p>进入后台执行：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> screen</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> screen</span></div></pre></td></tr></table></figure>
 <p>当开始执行任务之后使用如下指令退出：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> control + A + D</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> control + A + D</span></div></pre></td></tr></table></figure>
 <p>将正在执行的任务列举出来</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> screen -ls</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> screen -ls</span></div></pre></td></tr></table></figure>
 <p>查看任务执行进度：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> screen -r 进程号</div></pre></td></tr></table></figure>
-<p>还包括axel、fasd、m-cli等等有兴趣的小伙伴可以自己研究。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> screen -r 进程号</span></div></pre></td></tr></table></figure>
+<p>还包括<code>axel</code>、<code>fasd</code>、m-cli等等有兴趣的小伙伴可以自己研究。</p>
 
           
         
