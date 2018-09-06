@@ -79,13 +79,14 @@
 
 
 
-<meta name="description" content="最近公司的服务已经从传统tomcat服务拆分成了微服务，使得各个原本臃肿的业务变得轻量、易维护，但是也带了一些问题，比如生产、测试环境中的定时任务管理就成了问题，由于服务器变得更多，定时任务变得分散，各个环境容易变得混杂、维护成本升高且容易出错，同时无法知道这个定时任务执行是否成功，只有当服务出现了问题才能反推定时任务出现了问题。  使用系统级定时crontab存在的主要问题 任务的时间粒度不够">
+<meta name="description" content="最近公司的服务已经从传统tomcat服务拆分成了微服务，使得各个原本臃肿的业务变得轻量、易维护，但是也带了一些问题，比如生产、测试环境中的定时任务管理就成了问题，由于服务器变得更多，定时任务变得分散，各个环境容易变得混杂、维护成本升高且容易出错，同时无法知道这个定时任务执行是否成功，只有当服务出现了问题才能反推定时任务出现了问题。  使用系统级定时crontab存在的主要问题 任务的时间粒度不">
 <meta property="og:type" content="article">
 <meta property="og:title" content="分布式调度中心">
 <meta property="og:url" content="http://yoursite.com/2018/09/06/分布式调度中心/index.html">
 <meta property="og:site_name" content="花谢花开">
-<meta property="og:description" content="最近公司的服务已经从传统tomcat服务拆分成了微服务，使得各个原本臃肿的业务变得轻量、易维护，但是也带了一些问题，比如生产、测试环境中的定时任务管理就成了问题，由于服务器变得更多，定时任务变得分散，各个环境容易变得混杂、维护成本升高且容易出错，同时无法知道这个定时任务执行是否成功，只有当服务出现了问题才能反推定时任务出现了问题。  使用系统级定时crontab存在的主要问题 任务的时间粒度不够">
+<meta property="og:description" content="最近公司的服务已经从传统tomcat服务拆分成了微服务，使得各个原本臃肿的业务变得轻量、易维护，但是也带了一些问题，比如生产、测试环境中的定时任务管理就成了问题，由于服务器变得更多，定时任务变得分散，各个环境容易变得混杂、维护成本升高且容易出错，同时无法知道这个定时任务执行是否成功，只有当服务出现了问题才能反推定时任务出现了问题。  使用系统级定时crontab存在的主要问题 任务的时间粒度不">
 <meta property="og:locale" content="zh-hk">
+<meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1536228539/america-american-american-flag-92730_nxhmbn.jpg">
 <meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1536229716/xxl-job2_dmcr7w.png">
 <meta property="og:image" content="  https://res.cloudinary.com/leon824/image/upload/v1536229989/xxl-job3_znsdti.png">
 <meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1536054290/Pic2432_m0orgo.png">
@@ -94,11 +95,11 @@
 <meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1536232500/xxl-job8_fsxslg.png">
 <meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1536232776/xxl-job9_vnqd4c.png">
 <meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1536114765/pic110_ugssl2.png">
-<meta property="og:updated_time" content="2018-09-06T11:29:57.000Z">
+<meta property="og:updated_time" content="2018-09-06T11:31:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="分布式调度中心">
-<meta name="twitter:description" content="最近公司的服务已经从传统tomcat服务拆分成了微服务，使得各个原本臃肿的业务变得轻量、易维护，但是也带了一些问题，比如生产、测试环境中的定时任务管理就成了问题，由于服务器变得更多，定时任务变得分散，各个环境容易变得混杂、维护成本升高且容易出错，同时无法知道这个定时任务执行是否成功，只有当服务出现了问题才能反推定时任务出现了问题。  使用系统级定时crontab存在的主要问题 任务的时间粒度不够">
-<meta name="twitter:image" content="https://res.cloudinary.com/leon824/image/upload/v1536229716/xxl-job2_dmcr7w.png">
+<meta name="twitter:description" content="最近公司的服务已经从传统tomcat服务拆分成了微服务，使得各个原本臃肿的业务变得轻量、易维护，但是也带了一些问题，比如生产、测试环境中的定时任务管理就成了问题，由于服务器变得更多，定时任务变得分散，各个环境容易变得混杂、维护成本升高且容易出错，同时无法知道这个定时任务执行是否成功，只有当服务出现了问题才能反推定时任务出现了问题。  使用系统级定时crontab存在的主要问题 任务的时间粒度不">
+<meta name="twitter:image" content="https://res.cloudinary.com/leon824/image/upload/v1536228539/america-american-american-flag-92730_nxhmbn.jpg">
 
 
 
@@ -359,7 +360,8 @@
       
 
       
-        <blockquote>
+        <p><img src="https://res.cloudinary.com/leon824/image/upload/v1536228539/america-american-american-flag-92730_nxhmbn.jpg" width="90%" height="90%"></p>
+<blockquote>
 <p>最近公司的服务已经从传统tomcat服务拆分成了微服务，使得各个原本臃肿的业务变得轻量、易维护，但是也带了一些问题，比如生产、测试环境中的定时任务管理就成了问题，由于服务器变得更多，定时任务变得分散，各个环境容易变得混杂、维护成本升高且容易出错，同时无法知道这个定时任务执行是否成功，只有当服务出现了问题才能反推定时任务出现了问题。</p>
 </blockquote>
 <h2 id="使用系统级定时crontab存在的主要问题"><a href="#使用系统级定时crontab存在的主要问题" class="headerlink" title="使用系统级定时crontab存在的主要问题"></a>使用系统级定时crontab存在的主要问题</h2><ul>
