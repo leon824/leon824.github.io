@@ -315,7 +315,7 @@
                   <span class="post-meta-item-text">字數統計&#58;</span>
                 
                 <span title="字數統計">
-                  920
+                  1,100
                 </span>
               
 
@@ -331,7 +331,7 @@
                   <span class="post-meta-item-text">閱讀時長 &asymp;</span>
                 
                 <span title="閱讀時長">
-                  3
+                  4
                 </span>
               
             </div>
@@ -367,6 +367,9 @@
 <li>2) 调用构造函数初始化对象。</li>
 <li>3）将<code>instance</code>引用指向堆内存空间的起始地址（此时<code>instance</code>才为非<code>null</code>）。</li>
 </ul>
+<p>若将上边三步用伪代码来表示就是下边这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">memory = allocate();  <span class="comment">//  1、分配对象的内存空间</span></div><div class="line">ctorInstance(memory); <span class="comment">// 2、初始化对象</span></div><div class="line">instance = memory；  <span class="comment">//3、设置instance指向刚分配的内存地址</span></div></pre></td></tr></table></figure>
+<p>实际上在上边的伪代码中2和3之间，可能会被重排序（在一些JIT编译器上，这种重排序也是真实发生的） ，根据《java语言规范》，所有线程在执行java程序时必须遵守<strong>intra-thread semantics</strong>,<strong>intra-thread semantics</strong>保证排序不会改变单线程的执行结果。换句话说，<strong>intra-thread semantics</strong>允许那些在单线程中不改变执行结果的重排序，这样会提高程序的执行性能。</p>
 <p>这个时候<strong>A</strong>线程执行刚刚才执行到创建对象的<strong>第二步</strong>，线程<strong>B</strong>就执行到代码<strong>1</strong>处，此时判断出<code>instance</code>为<code>null</code>，然后进入对象在创建一个对象！ 这个时候就出现问题了，单例模式此时创建了两个对象。违背了单例模式的初衷。</p>
 <h3 id="双重锁检查"><a href="#双重锁检查" class="headerlink" title="双重锁检查"></a>双重锁检查</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OtherSingleton</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> OtherSingleton instance;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="title">OtherSingleton</span><span class="params">()</span> </span>&#123;&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> OtherSingleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</div><div class="line">        <span class="keyword">if</span> (instance == <span class="keyword">null</span>)&#123;  ————<span class="number">1</span></div><div class="line">            <span class="keyword">synchronized</span> (OtherSingleton.class)&#123;</div><div class="line">             <span class="keyword">if</span> (instance == <span class="keyword">null</span>)&#123;    ————<span class="number">2</span></div><div class="line">                 instance = <span class="keyword">new</span> OtherSingleton();   ————<span class="number">3</span></div><div class="line">                 <span class="keyword">return</span> instance;</div><div class="line">             &#125;</div><div class="line">           &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>这里加双重检查锁就是在同步代码前和同步代码后边都检查实例是否为空。如果仅仅在同步块外边检查，而在同步块内不检查，那么可能存在多个线程同时进入了同步块外的代码，则可能<strong>生成多个实例</strong>。</p>
@@ -2663,7 +2666,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">23.9k</span>
+    <span title="Site words total count">24.0k</span>
   
 </div>
 
