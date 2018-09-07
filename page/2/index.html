@@ -232,6 +232,212 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/14/类unix平台中几个大杀器指令/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="leonyoung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://res.cloudinary.com/leon824/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花谢花开">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/14/类unix平台中几个大杀器指令/" itemprop="url">类unix平台中几个大杀器指令</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-12-14T21:22:47+08:00">
+                2017-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/macOS/" itemprop="url" rel="index">
+                    <span itemprop="name">macOS</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  668
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">閱讀時長 &asymp;</span>
+                
+                <span title="閱讀時長">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="类unix平台中几个大杀器指令"><a href="#类unix平台中几个大杀器指令" class="headerlink" title="类unix平台中几个大杀器指令"></a>类unix平台中几个大杀器指令</h2><blockquote>
+<p>下边介绍几个“很强势”的命令行指令，能大大提高我们的工作生产效率。使用macOS Sierra作为演示环境。</p>
+</blockquote>
+<h4 id="1、autojump"><a href="#1、autojump" class="headerlink" title="1、autojump"></a>1、autojump</h4><p>  通常我们在类<code>unix</code>操作系统中切换目录都是使用cd，使用这个指令如果要切换到很深的目录，是很烦恼的。那么这个时候<code>autojump</code>就是大杀器。</p>
+<p>1、 在<code>mac</code>中安装<code>autojump</code>比较简单：<br> <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install autojump</div></pre></td></tr></table></figure></p>
+<p> 但是需要注意安装完并不能直接使用。在我们安装的过程中会有如下的提示：</p>
+<p> <img src="https://res.cloudinary.com/leon824/image/upload/v1513176176/autojump_efiljd.png" width="100%" height="100%"><br> 我们只需要按照步骤操作就好：<br><br>（1） 先在~/.zshrc文件或者~/.bash_profile中添加</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[ -f /usr/local/etc/profile.d/autojump.sh ] &amp;&amp; . /usr/local/etc/profile.d/autojump.sh</div></pre></td></tr></table></figure>
+<p> (2) 然后source相应的文件，重新打开一个窗口。就可以使用了。</p>
+<h4 id="简单介绍一下autojump的简单使用"><a href="#简单介绍一下autojump的简单使用" class="headerlink" title="简单介绍一下autojump的简单使用"></a>简单介绍一下<code>autojump</code>的简单使用</h4><p>可以使用下面的命令来手动添加一个目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> autojump -a [目录]</span></div></pre></td></tr></table></figure>
+<p>如果你突然想要把当前目录变成你的最爱和使用最频繁的文件夹，你可以在该目录通过命令的参数 i 来手工增加它的权重</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> autojump -i [权重]</span></div></pre></td></tr></table></figure>
+<p>这将使得该目录更可能被选择跳转。相反的例子是在该目录使用参数 d 来减少权重：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> autojump -d [权重]</span></div></pre></td></tr></table></figure>
+<p>要跟踪所有这些改变，输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash">  autojump -s</span></div></pre></td></tr></table></figure>
+<h4 id="2、mycli"><a href="#2、mycli" class="headerlink" title="2、mycli"></a>2、mycli</h4><blockquote>
+<p>&emsp;&emsp; 对于程序员来说，数据库再熟悉不过了，很多时候我们更喜欢用命令行来访问数据库，但是默认自带的<code>mysql</code>对操作并不是十分友好，不能自动补全，没有语法高亮。<br>这个时候使用<code>mycli</code>就再合适不过了。</p>
+</blockquote>
+<p>1、 先安装，依旧使用<code>brew</code>来安装管理<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">brew install mycli</div></pre></td></tr></table></figure></p>
+<p> 然后使用<code>mycli -u username</code>进入数据库，需要注意的是这里不需要-p参数。<br> 如下所示：</p>
+<p> <img src="https://res.cloudinary.com/leon824/image/upload/v1513176886/mycli_heofoa.png" width="100%" height="100%"></p>
+<h4 id="3、screen"><a href="#3、screen" class="headerlink" title="3、screen"></a>3、screen</h4><blockquote>
+<p>当我们在通过<code>ssh</code>连接远端机器执行任务时，如果任务执行时间相对比较短还好，如果是执行<code>hadoop</code>的任务，很多时候回超过几个小时，那么这个时候如果<code>ssh</code>连接中断了，那么这个任务也会失败。所以这个时候<code>screen</code>就派上用场了。</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> brew install screen</span></div></pre></td></tr></table></figure>
+<p>进入后台执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> screen</span></div></pre></td></tr></table></figure>
+<p>当开始执行任务之后使用如下指令退出：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> control + A + D</span></div></pre></td></tr></table></figure>
+<p>将正在执行的任务列举出来</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> screen -ls</span></div></pre></td></tr></table></figure>
+<p>查看任务执行进度：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span><span class="bash"> screen -r 进程号</span></div></pre></td></tr></table></figure>
+<p>还包括<code>axel</code>、<code>fasd</code>、m-cli等等有兴趣的小伙伴可以自己研究。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/11/27/记录一次spark踩坑/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1756,7 +1962,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">文章</span>
                 </a>
               </div>
@@ -1821,7 +2027,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">22.9k</span>
+    <span title="Site words total count">23.9k</span>
   
 </div>
 
