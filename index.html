@@ -2240,17 +2240,16 @@
 <p><strong>将username.github.io解析到自己的域名上，首先需要将域名解析到github pages的ip上，然后在github的settings中添加一个CNAME文件。具体步骤如下</strong></p>
 <h3 id="注册域名"><a href="#注册域名" class="headerlink" title="注册域名"></a>注册域名</h3><p>可以去腾讯云上边买一个域名，便宜点的就行。</p>
 <p><img src="http://res.cloudinary.com/leon824/image/upload/v1521195447/github1_l9ffvx.png" width="100%" height="100%"></p>
-<h3 id="解析域名"><a href="#解析域名" class="headerlink" title="解析域名"></a>解析域名</h3><pre><code>域名其实就是一个ip的重命名而已，所以解析就相当于将域名绑定到一个ip，那么以后我们就可以直接用域名来访问那个ip对应的服务器的服务。
-
-这里直接使用腾讯提供的快速解析方法,将github提供的两个ip中的一个加入就行
-</code></pre><ul>
+<h3 id="解析域名"><a href="#解析域名" class="headerlink" title="解析域名"></a>解析域名</h3><p>域名其实就是一个ip的重命名而已，所以解析就相当于将域名绑定到一个ip，那么以后我们就可以直接用域名来访问那个ip对应的服务器的服务。</p>
+<p>这里直接使用腾讯提供的快速解析方法,将github提供的两个ip中的一个加入就行</p>
+<ul>
 <li>192.30.252.153</li>
 <li>192.30.252.154</li>
 </ul>
 <p><img src="http://res.cloudinary.com/leon824/image/upload/v1521195771/github2_wtaleu.png" width="100%" height="100%"></p>
 <h3 id="创建CNAME文件"><a href="#创建CNAME文件" class="headerlink" title="创建CNAME文件"></a>创建CNAME文件</h3><p>  我们打开在github中的博客目录中的<code>settings</code>，填入自己的域名，然后<code>save</code>。就可以在项目的根目录中看到一个<code>CNAME</code>的文件。这个文件就已经填入了我们的域名，但是当我们重新发布之后这个<code>CNAME</code>文件会被覆盖，所以需要<code>source</code>目录下创建同样的一个<code>CNAME</code>的文件。</p>
 <p>  <img src="http://res.cloudinary.com/leon824/image/upload/v1521270864/github3_nqeg25.png" width="100%" height="100%"></p>
-<p> 最后访问自己的域名，就能直接访问到博客了。</p>
+<p>最后访问自己的域名，就能直接访问到博客了。</p>
 
           
         
