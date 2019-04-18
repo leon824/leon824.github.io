@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-hk">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/xiongmao.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/xiongmao.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="centos搭建ELK集群 在之前两篇文章中我们详细讲述了如何在一台机器中搭建Filebeat + ELK单点服务，但是ELK服务若是上生产，为了实现高可用，我们需要搭建分布式集群。     集群架构图：   整个集群的部署是在下面这三台中的，机器ip123172.20.0.203172.30.0.199172.17.71.113 根据个人这些年搭建各种集群的经验来说，想要快速完成集群搭建，我们">
+<meta property="og:type" content="article">
+<meta property="og:title" content="centos搭建ELK集群">
+<meta property="og:url" content="http://yoursite.com/2019/04/18/elk集群搭建/index.html">
+<meta property="og:site_name" content="花谢花开">
+<meta property="og:description" content="centos搭建ELK集群 在之前两篇文章中我们详细讲述了如何在一台机器中搭建Filebeat + ELK单点服务，但是ELK服务若是上生产，为了实现高可用，我们需要搭建分布式集群。     集群架构图：   整个集群的部署是在下面这三台中的，机器ip123172.20.0.203172.30.0.199172.17.71.113 根据个人这些年搭建各种集群的经验来说，想要快速完成集群搭建，我们">
+<meta property="og:locale" content="zh-hk">
+<meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1555588911/elk_xitdtn.png">
+<meta property="og:image" content="http://yoursite.com/2019/04/18/elk集群搭建/media/15548098580919.jpg">
+<meta property="og:image" content="http://yoursite.com/2019/04/18/elk集群搭建/media/15548099030473.jpg">
+<meta property="og:updated_time" content="2019-04-18T12:06:35.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="centos搭建ELK集群">
+<meta name="twitter:description" content="centos搭建ELK集群 在之前两篇文章中我们详细讲述了如何在一台机器中搭建Filebeat + ELK单点服务，但是ELK服务若是上生产，为了实现高可用，我们需要搭建分布式集群。     集群架构图：   整个集群的部署是在下面这三台中的，机器ip123172.20.0.203172.30.0.199172.17.71.113 根据个人这些年搭建各种集群的经验来说，想要快速完成集群搭建，我们">
+<meta name="twitter:image" content="https://res.cloudinary.com/leon824/image/upload/v1555588911/elk_xitdtn.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/04/18/elk集群搭建/"/>
+
+
+
+
+
+  <title>centos搭建ELK集群 | 花谢花开</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">花谢花开</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/18/elk集群搭建/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="leonyoung">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://res.cloudinary.com/leon824/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="花谢花开">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">centos搭建ELK集群</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">發表於</span>
+              
+              <time title="創建於" itemprop="dateCreated datePublished" datetime="2019-04-18T19:22:37+08:00">
+                2019-04-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分類於</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/elk/" itemprop="url" rel="index">
+                    <span itemprop="name">elk</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字數統計&#58;</span>
+                
+                <span title="字數統計">
+                  2,886
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">閱讀時長 &asymp;</span>
+                
+                <span title="閱讀時長">
+                  13
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="centos搭建ELK集群"><a href="#centos搭建ELK集群" class="headerlink" title=" centos搭建ELK集群"></a><center> centos搭建ELK集群</center></h1><blockquote>
+<p>在之前两篇文章中我们详细讲述了如何在一台机器中搭建Filebeat + ELK单点服务，但是ELK服务若是上生产，为了实现高可用，我们需要搭建分布式集群。</p>
+</blockquote>
+<p>   集群架构图：<br>   <img src="https://res.cloudinary.com/leon824/image/upload/v1555588911/elk_xitdtn.png" alt=""><br>整个集群的部署是在下面这三台中的，机器ip<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">172.20.0.203</div><div class="line">172.30.0.199</div><div class="line">172.17.71.113</div></pre></td></tr></table></figure></p>
+<p>根据个人这些年搭建各种集群的经验来说，想要快速完成集群搭建，我们一定要注意控制<strong>”变量“</strong>，也就是说我们完成一个模块的配置之后要快速验证当前这一个模块是否配置正常，不要着急去配置后边的模块，若是出现问题，这样可能会导致后边难以定位具体问题出现在哪里，白白浪费时间，切记切记。</p>
+<h3 id="集群配置免密登录"><a href="#集群配置免密登录" class="headerlink" title="集群配置免密登录"></a>集群配置免密登录</h3><h5 id="1、先在各个环境中生成秘钥对。"><a href="#1、先在各个环境中生成秘钥对。" class="headerlink" title="1、先在各个环境中生成秘钥对。"></a>1、先在各个环境中生成秘钥对。</h5><p>下面的指令需要在各个环境中执行，生成对应的公私钥</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> ssh-keygen -t rsa</div></pre></td></tr></table></figure>
+<h5 id="2、-将各个环境中的公钥全部集中到一个authorized-keys文件中"><a href="#2、-将各个环境中的公钥全部集中到一个authorized-keys文件中" class="headerlink" title="2、 将各个环境中的公钥全部集中到一个authorized_keys文件中"></a>2、 将各个环境中的公钥全部集中到一个<code>authorized_keys</code>文件中</h5><h5 id="3、然后将这个文件分发到各个机器的-ssh目录下面。"><a href="#3、然后将这个文件分发到各个机器的-ssh目录下面。" class="headerlink" title="3、然后将这个文件分发到各个机器的.ssh目录下面。"></a>3、然后将这个文件分发到各个机器的.ssh目录下面。</h5><p>上述操作步骤并不复杂，但是在实际操作中需要注意一些地方，下面举例需要特别注意的地方。</p>
+<h5 id="可能会出现的问题-："><a href="#可能会出现的问题-：" class="headerlink" title="可能会出现的问题 ："></a>可能会出现的问题 ：</h5><p>a，不要忘记修改sshd服务的配置。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">RSAAuthentication yes</div><div class="line">PubkeyAuthentication yes</div><div class="line">AuthorizedKeysFile      /home/felk/.ssh/authorized_keys</div></pre></td></tr></table></figure></p>
+<p>然后重启sshd服务<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo service sshd restart</div></pre></td></tr></table></figure></p>
+<p>特别是最后一个配置涉及到<code>authorized_keys</code>文件的目录，需要根据自己的实际配置目录添加进去。</p>
+<p>b、<code>ssh_exchange_identification: Connection closed by remote host</code>报错</p>
+<p>解决办法：<br>先登录到需要目标机器中查看 <code>/etc/hosts.allow</code>文件中是否允许响应网段ip访问。修改之后重启sshd服务。</p>
+<p>主要就是上边的两个问题。</p>
+<h3 id="配置zookeeper集群"><a href="#配置zookeeper集群" class="headerlink" title="配置zookeeper集群"></a>配置zookeeper集群</h3><p>由于我们的架构中使用到了kafka，kafka集群是需要zookeeper集群来管理的，所以在安装kafka之前需要安装zk集群。</p>
+<p>1、先在三台机器中zk目录的根目录下分别创两个目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ mkdir logs</div><div class="line">$ mkdir data</div></pre></td></tr></table></figure>
+<p>2、然后分别在data目录中创建一个<code>myid</code>文件，这个文件里边只有一个数字，代表当前zk服务的标记，三个zookeeper模块中的myid文件中的内容必须保证不同。<br>3、进入zk的conf目录，创建一个名为zoo.cfg的文件，填入以下内容</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">tickTime=2000</div><div class="line">initLimit=10</div><div class="line">syncLimit=5</div><div class="line">dataDir=/opt/soft/zookeeper/data</div><div class="line">dataLogDir=/opt/soft/zookeeper/logs</div><div class="line">clientPort=2181</div><div class="line">server.0=172.20.0.203:2888:3888</div><div class="line">server.1=172.30.0.199:2888:3888</div><div class="line">server.2=172.17.71.113:2888:3888</div></pre></td></tr></table></figure>
+<p>需要注意最后三行配置，server.0、server.1、server.2中的0、1、2就是之前你创建myid文件中写入的值。</p>
+<p>然后将文件分发到各个服务器中。</p>
+<p>为了方便使用，我们可以在配置文件中加入zookeeper的环境变量。</p>
+<p>然后在三台机器中分别执行<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> zkServer.sh start</div></pre></td></tr></table></figure></p>
+<p>启动完成后分别执行<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[felk@blv0104 conf]$ zkServer.sh status</div><div class="line">JMX enabled by default</div><div class="line">Using config: /opt/soft/zookeeper/bin/../conf/zoo.cfg</div><div class="line">Mode: follower</div><div class="line"></div><div class="line">[felk@blv0114 conf]$ zkServer.sh status</div><div class="line">JMX enabled by default</div><div class="line">Using config: /opt/soft/zookeeper/bin/../conf/zoo.cfg</div><div class="line">Mode: leader</div><div class="line"></div><div class="line">[felk@blv0115 es]$ zkServer.sh status</div><div class="line">JMX enabled by default</div><div class="line">Using config: /opt/soft/zookeeper/bin/../conf/zoo.cfg</div><div class="line">Mode: follower</div></pre></td></tr></table></figure></p>
+<p>若出现上面的的信息，则说明配置正确。</p>
+<h3 id="配置kafka集群"><a href="#配置kafka集群" class="headerlink" title="配置kafka集群"></a>配置kafka集群</h3><p>1、分别进入kakfa的目录，在根目录下面创建一个<code>logs</code>的目录。</p>
+<p>2、进入<code>config</code>目录，编辑<code>server.properties</code></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span> kafka-1</div><div class="line"><span class="meta">#</span>注意和集群中其他机器不同</div><div class="line">broker.id=0     </div><div class="line">listeners=PLAINTEXT://172.20.0.203:9092</div><div class="line"><span class="meta"> #</span>当前机器的ip</div><div class="line">advertised.host.name=172.20.0.203  </div><div class="line">num.network.threads=3</div><div class="line">num.io.threads=8</div><div class="line">socket.send.buffer.bytes=102400</div><div class="line">socket.receive.buffer.bytes=102400</div><div class="line">socket.request.max.bytes=104857600</div><div class="line">log.dirs=/opt/soft/kafka/logs</div><div class="line">num.partitions=1</div><div class="line">num.recovery.threads.per.data.dir=1</div><div class="line">log.retention.hours=168</div><div class="line">log.segment.bytes=1073741824</div><div class="line">log.retention.check.interval.ms=300000</div><div class="line">delete.topic.enable=true</div><div class="line">auto.create.topics.enable=false</div><div class="line">zookeeper.connect=172.20.0.203:2181,172.30.0.199:2181,172.17.71.113:2181</div><div class="line">zookeeper.connection.timeout.ms=6000</div><div class="line"></div><div class="line"><span class="meta">#</span> kafka-2</div><div class="line"><span class="meta">#</span>注意和集群中其他机器不同</div><div class="line">broker.id=1   </div><div class="line">listeners=PLAINTEXT://172.30.0.199:9092</div><div class="line"><span class="meta">#</span>当前机器的ip</div><div class="line">advertised.host.name=172.30.0.199 </div><div class="line">num.network.threads=3</div><div class="line">num.io.threads=8</div><div class="line">socket.send.buffer.bytes=102400</div><div class="line">socket.receive.buffer.bytes=102400</div><div class="line">socket.request.max.bytes=104857600</div><div class="line">log.dirs=/opt/soft/kafka/logs</div><div class="line">num.partitions=1</div><div class="line">num.recovery.threads.per.data.dir=1</div><div class="line">log.retention.hours=168</div><div class="line">log.segment.bytes=1073741824</div><div class="line">log.retention.check.interval.ms=300000</div><div class="line">delete.topic.enable=true</div><div class="line">auto.create.topics.enable=false</div><div class="line">zookeeper.connect=172.20.0.203:2181,172.30.0.199:2181,172.17.71.113:2181</div><div class="line">zookeeper.connection.timeout.ms=6000</div><div class="line"></div><div class="line"><span class="meta">#</span> kafka-3</div><div class="line"><span class="meta">#</span>注意和集群中其他机器不同</div><div class="line">broker.id=2   </div><div class="line">listeners=PLAINTEXT://172.17.71.113:9092</div><div class="line"><span class="meta">#</span>当前机器的ip</div><div class="line">advertised.host.name=172.17.71.113 </div><div class="line">num.network.threads=3</div><div class="line">num.io.threads=8</div><div class="line">socket.send.buffer.bytes=102400</div><div class="line">socket.receive.buffer.bytes=102400</div><div class="line">socket.request.max.bytes=104857600</div><div class="line">log.dirs=/opt/soft/kafka/logs</div><div class="line">num.partitions=1</div><div class="line">num.recovery.threads.per.data.dir=1</div><div class="line">log.retention.hours=168</div><div class="line">log.segment.bytes=1073741824</div><div class="line">log.retention.check.interval.ms=300000</div><div class="line">delete.topic.enable=true</div><div class="line">auto.create.topics.enable=false</div><div class="line">zookeeper.connect=172.20.0.203:2181,172.30.0.199:2181,172.17.71.113:2181</div><div class="line">zookeeper.connection.timeout.ms=6000</div></pre></td></tr></table></figure>
+<p>上边配置完成后分别在各个机器上启动。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> bin/kafka-server-start.sh config/server.properties &amp;</div></pre></td></tr></table></figure>
+<p>然后看看进程有没有启动成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[felk@blv0104 kafka]$ jps</div><div class="line">4740 Kafka</div><div class="line">6806 QuorumPeerMain</div><div class="line">16936 Main</div><div class="line">2750 ConsoleConsumer</div></pre></td></tr></table></figure>
+<p>为了验证集群是否配置成功，我们可以开启一个生产者，然后在其他机器开启消费者，若是都能正常消费生产者发出的消息，那么可以证明此时集群是运行正常的。</p>
+<h3 id="配置logstash集群"><a href="#配置logstash集群" class="headerlink" title="配置logstash集群"></a>配置logstash集群</h3><p>logstash配置是整个集群最麻烦的一个模块，涉及到改动比较多，我们解析nginx日志此时不在用正则去解析匹配了，而是先将nginx format的格式，用‘|’来间隔，这样就能直接使用ruby的spite方法将各个字段解析出来。</p>
+<p>基于之前的单点配置，这里集群的配置并不需要改动多少配置，只需要将<code>logstash.conf</code>文件的input、output模块修改，主要是在各台机器上修改下面的内容<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div></pre></td><td class="code"><pre><div class="line">input&#123;</div><div class="line">    kafka&#123;</div><div class="line">       topics =&gt; ["nginx_log"] </div><div class="line">       add_field =&gt; &#123;"myid"=&gt;"nginx_log_input"&#125;</div><div class="line">       bootstrap_servers =&gt; "172.20.0.203:9092,172.30.0.199:9092,172.17.71.113:9092"</div><div class="line">       codec =&gt; "json"</div><div class="line">    &#125;</div><div class="line">    kafka&#123;</div><div class="line">       topics =&gt; ["bling-service-tps"] </div><div class="line">       add_field =&gt; &#123;"myid"=&gt;"bling-service-tps"&#125;</div><div class="line">       bootstrap_servers =&gt; "172.20.0.203:9092,172.30.0.199:9092,172.17.71.113:9092"</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">filter &#123;</div><div class="line">   if [myid] == "nginx_log_input" &#123; </div><div class="line">    ruby &#123;</div><div class="line">            init =&gt; "@kname = ['remote_addr','time_local','host','request','status','body_bytes_sent','http_referer','http_x_forwarded_for','http_user_agent','request_time','upstream_response_time']"</div><div class="line">            code =&gt; "</div><div class="line">                new_event = LogStash::Event.new(Hash[@kname.zip(event.get('message').split('|'))])</div><div class="line">                new_event.remove('@timestamp')</div><div class="line">                event.append(new_event)</div><div class="line">            "</div><div class="line">    &#125;</div><div class="line">    if [request] &#123;</div><div class="line">        ruby &#123;</div><div class="line">            init =&gt; "@kname = ['method','uri']"</div><div class="line">            code =&gt; "</div><div class="line">                new_event = LogStash::Event.new(Hash[@kname.zip(event.get('request').split(' '))]) </div><div class="line">                new_event.remove('@timestamp')</div><div class="line">                event.append(new_event)</div><div class="line">            "</div><div class="line">    &#125;</div><div class="line">    if [uri] &#123;</div><div class="line">        ruby &#123;</div><div class="line">            init =&gt; "@kname = ['url_path','url_args']"</div><div class="line">            code =&gt; "</div><div class="line">                new_event = LogStash::Event.new(Hash[@kname.zip(event.get('uri').split('?'))])</div><div class="line">                new_event.remove('@timestamp')</div><div class="line">                new_event.remove('url_args')</div><div class="line">                event.append(new_event)</div><div class="line">            "</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">   if [url_path] &#123;</div><div class="line">            ruby &#123;</div><div class="line">                init =&gt; "@kname = ['service_name', 'module_name']"</div><div class="line">                code =&gt; "</div><div class="line">                    new_event = LogStash::Event.new(Hash[@kname.zip(event.get('uri').split('/'))])</div><div class="line">                    new_event.remove('service_name')</div><div class="line">                    new_event.remove('@timestamp')</div><div class="line">                    event.append(new_event)</div><div class="line">                "</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    mutate&#123;</div><div class="line">           convert =&gt; ["request_time", "float"]</div><div class="line">           convert =&gt; ["status", "integer"]</div><div class="line">           convert =&gt; ["body_bytes_sent", "float"]</div><div class="line">           convert =&gt; ["upstream_response_time", "float"]</div><div class="line">    &#125;</div><div class="line">    if [module_name] == "monitor" or [module_name] == "weixin" or [method] == "OPTIONS" &#123;</div><div class="line">            drop &#123;&#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">output &#123;</div><div class="line">    if [myid] == "nginx_log_input" &#123;</div><div class="line">        elasticsearch&#123;</div><div class="line">        hosts =&gt; ["172.20.0.203:9200", "172.30.0.199:9200", "172.17.71.113:9200"]</div><div class="line">        index =&gt; "nginx-log"</div><div class="line">        template_overwrite =&gt; true</div><div class="line">        template =&gt; "/opt/soft/logstash/output/es_template.json"</div><div class="line">        &#125;</div><div class="line">        stdout&#123;codec =&gt; rubydebug&#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    if [myid] == "bling-service-tps" &#123;</div><div class="line">        elasticsearch&#123;</div><div class="line">            hosts =&gt; ["172.20.0.203:9200", "172.30.0.199:9200", "172.17.71.113:9200"]</div><div class="line">            index =&gt; "bling-service-tps"</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>中间的filter模块不动改动。</p>
+<h3 id="配置es集群"><a href="#配置es集群" class="headerlink" title="配置es集群"></a>配置es集群</h3><p>1、还是分别在es的根目录下边分别创建logs、data目录<br>2、然后进入<code>config</code>目录中编辑elasticsearch.yml</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span> es-1</div><div class="line">cluster.name: BlingABC_ES-Cluster </div><div class="line">path.data: /opt/soft/elasticsearch-5.6.14/data</div><div class="line">path.logs: /opt/soft/elasticsearch-5.6.14/logs</div><div class="line">node.name: BlingABC_ES1 </div><div class="line">node.data: true</div><div class="line">node.master: true</div><div class="line">network.host: 172.20.0.203</div><div class="line">http.port: 9200</div><div class="line">discovery.zen.ping.unicast.hosts: ["172.20.0.203", "172.30.0.199", "172.17.71.113"]</div><div class="line">discovery.zen.minimum_master_nodes: 2</div><div class="line">http.cors.enabled: true</div><div class="line">http.cors.allow-origin: "*"</div><div class="line">http.cors.allow-headers: Authorization,X-Requested-With,Content-Length,Content-Type</div><div class="line">bootstrap.memory_lock: false</div><div class="line">bootstrap.system_call_filter: false</div><div class="line"></div><div class="line"><span class="meta">#</span>es-2</div><div class="line">cluster.name: BlingABC_ES-Cluster </div><div class="line">path.data: /opt/soft/elasticsearch-5.6.14/data</div><div class="line">path.logs: /opt/soft/elasticsearch-5.6.14/logs</div><div class="line">node.name: BlingABC_ES2 </div><div class="line">node.data: true</div><div class="line">node.master: true</div><div class="line">network.host: 172.30.0.199 </div><div class="line">http.port: 9200</div><div class="line">discovery.zen.ping.unicast.hosts: ["172.20.0.203", "172.30.0.199", "172.17.71.113"]</div><div class="line">discovery.zen.minimum_master_nodes: 2</div><div class="line">http.cors.enabled: true</div><div class="line">http.cors.allow-origin: "*"</div><div class="line">http.cors.allow-headers: Authorization,X-Requested-With,Content-Length,Content-Type</div><div class="line">bootstrap.memory_lock: false</div><div class="line">bootstrap.system_call_filter: false</div><div class="line"></div><div class="line"><span class="meta">#</span>es-3</div><div class="line">cluster.name: BlingABC_ES-Cluster </div><div class="line">path.data: /opt/soft/elasticsearch-5.6.14/data</div><div class="line">path.logs: /opt/soft/elasticsearch-5.6.14/logs</div><div class="line">node.name: BlingABC_ES3 </div><div class="line">node.data: true</div><div class="line">node.master: true</div><div class="line">network.host: 172.17.71.113 </div><div class="line">http.port: 9200</div><div class="line">discovery.zen.ping.unicast.hosts: ["172.20.0.203", "172.30.0.199", "172.17.71.113"]</div><div class="line">discovery.zen.minimum_master_nodes: 2</div><div class="line">http.cors.enabled: true</div><div class="line">http.cors.allow-origin: "*"</div><div class="line">http.cors.allow-headers: Authorization,X-Requested-With,Content-Length,Content-Type</div><div class="line">bootstrap.memory_lock: false</div><div class="line">bootstrap.system_call_filter: false</div></pre></td></tr></table></figure>
+<p>上边需要注意的几个配置:</p>
+<p><code>cluster.name</code>：三台机器中这个字段值都是一致的，表示这个集群的名称。<br><code>node.name</code>:各个节点的名称，三台机器中这个值都是不同的。<br><code>discovery.zen.ping.unicast.hosts</code>:es集群相互通信的主机ip，若是不填端口，默认是<code>9092</code>端口。<br><code>discovery.zen.minimum_master_nodes</code>：这个值推荐是节点数 n/2+1 </p>
+<p>3、分别启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ./bin/elasticsearch &amp;</div></pre></td></tr></table></figure></p>
+<p>4、我们在第三步已经将es集群启动了，但是我们应该检查一下当前es集群状态是否成功。我们需要借助一个插件<code>elasticsearch-head</code>，</p>
+<p>这里我们就不记录这个插件的安装启动了。启动之后我们访问9100端口，若能看到下面的内容，说明此时集群状态正常。</p>
+<p><img src="media/15548098580919.jpg" alt=""></p>
+<h4 id="定期删除es中的数据"><a href="#定期删除es中的数据" class="headerlink" title="定期删除es中的数据"></a>定期删除es中的数据</h4><p>我们的es集群中若是不设置定期删除索引，es本身是不会主动删除之前索引的，为了减少存储量、加快查询速度，我们可以使用es自带的删除工具<code>_delete_by_query</code>可以很简单的实现定期删除指定时间之前的数据。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">curl -H 'Content-Type:application/json' -d'&#123;</div><div class="line">    "query": &#123;</div><div class="line">        "range": &#123;</div><div class="line">            "@timestamp": &#123;</div><div class="line">                "lt": "now-7d",</div><div class="line">                "format": "epoch_millis"</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;' -XPOST "http://172.17.71.113:9200/*-*/_delete_by_query?pretty"</div></pre></td></tr></table></figure>
+<p>以上的语句就可以将当前集群中7天以前的数据删除。然后我们可以考虑创建一个定时任务来执行清理任务。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">* 0 * * * /usr/bin/curl -u username:password  -H&apos;Content-Type:application/json&apos; -d&apos;&#123;&quot;query&quot;:&#123;&quot;range&quot;:&#123;&quot;@timestamp&quot;:&#123;&quot;lt&quot;:&quot;now-7d&quot;,&quot;format&quot;:&quot;epoch_millis&quot;&#125;&#125;&#125;&#125;&apos; -XPOST &quot;http://127.0.0.1:9200/*-*/_delete_by_query?pretty&quot; &gt; /tmp/elk_clean.txt</div></pre></td></tr></table></figure>
+<p>每天0点删除超过7天的无效索引</p>
+<h3 id="配置kibana集群"><a href="#配置kibana集群" class="headerlink" title="配置kibana集群"></a>配置kibana集群</h3><p>在这个集群中，kibana负责为用户提供页面展示，我们在三台机器中分别部署kibana服务，然后前面加上nginx的反向代理来将用户请求分散到三台机器中。</p>
+<p>kibana的配置非常简单</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">kibana-1</div><div class="line">server.port: 5601</div><div class="line">server.host: "172.20.0.203"</div><div class="line">server.name: "BlingABC_Kibana"</div><div class="line">elasticsearch.url: "http://172.20.0.203:9200"</div><div class="line"></div><div class="line">kibana-2</div><div class="line">server.port: 5601</div><div class="line">server.host: "172.30.0.199"</div><div class="line">server.name: "BlingABC_Kibana"</div><div class="line">elasticsearch.url: "http://172.30.0.199:9200"</div><div class="line"></div><div class="line">kibana-3</div><div class="line">server.port: 5601</div><div class="line">server.host: "172.17.71.113"</div><div class="line">server.name: "BlingABC_Kibana"</div><div class="line">elasticsearch.url: "http://172.17.71.113:9200"</div></pre></td></tr></table></figure>
+<p>分别启动<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">./bin/kibana &amp;</div></pre></td></tr></table></figure></p>
+<p>接下来可以直接通过ip访问具体服务了</p>
+<p>比如我们访问<code>http://172.17.71.113:5601</code>可以看到如下页面（这里是已经创建好索引的）</p>
+<p><img src="media/15548099030473.jpg" alt=""></p>
+<h3 id="安装Grafana"><a href="#安装Grafana" class="headerlink" title="安装Grafana"></a>安装Grafana</h3><p>先去官网下载对应操作系统的Grafana安装源</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo yum localinstall grafana-6.0.2-1.x86_64.rpm</div></pre></td></tr></table></figure>
+<p>启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ nohup sudo service grafana-server start &amp;</div></pre></td></tr></table></figure></p>
+<p>查看状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo service grafana-server status</div></pre></td></tr></table></figure></p>
+<p>我们可以在/etc/grafana/grafana.ini中自定义一些grafana的一些参数。</p>
+<hr>
+<h3 id="备注：集群启动指令"><a href="#备注：集群启动指令" class="headerlink" title="备注：集群启动指令"></a>备注：集群启动指令</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">// 启动zookeeper</div><div class="line"><span class="meta">$</span> nohup bin/zookeeper-server-start.sh -daemon config/zookeeper.properties &amp;</div><div class="line">// 启动kafka</div><div class="line"><span class="meta">$</span> nohup bin/kafka-server-start.sh config/server.properties &amp;</div><div class="line">// 启动logstash</div><div class="line"><span class="meta">$</span> nohup ./bin/logstash -f config/logstash.conf &amp; </div><div class="line">// 启动es</div><div class="line"><span class="meta">$</span> nohup ./bin/elasticsearch &amp;</div><div class="line">// 启动es插件</div><div class="line"><span class="meta">$</span> nohup npm run start &amp;</div><div class="line">// 启动kibana</div><div class="line"><span class="meta">$</span> nohup ./bin/kibana &amp;</div><div class="line">// 启动grafana</div><div class="line"><span class="meta">$</span> nohup sudo service grafana-server start &amp;</div><div class="line">// 查看grafana状态</div><div class="line"><span class="meta">$</span> sudo service grafana-server status</div></pre></td></tr></table></figure>
+<hr>
+<h4 id="kafka的一些操作"><a href="#kafka的一些操作" class="headerlink" title="kafka的一些操作"></a>kafka的一些操作</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">// 查看当前kafka集群的topic</div><div class="line"><span class="meta">$</span> bin/kafka-topics.sh --list --zookeeper 172.20.0.203:2181,172.30.0.199:2181,172.17.71.113:2181</div><div class="line">// 查看nginx_log主题的信息</div><div class="line"><span class="meta">$</span> bin/kafka-console-consumer.sh --zookeeper 172.20.0.203:2181,172.30.0.199:2181,172.17.71.113:2181 --topic nginx_log</div><div class="line"><span class="meta">$</span> 创建主题</div><div class="line"><span class="meta">$</span> bin/kafka-topics.sh --create --zookeeper 172.20.0.203:2181,172.30.0.199:2181,172.17.71.113:2181 --replication-factor 1 --partitions 1 --topic bling-service-general</div></pre></td></tr></table></figure>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete-by-query.html" target="_blank" rel="external">Elasticsearch Reference </a><br><a href="https://juejin.im/post/58e5de06ac502e006c254145" target="_blank" rel="external">elasticsearch按照日期定时批量删除索引</a><br><a href="https://blog.csdn.net/piantoutongyang/article/details/88811840" target="_blank" rel="external">偏头痛杨的分布式日志框架ELK入门helloworld</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打賞</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="https://res.cloudinary.com/leon824/image/upload/v1550390622/WechatIMG56_vpe35d.jpg" alt="leonyoung 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/18/历史的逻辑/" rel="next" title="历史的逻辑">
+                <i class="fa fa-chevron-left"></i> 历史的逻辑
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://res.cloudinary.com/leon824/image/upload/v1505793001/IMG_3957_uwrsum.jpg"
+                alt="leonyoung" />
+            
+              <p class="site-author-name" itemprop="name">leonyoung</p>
+              <p class="site-description motion-element" itemprop="description">人们常常嘲笑“螳臂当车” 但有时候啊，你并不是驾车的人 正巧是那只，反抗不了的螳螂。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">文章</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-name">分類</span>
+                
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#centos搭建ELK集群"><span class="nav-number">1.</span> <span class="nav-text"> centos搭建ELK集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集群配置免密登录"><span class="nav-number">1.0.1.</span> <span class="nav-text">集群配置免密登录</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、先在各个环境中生成秘钥对。"><span class="nav-number">1.0.1.0.1.</span> <span class="nav-text">1、先在各个环境中生成秘钥对。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、-将各个环境中的公钥全部集中到一个authorized-keys文件中"><span class="nav-number">1.0.1.0.2.</span> <span class="nav-text">2、 将各个环境中的公钥全部集中到一个authorized_keys文件中</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、然后将这个文件分发到各个机器的-ssh目录下面。"><span class="nav-number">1.0.1.0.3.</span> <span class="nav-text">3、然后将这个文件分发到各个机器的.ssh目录下面。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#可能会出现的问题-："><span class="nav-number">1.0.1.0.4.</span> <span class="nav-text">可能会出现的问题 ：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置zookeeper集群"><span class="nav-number">1.0.2.</span> <span class="nav-text">配置zookeeper集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置kafka集群"><span class="nav-number">1.0.3.</span> <span class="nav-text">配置kafka集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置logstash集群"><span class="nav-number">1.0.4.</span> <span class="nav-text">配置logstash集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置es集群"><span class="nav-number">1.0.5.</span> <span class="nav-text">配置es集群</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#定期删除es中的数据"><span class="nav-number">1.0.5.1.</span> <span class="nav-text">定期删除es中的数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置kibana集群"><span class="nav-number">1.0.6.</span> <span class="nav-text">配置kibana集群</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Grafana"><span class="nav-number">1.0.7.</span> <span class="nav-text">安装Grafana</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#备注：集群启动指令"><span class="nav-number">1.0.8.</span> <span class="nav-text">备注：集群启动指令</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#kafka的一些操作"><span class="nav-number">1.0.8.1.</span> <span class="nav-text">kafka的一些操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.0.9.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+<div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">leonyoung</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">29.1k</span>
+  
+</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+<span id="busuanzi_container_site_pv">
+    本站总访问量<span id="busuanzi_value_site_pv"></span>次
+</span>
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/love.js"></script>
+</body>
+</html>
