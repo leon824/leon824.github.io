@@ -1,776 +1,234 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-hk">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/xiongmao.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/xiongmao.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="我们在开发微信公众号时，使用网页工具生成自定义菜单，关联到某一个网站，当我们访问这个网页的时候就会出现如下情况：  要解决上述问题，可以采用如下方式：  1、登录微信公众号，进入公众号设置 –&amp;gt; 功能设置，进入到下面的页面中，然后点击设置。      然后最终进入到设置的页面。有两个地方需要特别注意：（1）首先要确保设置的域名必须是备过案的。（2）同时还需要下载MP_verify_zvHG">
-<meta property="og:type" content="article">
-<meta property="og:title" content="如何解决“非WeChat官方网页，继续访问将转换成.....”的问题">
-<meta property="og:url" content="http://yoursite.com/2017/10/18/如何解决“非WeChat官方网页，继续访问将转换成......”的问题/index.html">
-<meta property="og:site_name" content="花谢花开">
-<meta property="og:description" content="我们在开发微信公众号时，使用网页工具生成自定义菜单，关联到某一个网站，当我们访问这个网页的时候就会出现如下情况：  要解决上述问题，可以采用如下方式：  1、登录微信公众号，进入公众号设置 –&amp;gt; 功能设置，进入到下面的页面中，然后点击设置。      然后最终进入到设置的页面。有两个地方需要特别注意：（1）首先要确保设置的域名必须是备过案的。（2）同时还需要下载MP_verify_zvHG">
-<meta property="og:locale" content="zh-hk">
-<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1508378939/wechat_jrovnj.png">
-<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1508337927/WX20171018-224506_2x_vuyytg.png">
-<meta property="og:image" content="http://res.cloudinary.com/leon824/image/upload/v1508337467/WX20171018-223644_2x_ejzxrr.png">
-<meta property="og:updated_time" content="2018-01-11T13:48:49.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何解决“非WeChat官方网页，继续访问将转换成.....”的问题">
-<meta name="twitter:description" content="我们在开发微信公众号时，使用网页工具生成自定义菜单，关联到某一个网站，当我们访问这个网页的时候就会出现如下情况：  要解决上述问题，可以采用如下方式：  1、登录微信公众号，进入公众号设置 –&amp;gt; 功能设置，进入到下面的页面中，然后点击设置。      然后最终进入到设置的页面。有两个地方需要特别注意：（1）首先要确保设置的域名必须是备过案的。（2）同时还需要下载MP_verify_zvHG">
-<meta name="twitter:image" content="http://res.cloudinary.com/leon824/image/upload/v1508378939/wechat_jrovnj.png">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2017/10/18/如何解决“非WeChat官方网页，继续访问将转换成......”的问题/"/>
-
-
-
-
-
-  <title>如何解决“非WeChat官方网页，继续访问将转换成.....”的问题 | 花谢花开</title>
   
-
-
-
-
-
-
-
-
+    <meta name="description" content="人们常常嘲笑“螳臂当车” 但有时候啊，你并不是驾车的人 正巧是那只，反抗不了的螳螂。">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    如何解决“非WeChat官方网页，继续访问将转换成.....”的问题 |
+    
+    花谢花开</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
 </head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-如何解决“非WeChat官方网页，继续访问将转换成......”的问题" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
-
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      如何解决“非WeChat官方网页，继续访问将转换成.....”的问题
+    </h1>
   
   
-    
-  
 
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">花谢花开</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-      
-        <p class="site-subtitle"></p>
-      
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2017/10/18/如何解决“非WeChat官方网页，继续访问将转换成......”的问题/" class="article-date">
+  <time datetime="2017-10-18T14:47:47.000Z" itemprop="datePublished">2017-10-18</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
+                    </div>
+                    
 
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首頁
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            歸檔
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
-</nav>
+                        
+                            
+    <div class="tocbot"></div>
 
 
 
- </div>
-    </header>
 
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
 
-  <div id="posts" class="posts-expand">
-    
+                                
 
-  
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
 
-  
-  
-  
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/10/18/如何解决“非WeChat官方网页，继续访问将转换成......”的问题/">
+                                            
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="leonyoung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://res.cloudinary.com/leon824/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花谢花开">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">如何解决“非WeChat官方网页，继续访问将转换成.....”的问题</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2017-10-18T22:47:47+08:00">
-                2017-10-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字數統計&#58;</span>
-                
-                <span title="字數統計">
-                  234
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">閱讀時長 &asymp;</span>
-                
-                <span title="閱讀時長">
-                  1
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <blockquote>
+                                                
+                                                                    <blockquote>
 <p>我们在开发微信公众号时，使用网页工具生成自定义菜单，关联到某一个网站，当我们访问这个网页的时候就会出现如下情况：</p>
+</blockquote>
 <p><img src="http://res.cloudinary.com/leon824/image/upload/v1508378939/wechat_jrovnj.png" width="60%" height="60%"></p>
 <h4 id="要解决上述问题，可以采用如下方式："><a href="#要解决上述问题，可以采用如下方式：" class="headerlink" title="要解决上述问题，可以采用如下方式："></a><strong>要解决上述问题，可以采用如下方式：</strong></h4><p>  1、登录微信公众号，进入公众号设置 –&gt; 功能设置，进入到下面的页面中，然后点击设置。</p>
-</blockquote>
 <p> <img src="http://res.cloudinary.com/leon824/image/upload/v1508337927/WX20171018-224506_2x_vuyytg.png" width="100%" height="100%"></p>
 <p>  然后最终进入到设置的页面。有两个地方需要特别注意：（1）首先要确保设置的域名必须是备过案的。（2）同时还需要下载MP_verify_zvHGyljL5rHLDOB1.txt文件到能够访问的目录。</p>
 <p>   <img src="http://res.cloudinary.com/leon824/image/upload/v1508337467/WX20171018-223644_2x_ejzxrr.png" width="100%" height="100%"></p>
 <p>  假设是java web的项目，备案的url可以具体到访问的首页目录（WebContent目录下），那么也就可以将MP_verify_zvHGyljL5rHLDOB1.txt文件放置到WebContent目录下。<br>  通过以上的设置，过一段时间生效之后，就不会在出现安全提示了。</p>
 
-      
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2017/10/18/如何解决“非WeChat官方网页，继续访问将转换成......”的问题/" data-id="ckbyfke0s000bzbynszmrno5o" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
     </div>
-    
-    
-    
 
     
-
-    
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>打賞</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="https://res.cloudinary.com/leon824/image/upload/v1550390622/WechatIMG56_vpe35d.jpg" alt="leonyoung 微信支付"/>
-        <p>微信支付</p>
-      </div>
-    
-
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/09/27/SpringMVC访问静态资源文件/" rel="next" title="Spring MVC访问静态资源文件">
-                <i class="fa fa-chevron-left"></i> Spring MVC访问静态资源文件
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/11/27/记录一次spark踩坑/" rel="prev" title="记录spark一次踩坑">
-                记录spark一次踩坑 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-
-        </div>
         
+  <nav class="article-nav">
+    
+      <a href="/2017/11/27/记录一次spark踩坑/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
           
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
+            记录spark一次踩坑
+          
+        </div>
+      </a>
     
-      <div id="sidebar-dimmer"></div>
     
-    <div class="sidebar-inner">
+      <a href="/2017/09/27/SpringMVC访问静态资源文件/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">Spring MVC访问静态资源文件</div>
+      </a>
+    
+  </nav>
 
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目錄
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            本站概覽
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="https://res.cloudinary.com/leon824/image/upload/v1505793001/IMG_3957_uwrsum.jpg"
-                alt="leonyoung" />
-            
-              <p class="site-author-name" itemprop="name">leonyoung</p>
-              <p class="site-description motion-element" itemprop="description">人们常常嘲笑“螳臂当车” 但有时候啊，你并不是驾车的人 正巧是那只，反抗不了的螳螂。</p>
-          </div>
-
-          <nav class="site-state motion-element">
 
             
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">21</span>
-                  <span class="site-state-item-name">文章</span>
-                </a>
-              </div>
-            
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">11</span>
-                  <span class="site-state-item-name">分類</span>
-                
-              </div>
-            
+                    
+                        
+                            
 
-            
-
-          </nav>
-
-          
-
-          
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#要解决上述问题，可以采用如下方式："><span class="nav-number">1.</span> <span class="nav-text">要解决上述问题，可以采用如下方式：</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
     </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">leonyoung</span>
-
-  
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">Site words total count&#58;</span>
-    
-    <span title="Site words total count">29.1k</span>
-  
-</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
-
-
-<span id="busuanzi_container_site_pv">
-    本站总访问量<span id="busuanzi_value_site_pv"></span>次
-</span>
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-          <span id="scrollpercent"><span>0</span>%</span>
-        
-      </div>
-    
-
-    
-
+    <ul class="list-inline">
+      <li>&copy; 2020 花谢花开</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
   </div>
+</footer>
 
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="花谢花开"></a>
+    </div>
   
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/tocbot.min.js"></script>
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+<script src="/js/ocean.js"></script>
 
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
-
-
-
-
-<!-- 页面点击小红心 -->
-<script type="text/javascript" src="/js/src/love.js"></script>
 </body>
 </html>

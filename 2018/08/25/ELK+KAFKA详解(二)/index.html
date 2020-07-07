@@ -1,374 +1,92 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-hk">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/xiongmao.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/xiongmao.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="上一篇文章我们已经将filebeat、kafka、zookeeper、logstash安装配置完毕了。接下来主要是索引数据、展示数据阶段。   安装Elasticsearch首先到官网下载5.3.3版本的安装包 1&amp;gt; axel -n 5 https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.3.3.ta">
-<meta property="og:type" content="article">
-<meta property="og:title" content="ELK+KAFKA详解(二)">
-<meta property="og:url" content="http://yoursite.com/2018/08/25/ELK+KAFKA详解(二)/index.html">
-<meta property="og:site_name" content="花谢花开">
-<meta property="og:description" content="上一篇文章我们已经将filebeat、kafka、zookeeper、logstash安装配置完毕了。接下来主要是索引数据、展示数据阶段。   安装Elasticsearch首先到官网下载5.3.3版本的安装包 1&amp;gt; axel -n 5 https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.3.3.ta">
-<meta property="og:locale" content="zh-hk">
-<meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1535599872/pic5_pn74x6.jpg">
-<meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1535186203/head_yvixk7.png">
-<meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1535187828/kiaban_bozs2a.png">
-<meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1535203571/discoey_g4ltbs.png">
-<meta property="og:image" content="https://res.cloudinary.com/leon824/image/upload/v1535204856/gra_ihk0b2.png">
-<meta property="og:updated_time" content="2018-08-30T04:03:49.000Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ELK+KAFKA详解(二)">
-<meta name="twitter:description" content="上一篇文章我们已经将filebeat、kafka、zookeeper、logstash安装配置完毕了。接下来主要是索引数据、展示数据阶段。   安装Elasticsearch首先到官网下载5.3.3版本的安装包 1&amp;gt; axel -n 5 https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.3.3.ta">
-<meta name="twitter:image" content="https://res.cloudinary.com/leon824/image/upload/v1535599872/pic5_pn74x6.jpg">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2018/08/25/ELK+KAFKA详解(二)/"/>
-
-
-
-
-
-  <title>ELK+KAFKA详解(二) | 花谢花开</title>
   
-
-
-
-
-
-
-
-
+    <meta name="description" content="人们常常嘲笑“螳臂当车” 但有时候啊，你并不是驾车的人 正巧是那只，反抗不了的螳螂。">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    ELK+KAFKA详解(二) |
+    
+    花谢花开</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
 </head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-ELK+KAFKA详解(二)" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
-
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      ELK+KAFKA详解(二)
+    </h1>
   
   
-    
-  
 
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
 
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">花谢花开</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
-      
-        <p class="site-subtitle"></p>
-      
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2018/08/25/ELK+KAFKA详解(二)/" class="article-date">
+  <time datetime="2018-08-25T05:42:14.000Z" itemprop="datePublished">2018-08-25</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ELK/">ELK</a>
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
+                    </div>
+                    
 
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首頁
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            歸檔
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
-</nav>
+                        
+                            
+    <div class="tocbot"></div>
 
 
 
- </div>
-    </header>
 
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
 
-  <div id="posts" class="posts-expand">
-    
+                                
 
-  
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
 
-  
-  
-  
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/25/ELK+KAFKA详解(二)/">
+                                            
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="leonyoung">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://res.cloudinary.com/leon824/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花谢花开">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">ELK+KAFKA详解(二)</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2018-08-25T13:42:14+08:00">
-                2018-08-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ELK/" itemprop="url" rel="index">
-                    <span itemprop="name">ELK</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字數統計&#58;</span>
-                
-                <span title="字數統計">
-                  1,356
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">閱讀時長 &asymp;</span>
-                
-                <span title="閱讀時長">
-                  6
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <p><img src="https://res.cloudinary.com/leon824/image/upload/v1535599872/pic5_pn74x6.jpg" width="80%" height="80%"></p>
+                                                
+                                                                    <p><img src="https://res.cloudinary.com/leon824/image/upload/v1535599872/pic5_pn74x6.jpg" width="80%" height="80%"></p>
 <blockquote>
 <p> 上一篇文章我们已经将filebeat、kafka、zookeeper、logstash安装配置完毕了。接下来主要是索引数据、展示数据阶段。</p>
 </blockquote>
 <hr>
 <h2 id="安装Elasticsearch"><a href="#安装Elasticsearch" class="headerlink" title="安装Elasticsearch"></a>安装Elasticsearch</h2><p>首先到官网下载5.3.3版本的安装包</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> axel -n 5 https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.3.3.tar.gz</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> axel -n 5 https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-5.3.3.tar.gz</span><br></pre></td></tr></table></figure>
 <p>然后在ES的根目录下创建两个目录data、logs，用来保存索引数据、日志等等</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> mkdir logs</div><div class="line"><span class="meta">&gt;</span> mkdir data</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> mkdir logs</span><br><span class="line"><span class="meta">&gt;</span> mkdir data</span><br></pre></td></tr></table></figure>
 <p>进入<code>config</code>目录编辑<code>elasticsearch.yml</code>文件，这种以.yml类型结尾的文件要注意缩进。</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></div><div class="line"><span class="string">path.data:</span> <span class="string">/opt/soft/elasticsearch-5.5.3/data</span></div><div class="line"><span class="comment"># Path to log files:</span></div><div class="line"><span class="string">path.logs:</span> <span class="string">/opt/soft/elasticsearch-5.5.3/logs</span></div><div class="line"><span class="comment"># 绑定一个指定的ip</span></div><div class="line"><span class="comment"># network.host: 0.0.0.0</span></div><div class="line"><span class="string">http.port:</span> <span class="number">9200</span></div><div class="line"><span class="comment"># 后边使用插件的时候需要使用到下边两个配置。</span></div><div class="line"><span class="string">http.cors.enabled:</span> <span class="literal">true</span></div><div class="line"><span class="string">http.cors.allow-origin:</span> <span class="string">"*"</span></div></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Path to directory where to store the data (separate multiple locations by comma):</span></span><br><span class="line"><span class="string">path.data:</span> <span class="string">/opt/soft/elasticsearch-5.5.3/data</span></span><br><span class="line"><span class="comment"># Path to log files:</span></span><br><span class="line"><span class="string">path.logs:</span> <span class="string">/opt/soft/elasticsearch-5.5.3/logs</span></span><br><span class="line"><span class="comment"># 绑定一个指定的ip</span></span><br><span class="line"><span class="comment"># network.host: 0.0.0.0</span></span><br><span class="line"><span class="string">http.port:</span> <span class="number">9200</span></span><br><span class="line"><span class="comment"># 后边使用插件的时候需要使用到下边两个配置。</span></span><br><span class="line"><span class="string">http.cors.enabled:</span> <span class="literal">true</span></span><br><span class="line"><span class="string">http.cors.allow-origin:</span> <span class="string">"*"</span></span><br></pre></td></tr></table></figure>
 <p>上边是一些主要的配置，然后可以直接启动ES了</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> ./bin/elasticsearch &amp;</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> ./bin/elasticsearch &amp;</span><br></pre></td></tr></table></figure>
 <p>上边我们是已经启动了，但是我们还不知道数据是否通过<code>logstash</code>写入到ES中，所以我们还需要两个步骤来确保我们安装配置是没有问题的：</p>
 <ul>
 <li>创建一个索引（ES中的索引类似于数据库中的一个数据库实例） 。</li>
@@ -381,38 +99,38 @@
 <li>type：document可以分组，分组就叫type</li>
 </ul>
 <p>通过指定一个文件的方式创建一个索引：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span>  curl -XPUT 'http://localhost:9200/nginx_log_index/test_log/1?pretty' -H 'Content-Type: application/json' -d '/opt/soft/logstash-5.5.3/output/es_template.json'</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span>  curl -XPUT 'http://localhost:9200/nginx_log_index/test_log/1?pretty' -H 'Content-Type: application/json' -d '/opt/soft/logstash-5.5.3/output/es_template.json'</span><br></pre></td></tr></table></figure>
 <p>删除索引：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span>  curl -X DELETE 'localhost:9200/nginx_log_index'</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span>  curl -X DELETE 'localhost:9200/nginx_log_index'</span><br></pre></td></tr></table></figure>
 <h3 id="安装head插件"><a href="#安装head插件" class="headerlink" title="安装head插件"></a>安装head插件</h3><p>head插件运行需要node环境，这里就不讨论如何安装node了，网上资料比较多。</p>
 <p>使用git下载head源码：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> git clone git://github.com/mobz/elasticsearch-head.git</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> git clone git://github.com/mobz/elasticsearch-head.git</span><br></pre></td></tr></table></figure>
 <p>然后进入head的目录执行指令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> npm install</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> npm install</span><br></pre></td></tr></table></figure>
 <p>启动</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&gt; npm run start</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; npm run start</span><br></pre></td></tr></table></figure>
 <p>若是ES使用的都是默认端口，那么<code>head</code>插件就不需要修改配置。</p>
 <p>在浏览器中访问<code>http://ip:9100/</code>就可以看到ES的情况</p>
 <p><img src="https://res.cloudinary.com/leon824/image/upload/v1535186203/head_yvixk7.png" width="80%" height="80%"></p>
 <h3 id="ES补充"><a href="#ES补充" class="headerlink" title="ES补充"></a>ES补充</h3><p>Elasticsearch是一个搜索引擎，我们可以通过它提供的查询语句实现类似sql的查询功能，为我们展示数据提供便利，下面列举一个常用的查询。</p>
 <p>1、指定一个index，搜索其下所有type的数据</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> curl -X GET 'http://localhost:9200/nginx-log/_search?pretty' -H 'Content-Type: application/json' -d '  </div><div class="line">&#123;</div><div class="line">  "query": &#123;</div><div class="line">    "match_all": &#123;&#125;</div><div class="line">  &#125;</div><div class="line">&#125;'</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> curl -X GET 'http://localhost:9200/nginx-log/_search?pretty' -H 'Content-Type: application/json' -d '  </span><br><span class="line">&#123;</span><br><span class="line">  "query": &#123;</span><br><span class="line">    "match_all": &#123;&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;'</span><br></pre></td></tr></table></figure>
 <p>上边的nginx-log就是我们想要查询的index</p>
 <p>2、查看每个index所包含的type</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> curl 'localhost:9200/_mapping?pretty=true'</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> curl 'localhost:9200/_mapping?pretty=true'</span><br></pre></td></tr></table></figure>
 <p>3、查看当前节点的所有Index</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> curl -X GET 'http://localhost:9200/_cat/indices?v'</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> curl -X GET 'http://localhost:9200/_cat/indices?v'</span><br></pre></td></tr></table></figure>
 <p>4、根据某个字段进行分组后统计，实现类似于<code>sql</code>里边的功能</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> table_name <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">field</span>;</div></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">count</span>(*) <span class="keyword">from</span> table_name <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">field</span>;</span><br></pre></td></tr></table></figure>
 <p>下面的ES查询语句功能和上边的sql是类似的</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> curl -X POST 'http://localhost:9200/nginx-log/nginxlog/_search?pretty' -H 'Content-Type: application/json' -d'</div><div class="line">&#123;	</div><div class="line">	"size": 0,</div><div class="line">	"aggs": &#123;</div><div class="line">	"group_by_service_name": &#123;</div><div class="line">		"terms": &#123; </div><div class="line">		"field": "service_name.keyword"</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">&#125;'</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> curl -X POST 'http://localhost:9200/nginx-log/nginxlog/_search?pretty' -H 'Content-Type: application/json' -d'</span><br><span class="line">&#123;	</span><br><span class="line">	"size": 0,</span><br><span class="line">	"aggs": &#123;</span><br><span class="line">	"group_by_service_name": &#123;</span><br><span class="line">		"terms": &#123; </span><br><span class="line">		"field": "service_name.keyword"</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;'</span><br></pre></td></tr></table></figure>
 <hr>
 <h2 id="安装kibana"><a href="#安装kibana" class="headerlink" title="安装kibana"></a>安装kibana</h2><p>下载：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> axel -n 5 https://artifacts.elastic.co/downloads/kibana/kibana-5.5.3-linux-x86_64.tar.gz</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> axel -n 5 https://artifacts.elastic.co/downloads/kibana/kibana-5.5.3-linux-x86_64.tar.gz</span><br></pre></td></tr></table></figure>
 <p>kibana的安装配置较为简单，只需要在config目录中的kibana.yml文件配置两个字段</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># Kibana is served by a back end server. This setting specifies the port to use.</span></div><div class="line"><span class="string">server.port:</span> <span class="number">5601</span></div><div class="line"><span class="comment"># The URL of the Elasticsearch instance to use for all your queries.</span></div><div class="line"><span class="string">elasticsearch.url:</span> <span class="string">"http://localhost:9200"</span></div></pre></td></tr></table></figure>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Kibana is served by a back end server. This setting specifies the port to use.</span></span><br><span class="line"><span class="string">server.port:</span> <span class="number">5601</span></span><br><span class="line"><span class="comment"># The URL of the Elasticsearch instance to use for all your queries.</span></span><br><span class="line"><span class="string">elasticsearch.url:</span> <span class="string">"http://localhost:9200"</span></span><br></pre></td></tr></table></figure>
 <p>然后启动</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> ./bin/kibana &amp;</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> ./bin/kibana &amp;</span><br></pre></td></tr></table></figure>
 <p>在第一次启动kibana的时候，需要手动配置一个index，然后kibana会通过这个index去ES中查询并展示。</p>
 <p><img src="https://res.cloudinary.com/leon824/image/upload/v1535187828/kiaban_bozs2a.png" width="80%" height="80%"></p>
 <p>我们将刚才创建的index加入到里边，然后点击<code>Discover</code>选择刚才配置的index，在选择时间，就能够看到数据已经被展示出来了。</p>
@@ -420,10 +138,10 @@
 <p>上图中的左侧可以选择在右侧展示哪些字段。</p>
 <h3 id="使用kibana绘图"><a href="#使用kibana绘图" class="headerlink" title="使用kibana绘图"></a>使用kibana绘图</h3><p>&emsp;&emsp;在kibana中也是可以完成一些绘图的，但是由于kibana没有相应权限控制，并且kibana的颜值是没有Grafana高，所以我们还是用Grafana来展示图表，kibana查询日志。下面就来探讨一下Grafana相关内容</p>
 <hr>
-<h2 id="Grafana相关"><a href="#Grafana相关" class="headerlink" title="Grafana相关"></a>Grafana相关</h2><p>我们先进入Grafana的<a href="https://grafana.com/grafana/download" target="_blank" rel="external">官网</a>，里边有介绍如何安装，也很简单。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_5.2.2_amd64.deb </div><div class="line"><span class="meta">&gt;</span> sudo dpkg -i grafana_5.2.2_amd64.deb</div></pre></td></tr></table></figure>
+<h2 id="Grafana相关"><a href="#Grafana相关" class="headerlink" title="Grafana相关"></a>Grafana相关</h2><p>我们先进入Grafana的<a href="https://grafana.com/grafana/download" target="_blank" rel="noopener">官网</a>，里边有介绍如何安装，也很简单。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> wget https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana_5.2.2_amd64.deb </span><br><span class="line"><span class="meta">&gt;</span> sudo dpkg -i grafana_5.2.2_amd64.deb</span><br></pre></td></tr></table></figure>
 <p>然后启动</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&gt;</span> sudo /bin/systemctl start grafana-server</div></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> sudo /bin/systemctl start grafana-server</span><br></pre></td></tr></table></figure>
 <p>访问<code>http://localhost:3000</code>然后使用admin登录进去，密码默认也是admin。进去后需要先配置数据源。</p>
 <p><img src="https://res.cloudinary.com/leon824/image/upload/v1535204856/gra_ihk0b2.png" width="70%" height="70%"></p>
 <p>  上边有几个地方需要注意：</p>
@@ -438,418 +156,156 @@
 <p>然后保存，然后就可以创建DashBoard、panel。grafana绘图、查询相关内容较多，后边若有时间还会探讨一下grafana绘图相关。</p>
 <hr>
 <h3 id="参考："><a href="#参考：" class="headerlink" title="参考："></a>参考：</h3><ul>
-<li><a href="https://www.cnblogs.com/hupengcool/p/4031543.html" target="_blank" rel="external">elasticsearch 创建索引，以及检索一条数据</a></li>
-<li><a href="https://grafana.com/grafana/download" target="_blank" rel="external">grafana官网</a></li>
-<li><a href="https://groups.io/g/grafana/topic/tutorial_for_elasticsearch/716433?p=,,,20,0,0,0" target="_blank" rel="external">groups.io</a></li>
+<li><a href="https://www.cnblogs.com/hupengcool/p/4031543.html" target="_blank" rel="noopener">elasticsearch 创建索引，以及检索一条数据</a></li>
+<li><a href="https://grafana.com/grafana/download" target="_blank" rel="noopener">grafana官网</a></li>
+<li><a href="https://groups.io/g/grafana/topic/tutorial_for_elasticsearch/716433?p=,,,20,0,0,0" target="_blank" rel="noopener">groups.io</a></li>
 </ul>
 
-      
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2018/08/25/ELK+KAFKA详解(二)/" data-id="ckbyfke040000zbyna7o2ebd2" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
     </div>
-    
-    
-    
 
     
-
-    
-      <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>打賞</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="https://res.cloudinary.com/leon824/image/upload/v1550390622/WechatIMG56_vpe35d.jpg" alt="leonyoung 微信支付"/>
-        <p>微信支付</p>
-      </div>
-    
-
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2018/08/22/ELK+KAFKA详解（一）/" rel="next" title="ELK+KAFKA详解（一）">
-                <i class="fa fa-chevron-left"></i> ELK+KAFKA详解（一）
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/06/分布式调度中心/" rel="prev" title="分布式调度中心">
-                分布式调度中心 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-
-        </div>
         
+  <nav class="article-nav">
+    
+      <a href="/2018/09/06/分布式调度中心/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
           
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
+            分布式调度中心
+          
+        </div>
+      </a>
     
-      <div id="sidebar-dimmer"></div>
     
-    <div class="sidebar-inner">
+      <a href="/2018/08/22/ELK+KAFKA详解（一）/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">ELK+KAFKA详解（一）</div>
+      </a>
+    
+  </nav>
 
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目錄
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            本站概覽
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="https://res.cloudinary.com/leon824/image/upload/v1505793001/IMG_3957_uwrsum.jpg"
-                alt="leonyoung" />
-            
-              <p class="site-author-name" itemprop="name">leonyoung</p>
-              <p class="site-description motion-element" itemprop="description">人们常常嘲笑“螳臂当车” 但有时候啊，你并不是驾车的人 正巧是那只，反抗不了的螳螂。</p>
-          </div>
-
-          <nav class="site-state motion-element">
 
             
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">21</span>
-                  <span class="site-state-item-name">文章</span>
-                </a>
-              </div>
-            
 
-            
-              
-              
-              <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">11</span>
-                  <span class="site-state-item-name">分類</span>
-                
-              </div>
-            
+                    
+                        
+                            
 
-            
-
-          </nav>
-
-          
-
-          
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Elasticsearch"><span class="nav-number">1.</span> <span class="nav-text">安装Elasticsearch</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#索引"><span class="nav-number">1.1.</span> <span class="nav-text">索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装head插件"><span class="nav-number">1.2.</span> <span class="nav-text">安装head插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ES补充"><span class="nav-number">1.3.</span> <span class="nav-text">ES补充</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装kibana"><span class="nav-number">2.</span> <span class="nav-text">安装kibana</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用kibana绘图"><span class="nav-number">2.1.</span> <span class="nav-text">使用kibana绘图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Grafana相关"><span class="nav-number">3.</span> <span class="nav-text">Grafana相关</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考："><span class="nav-number">3.1.</span> <span class="nav-text">参考：</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
     </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">leonyoung</span>
-
-  
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">Site words total count&#58;</span>
-    
-    <span title="Site words total count">29.1k</span>
-  
-</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
-
-
-<span id="busuanzi_container_site_pv">
-    本站总访问量<span id="busuanzi_value_site_pv"></span>次
-</span>
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-          <span id="scrollpercent"><span>0</span>%</span>
-        
-      </div>
-    
-
-    
-
+    <ul class="list-inline">
+      <li>&copy; 2020 花谢花开</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
   </div>
+</footer>
 
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
   
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="花谢花开"></a>
+    </div>
   
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/tocbot.min.js"></script>
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+<script src="/js/ocean.js"></script>
 
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
-
-
-
-
-<!-- 页面点击小红心 -->
-<script type="text/javascript" src="/js/src/love.js"></script>
 </body>
 </html>
