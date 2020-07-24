@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="人们常常嘲笑“螳臂当车” 但有时候啊，你并不是驾车的人 正巧是那只，反抗不了的螳螂。">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    初识ES（ES系列一） |
+    
+    花谢花开</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-ES系列（一）" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      初识ES（ES系列一）
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/07/22/ES系列（一）/" class="article-date">
+  <time datetime="2020-07-22T07:22:37.000Z" itemprop="datePublished">2020-07-22</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>“这个世界已然被数据淹没。多年来，我们系统间流转和产生的大量数据已让我们不知所措。 现有的技术都集中在如何解决数据仓库存储以及如何结构化这些数据。 这些看上去都挺美好，直到你实际需要基于这些数据实时做决策分析的时候才发现根本不是那么一回事。Elasticsearch是一个<strong>分布式、可扩展、实时的搜索与数据分析引擎</strong>。无论你是需要<strong>全文搜索</strong>，还是<strong>结构化数据的实时统计</strong>，或者两者结合，Elasticsearch不仅仅只是全文搜索，我们还将介绍<strong>结构化搜索、数据分析、复杂的人类语言处理、地理位置和对象间关联关系</strong>等”。<br>                    – <a href="https://www.elastic.co/guide/cn/elasticsearch/guide/cn/preface.html" target="_blank" rel="noopener">Elasticsearch: 权威指南 » 前言</a></p>
+</blockquote>
+<p>上边一段摘录自<code>Elasticsearch: 权威指南</code>，告诉了我们ES拥有的超强能力。这个系列文章主要是根据在工作中的实战总结，<strong>最终目的是探讨一下如何根据现有的业务需求平滑的迁移到ES（使用java技术栈），去弥补关系型数据库的局限性，提高我们的处理数据的能力。</strong></p>
+<p>本系列暂时规划为四个部分</p>
+<ul>
+<li>第一部分：谈谈为什么我们需要使用ES，以及相关基本概念</li>
+<li>第二部分：我们讨论Mysql -&gt; ES数据的迁移策略、技术选型，以及在各种场景下选择的同步策略。</li>
+<li>第三部分： 我们将实现spring boot与ES的集成，以及使用ES提供的API去“<strong>翻译sql</strong>”</li>
+<li>第四部分：我们以前边的技术基础，去尝试解决一个现实中RDBMS单表数据量千万级，同时还有多表join的情况下如何使用ES去解决这个令人头痛的难题。</li>
+</ul>
+<hr>
+<p>话不多说，我们先来看为什么需要使用ES。</p>
+<h2 id="一、为什么需要-Elasticsearch"><a href="#一、为什么需要-Elasticsearch" class="headerlink" title="一、为什么需要 Elasticsearch"></a>一、为什么需要 Elasticsearch</h2><h4 id="1、快，就是快"><a href="#1、快，就是快" class="headerlink" title="1、快，就是快"></a>1、快，就是快</h4><p>我们使用ES最主要的原因就是因为ES速度快。特别是当数据量到达千万级以上的时候，关系型数据库单表无论是通过增加索引、分库分表来优化，最终能够优化的效果往往不如人意（且分库分表复杂度较高），而ES可以轻松hold住千万、亿级数据量。</p>
+<p>为了达到这样的速度，ES使用了<strong>有限状态转换器</strong>实现了用于全文检索的<strong>倒排索引</strong>，实现了用于存储数值数据和地理位置数据的<strong>BKD树</strong>，以及用于分析的列存储。并且由于ES默认就是将所有的字段全部建立索引，所以我们在查询的时候可以实时地检索到数据。</p>
+<h4 id="2、不只是全文检索"><a href="#2、不只是全文检索" class="headerlink" title="2、不只是全文检索"></a>2、不只是全文检索</h4><p>这一点也是我们使用ES很重要的原因，在传统关系型数据库中，我们很多使用需要采用模糊查询的方式来获取想要的数据。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> author <span class="keyword">where</span> <span class="keyword">name</span> <span class="keyword">like</span> <span class="string">'%鲁迅%'</span>.</span><br></pre></td></tr></table></figure>
+<p>在数据量较大的时候，就算我们在name字段上建立索引，上边的SQL也是不会走索引的（不符合最左前缀原则），将执行全表扫描，性能可想而知。<br>但是若在ES中实现上述的查询则很简单，由于ES采用的存储、索引策略，可以实时的查询到想要的结果。</p>
+<p>但是这里无论是精确查询还是模糊查询，本质上来时“传统关系型数据库”的思维，ES本质上是一个<strong>搜索、分析引擎</strong>，搜索引擎从一个抽象的角度来讲，它做了三件事：<strong>收集数据、建立数据索引、相关度排名</strong>。在ES中收集数据是有我们来完成的，1、比如将关系型数据库中的数据同步到ES中；2、然后ES将同步的数据建立索引，方便之后的查询；3、最后一步也是最重要的一步，也就是相关度排名，如此大量的数据，不会是所有都拥有相同的重要程度，所以排名的好坏对于搜索引擎来说很重要，它决定了搜索质量的高低。</p>
+<p>在ES中也是这样，我们在使用查询的时候不仅仅是将数据查询出来，ES还能将关键词检索到的数据根据<strong>相关度排名</strong>。这也更符合我们人类的思维方式，假设我们使用关键词“鲁迅”不是为了查询所有包含鲁迅关键词的文章、报道。而是希望把大家都认为有关鲁迅这个人最重要的作品、个人背景、人生经历、历史评价等等信息根据相关度排序检索出来。</p>
+<p>所以这也是传统关系型数据库不能提供的功能，它”似乎“更能懂得我们真正想要的结果。</p>
+<h4 id="3、完整的生态系统"><a href="#3、完整的生态系统" class="headerlink" title="3、完整的生态系统"></a>3、完整的生态系统</h4><p>ElasticSearch是Elastic公司的核心技术栈，他们还包括Logstash、Filebeat、Kibana等等。</p>
+<p>我们可以使用ES提供的技术栈，实现各种目的，比如典型的采用ELK + Filebeat搭建一套分布式日志采集系统，将各个微服务的日志通过Filebeat收集推送到Logstash管道做处理，然后logstash推送给ES，最终Kibana展示，查询日志。</p>
+<h4 id="4、可扩展性"><a href="#4、可扩展性" class="headerlink" title="4、可扩展性"></a>4、可扩展性</h4><p>对于大多数的数据库而言，通常需要对应用程序进行非常大的改动，才能利用上横向扩容的新增资源。 与之相反的是，ElastiSearch天生就是分布式的 ，在ES集群中，我们可以随时增加、摘除节点，集群将会重新平均分布所有的数据。它知道如何通过管理多节点来提高扩容性和可用性。 这也意味着你的应用无需关注这个问题。</p>
+<hr>
+<p>当然，任何技术都有其合适的应用场景，<strong>ES不支持事务、同时更适合查多改少</strong>的场景，所以我们在选择技术栈的时候需要注意这些限制。</p>
+<h2 id="二、核心概念"><a href="#二、核心概念" class="headerlink" title="二、核心概念"></a>二、核心概念</h2><p>无论我们是在开发、维护ES集群的时候，弄清楚ES中的核心概念都是重要的，下面我们采用“<strong>从小到大</strong>”的方式来介绍ES的核心概念。</p>
+<h4 id="1、字段（Fields）"><a href="#1、字段（Fields）" class="headerlink" title="1、字段（Fields）"></a>1、字段（Fields）</h4><p>字段是ES中最小的独立单元数据，每一个字段有自己的数据类型（可以自己定义覆盖ES自动设置的数据类型），我们还可以对单个字段设置是否分析、分词器等等。</p>
+<p>核心的数据类型有string、Numeric、DateDate、Boolean、Binary、Range等等，复杂类型有Object、Nested，详细的可以<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html" target="_blank" rel="noopener">参考官方的介绍</a></p>
+<h4 id="2、文档（Documents）"><a href="#2、文档（Documents）" class="headerlink" title="2、文档（Documents）"></a>2、文档（Documents）</h4><p>在ES中文档的概念相当于RDBMS中的一行数据，不同的是在ES中文档的存储是直接使用json格式存储的（也就是可以嵌套），而不是像RDBMS中把数据”压平”了存储，这一点也是Nosql和关系型数据库比较大的区别。</p>
+<p>下面是一个文档的例子</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   <span class="attr">"_id"</span>: <span class="number">3</span>,</span><br><span class="line">   “_type”: [“your index type”],</span><br><span class="line">   “_index”: [“your index name”],</span><br><span class="line">   "_source":&#123;</span><br><span class="line">   "age": 28,</span><br><span class="line">   "name": ["daniel”],</span><br><span class="line">   "year":1989,</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3、映射（Mapping）"><a href="#3、映射（Mapping）" class="headerlink" title="3、映射（Mapping）"></a>3、映射（Mapping）</h4><p>”Mapping is the process of defining how a document, and the fields it contains, are stored and indexed.“</p>
+<p>也就是Mapping是定义文档和字段如何存储和索引，使用Mapping可以定义下面这些信息</p>
+<ul>
+<li>哪些字段应该作为全文索引</li>
+<li>哪些字段包括numbers, dates, geolocations.</li>
+<li>时间类型的格式</li>
+<li>定义规则控制动态增加字段的mapping</li>
+</ul>
+<h4 id="4、索引（Index）"><a href="#4、索引（Index）" class="headerlink" title="4、索引（Index）"></a>4、索引（Index）</h4><p>在ES中是最大的数据存储概念，<strong>它是由许多具有相同特征的文档组成的一个集合</strong>。 由于在ES7.0之后逐渐废除Type类型，所以Index从”<strong>数据库</strong>“的概念变成了<em>实际上</em>的”<strong>表</strong>“概念，我们可以把它近似地当成RDBMS中的表，但是要注意Index只是一个逻辑上的概念，真实的数据是分开存储在各个分片中的。</p>
+<h4 id="5、分片（Shards）"><a href="#5、分片（Shards）" class="headerlink" title="5、分片（Shards）"></a>5、分片（Shards）</h4><p>这里需要多说几句，搞清楚分片对于理解ES集群（扩容、容错、路由）原理是很重要的。</p>
+<p>首先，每个分片都是一个Lucene索引实例，我们可以将其视作一个独立的搜索引擎，它能够对Elasticsearch集群中的数据子集进行索引并处理相关查询。</p>
+<p>分片分为两种：<strong>主分片（Primary Shard）、副本分片（Replica Shard）</strong></p>
+<ul>
+<li><p>主分片：由于所有的数据都会在主分片中存储，所以<strong>主分片决定了文档存储数量的上限</strong>，但是一个索引的主分片数在创建时一旦指定，那么主分片的数量就不能改变，这是因为当索引一个文档时，它是通过其主键（默认）Hash到对应的主分片上（类似于RDBMS分库分表路由策略），所以我们一旦修改主分片数量，那么将无法定位到具体的主分片上。在mapping时我们可以设置<code>number_of_shards</code>值，最大值默认为1024。当然这不是绝对的，如果实在想扩容咋办呢？答案是我们可以重新创建一个索引，然后将老索引的数据迁移到新的索引上，ES为了提供了方法<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.8/docs-reindex.html" target="_blank" rel="noopener">Reindex API</a></p>
+</li>
+<li><p>副本分片：我们可以为一个主分片根据实际的硬件资源指定任意数量的副本分片，上边已经说过，每个分片都可以处理查询，所以我们可以<strong>增加副本分片的资源（相应硬件资源提升）来提升系统的处理能力</strong>。同样，在mapping时，可以通过<code>number_of_replicas</code>参数来设置每个主分片的副本分片数量</p>
+</li>
+</ul>
+<p>但是要注意，为了容错（节点主机宕机导致数据丢失），<strong>主分片和副本分片不能在同一个节点上，防止节点宕机导致部分数据丢失</strong>。</p>
+<h4 id="6、实例和节点（Instances-and-Nodes）"><a href="#6、实例和节点（Instances-and-Nodes）" class="headerlink" title="6、实例和节点（Instances and Nodes）"></a>6、实例和节点（Instances and Nodes）</h4><p> ”A node is a running instance of Elasticsearch which belongs to a cluster”</p>
+<p>节点也就是运行的ES实例，它隶属于某一个集群。通常来说，我们在一个服务器上边部署一个节点，但有时候为了测试集群，也可以在单台服务器上启动多个节点来测试。假设当我们启动一个节点想加入已经存在的一个集群中时，可以在配置文件中配置改集群的名称，以及通信的<code>ip + port</code>，ES会自动通过“<strong>单点传送</strong>”的方式来自动发现集群并尝试加入这个集群。</p>
+<p>节点分为下面几种类型:</p>
+<ul>
+<li>Master-eligible node：负责管理和配置集群，例如增加、删除节点相关动作。</li>
+<li>Data node：文档实际上就存储在数据节点，负责执行相关的操作， 例如CRUD、搜索、聚合等等操作</li>
+<li>Ingest node：用于文档在indexing之前进行预处理</li>
+<li>Machine learning node：主要用于机器学习的任务，但是需要<code>Basic License</code>。</li>
+</ul>
+<p>关于ES节点的详细介绍，可以参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.8/modules-node.html#modules-node" target="_blank" rel="noopener">官方文档</a></p>
+<h4 id="7、集群（Cluster）"><a href="#7、集群（Cluster）" class="headerlink" title="7、集群（Cluster）"></a>7、集群（Cluster）</h4><ul>
+<li>在ES中，集群是由<strong>一个或多个ES节点组成</strong>的，每个集群都有一个唯一的名称/标识符，用作节点加入集群的依据。</li>
+<li>每一个集群中有一个Master节点，若是这个Master节点挂了，集群可以用其他的节点代替。<br>在ES中还支持跨集群复制、跨集群检索等等功能，详细的可以参考<a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.8/xpack-ccr.html#xpack-ccr" target="_blank" rel="noopener">Cross-cluster replication</a>，<a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-cross-cluster-search.html" target="_blank" rel="noopener">Search across clusters</a></li>
+</ul>
+<hr>
+<p>在上边的两节，我们知道了ES拥有的超强数据处理能力，也了解了ES一些基础的概念。因为网上关于ES使用的倒序索引原理分析已经比较多了，我这里就不在重新描述其中的细节了，具体原理推荐大家一篇文章参考：<a href="https://www.infoq.cn/article/database-timestamp-02" target="_blank" rel="noopener">时间序列数据库的秘密 (2)——索引</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html" target="_blank" rel="noopener">Elasticsearch Reference [7.8] » Mapping</a></p>
+</li>
+<li><p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.8/index-modules.html" target="_blank" rel="noopener">Elasticsearch Reference [7.8] » Index modules</a></p>
+</li>
+<li><p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.8/modules-node.html#modules-node" target="_blank" rel="noopener">Elasticsearch Reference [7.8] » Set up Elasticsearch » Configuring Elasticsearch » Node</a></p>
+</li>
+<li><p><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/glossary.html#glossary-routing" target="_blank" rel="noopener">Elasticsearch Reference [7.8] » Glossary of terms</a></p>
+</li>
+<li><p><a href="https://cloud.tencent.com/developer/article/1558616" target="_blank" rel="noopener">Elasticsearch：是什么？你为什么需要他？</a></p>
+</li>
+</ul>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/07/22/ES系列（一）/" data-id="ckczxj13k0001buynry5xsdr7" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/07/22/ES数据迁移策略（ES系列二）/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            ES数据迁移策略（ES系列二）
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/07/14/记一次实现日志完整链路追踪（log_trace_id）踩到的坑/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">记一次实现日志完整链路追踪（log_trace_id）踩到的坑</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2020 花谢花开</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="花谢花开"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/tocbot.min.js"></script>
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

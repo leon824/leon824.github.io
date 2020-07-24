@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="人们常常嘲笑“螳臂当车” 但有时候啊，你并不是驾车的人 正巧是那只，反抗不了的螳螂。">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    ES数据迁移策略（ES系列二） |
+    
+    花谢花开</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-ES数据迁移策略（ES系列二）" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      ES数据迁移策略（ES系列二）
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/07/22/ES数据迁移策略（ES系列二）/" class="article-date">
+  <time datetime="2020-07-22T11:19:32.000Z" itemprop="datePublished">2020-07-22</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/elasticsearch/">elasticsearch</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇文章<a href="https://juejin.im/post/5f06eb2be51d453480767b88" target="_blank" rel="noopener">初识ES</a>中我们介绍了ES优势、使用场景以及相关的核心概念。这篇文章我们继续探讨如何将数据从Mysql迁移到ES中。</p>
+<p>在本文中，Logstash和ES的版本均为7.3</p>
+<h2 id="一、全量数据迁移"><a href="#一、全量数据迁移" class="headerlink" title="一、全量数据迁移"></a>一、全量数据迁移</h2><p>在将业务迁移到ES的过程中首先就需要将数据全量迁移到ES中，这是一次性的，在调研的过程中主要考虑了如下几种方案。</p>
+<h3 id="1、go-mysql-elasticsearch"><a href="#1、go-mysql-elasticsearch" class="headerlink" title="1、go-mysql-elasticsearch"></a>1、go-mysql-elasticsearch</h3><p>go-mysql-elasticsearch is a service syncing your MySQL data into Elasticsearch automatically. It uses mysqldump to fetch the origin data at first, then syncs data incrementally with binlog.</p>
+<p>go-mysql-elasticsearch是一个开源的Mysql -&gt; ES的同步工具，使用mysqldump的方式将数据拉下来，然后同步增加到binlog中来实现数据同步，但是使用这种方式的限制很多，而且基本不怎么维护，所以不建议使用这种方案。</p>
+<h3 id="2、ES-BulkRequest"><a href="#2、ES-BulkRequest" class="headerlink" title="2、ES BulkRequest"></a>2、ES BulkRequest</h3><p>ES给我们提供了批量插入的API，我们可以采用在Mysql中分页查询，然后批量插入到ES中，类似下边的代码可以实现这样的功能。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">BulkRequest bulkRequest = <span class="keyword">new</span> BulkRequest(<span class="string">"your index name"</span>);</span><br><span class="line">        <span class="keyword">for</span> (Order item : orderList )&#123;</span><br><span class="line">            Map&lt;String, Object&gt; itemMap = <span class="keyword">new</span> HashMap&lt;&gt;(<span class="number">16</span>);</span><br><span class="line">            itemMap.put(id, item.getId());</span><br><span class="line">            itemMap.put(orderCode, item.getOrderCode());</span><br><span class="line">            itemMap.put(orderName, item.getOrderName());</span><br><span class="line">            bulkRequest.add(<span class="keyword">new</span> IndexRequest(<span class="string">"your index name"</span>).id(item.getId().toString()).source(itemMap));</span><br><span class="line">        &#125;</span><br><span class="line">        BulkResponse bulkResponse;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            bulkResponse = remoteHighLevelClient.bulk(bulkRequest, RequestOptions.DEFAULT);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">            log.error(<span class="string">"Insert batch execution failed: &#123;&#125;"</span>, e.getMessage(), e);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<p>通过这种方式也是可以实现全量同步的，但是问题是<strong>执行批量插入的速度太慢</strong>，若我们的数据达到上千万级，同步的时间将会非常漫长。</p>
+<h3 id="3、阿里云DTS"><a href="#3、阿里云DTS" class="headerlink" title="3、阿里云DTS"></a>3、阿里云DTS</h3><p>若是生产环境均购买阿里云的ELK服务，可以考虑使用DTS服务来实现Mysql和ES的数据同步，DTS的全量同步原理架构图如下：<br><img src="https://res.cloudinary.com/leon824/image/upload/v1595426140/es4_lqfyib.png" alt><br>注：图片来自<a href="https://help.aliyun.com/document_detail/26598.html?spm=a2c4g.11186623.6.550.79f51797WZSaOm" target="_blank" rel="noopener">阿里云官方</a></p>
+<p><strong>DTS实现了在全量同步的时候可以不停服</strong>，在全量数据迁移之前会启动增量数据拉取模块，增量数据拉取模块会拉取源实例的增量更新数据，并解析、封装、存储在本地存储中。当全量数据迁移完成后，DTS会启动增量日志回放模块，增量日志回放模块会从增量日志读取模块中获取增量数据，经过反解析、过滤、封装后迁移到目标实例，从而实现增量数据迁移。</p>
+<p>但是DTS截止目前对于ES的支持仅限在&lt;=6.7，而我们使用的是<code>ES7.3</code>版本，所以这种方式也暂时不考虑。</p>
+<h3 id="4、Logstash"><a href="#4、Logstash" class="headerlink" title="4、Logstash"></a>4、Logstash</h3><p>排除了上边三种方案之后，看似只剩下logstash能满足我们目前的需求了。Logstash是ELK技术栈的重要组成部分，Logstash是开源的、拥有实时管道处理能力的数据收集引擎。input模块支持多种输入源（kafka、mysql、filebeat等等），filter模块支持正则、ruby等等工具来实现强大的数据过滤，数据类型转换等等功能，最终将管道处理完成的数据用output模块输出到指定的目的地。在这里我们使用<a href="https://www.elastic.co/guide/en/logstash/7.4/plugins-inputs-jdbc.html" target="_blank" rel="noopener">Jdbc input plugin</a>来实现对Mysql的查询、ES作为最终的输出目的地来实现全量数据的迁移，先来看Logstash官方对它的描述：</p>
+<p>“Description This plugin was created as a way to ingest data in any database with a JDBC interface into Logstash. You can periodically schedule ingestion using a cron syntax (see schedule setting) or run the query one time to load data into Logstash. Each row in the resultset becomes a single event. Columns in the resultset are converted into fields in the event.”</p>
+<p>大意就是这个插件会创建一种方式，用jdbc接口从任何数据库中拉取数据到logstash，我们可以使用<code>cron</code>的方式定期拉取数据，或执行一次查询将数据加载到Logstash。</p>
+<p>先来看一个Logstash的管道配置。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  jdbc &#123;</span><br><span class="line">    jdbc_driver_library =&gt; <span class="string">"/opt/soft/mysql-connector-java-5.1.45.jar"</span> </span><br><span class="line">    jdbc_driver_class =&gt; <span class="string">"com.mysql.jdbc.Driver"</span></span><br><span class="line">    jdbc_connection_string =&gt; <span class="string">"jdbc:mysql://localhost:3306/database_name"</span></span><br><span class="line">    jdbc_user =&gt; <span class="string">"root"</span></span><br><span class="line">    jdbc_password =&gt; <span class="string">"**************"</span></span><br><span class="line">    jdbc_paging_enabled =&gt; <span class="literal">true</span></span><br><span class="line">    jdbc_page_size =&gt; <span class="number">10000</span></span><br><span class="line">    clean_run =&gt; <span class="literal">true</span></span><br><span class="line">    last_run_metadata_path =&gt; <span class="string">"/opt/soft/elk7.3/logstash/.log_last_run"</span></span><br><span class="line">   statement =&gt; <span class="string">"select id, order_code as orderCode, order_name as orderName, create_time as createTime, update_time as updateTime from es_order"</span></span><br><span class="line">    schedule =&gt; <span class="string">"* * * * *"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">  mutate &#123;</span><br><span class="line">    copy =&gt; &#123; <span class="string">"id"</span> =&gt; <span class="string">"[@metadata][_id]"</span>&#125;</span><br><span class="line">    remove_field =&gt; [<span class="string">"@version"</span>, <span class="string">"_score"</span>, <span class="string">"_type"</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    user =&gt; admin </span><br><span class="line">    password =&gt; <span class="string">"********"</span> </span><br><span class="line">    index =&gt; <span class="string">"es_order_index"</span></span><br><span class="line">    document_id =&gt; <span class="string">"%&#123;[@metadata][_id]&#125;"</span></span><br><span class="line">    hosts =&gt; [<span class="string">"http://localhost:9200"</span>]</span><br><span class="line">  &#125;</span><br><span class="line">  stdout&#123;</span><br><span class="line">  codec =&gt; rubydebug</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上边的管道配置中，有下面几个地方需要注意：</p>
+<h4 id="input模块"><a href="#input模块" class="headerlink" title="input模块"></a>input模块</h4><ul>
+<li><strong>jdbc_driver_library</strong>：指定的Mysql驱动，一般来说是没有问题的，但是若版本采用8.0以上的版本，则可能会出现<strong>迁移全量数据遗漏的问题</strong>，导致总会有一部分数据同步失败，定位迁移失败原因非常麻烦。</li>
+<li><strong>jdbc_paging_enabled</strong>：指定开启查询分页</li>
+<li><strong>jdbc_page_size</strong>：指定每次分页查询的大小</li>
+<li><strong>statement</strong>：我们指定查询语句，Logstash将根据这里的Sql发起查询，若sql较为复杂可以使用<code>statement_filepath</code>参数指定Sql文件的目录。</li>
+<li><strong>schedule</strong>：通过设置Cron，Logstash周期性的执行任务，此参数没有默认值，无没有配置，则只执行一次；这里配置的<code>&quot;* * * * *&quot;</code>，代表着每分钟执行一次。</li>
+</ul>
+<h4 id="filter模块"><a href="#filter模块" class="headerlink" title="filter模块"></a>filter模块</h4><p>这里的过滤模块较为简单，因为Mysql中的数据都是已经结构化的。</p>
+<ul>
+<li><strong>copy</strong>：在ES中每一个文档（概念在上一篇已经讲过了），是由<code>index</code>、<code>_type</code>、<code>_id</code>三个参数共同标识的，所以每一个文档必须拥有一个_id作为<code>metadata</code>，在这里我们<strong>使用<code>Mysql</code>的主键复制到ES中的_id字段</strong>，方便我们在使用后边的增删改查。否则，则ES会自动生成一个Base64的字符串赋值给<code>_id</code>。</li>
+<li><strong>remove_field</strong>：这里可以指定我们要删除的的字段</li>
+</ul>
+<h4 id="output模块"><a href="#output模块" class="headerlink" title="output模块"></a>output模块</h4><ul>
+<li><strong>document_id =&gt; “%{[@metadata][_id]}</strong>“：这一行即是将我们在filter模块中复制主键id的值提取出来设置到document_id中。</li>
+<li><strong>codec =&gt; rubydebug</strong>：在测试阶段，我们将Logstash的执行日志打印出来。</li>
+</ul>
+<p>在配置完成后，我们可以在启动的时候通过指定刚刚创建的管道来实现全量迁移。经过测试和生产环境的测试，迁移五百万数据大概在二十分钟左右，但是在生产数据迁移的过程中使用这种方式需要将迁移表写入、修改操作停止。为了避免停止整个服务，可以在配置中心配置开关来控制数据的写入，迁移完成之后打开，以减小对业务的影响。</p>
+<h2 id="二、增量数据同步"><a href="#二、增量数据同步" class="headerlink" title="二、增量数据同步"></a>二、增量数据同步</h2><p>在上一部分，我们探讨了如何对数据的全量迁移，这里我们接着探讨如何实现对增量数据的同步。这里实质上就是想实现Mysql-ES的数据一致性，我们知道数据一致性大致分为两种，一种是强一致性，一种是最终一致性。</p>
+<h3 id="1、强一致性实现"><a href="#1、强一致性实现" class="headerlink" title="1、强一致性实现"></a>1、强一致性实现</h3><p>在分布式系统中，若要实现强一致性，往往会牺牲较多的性能来实现，比如这里我们可以采用“<strong>同步双写</strong>”来实现事务。当有写入请求进来时，我们先写入到ES中，ES写入失败则此次插入失败，或者重新发起请求写入；待ES写入成功之后，再写Mysql，成功则事务完成，反之需要回滚ES已经写入的内容，否则双方数据将出现不一致。<br>从上边的流程来看，可能涉及到的远程调用较多、网络IO将拖慢接口的响应速度，使得系统吞吐量降低…所以想实现强一致性成本是比较高的，下面我们再来看看实现最终一致性的方案。</p>
+<h3 id="2、最终一致性"><a href="#2、最终一致性" class="headerlink" title="2、最终一致性"></a>2、最终一致性</h3><p>实现最终一致性的方案之间也有较大的区分。下边主要介绍两种方式来实现：异步MQ同步、储存层面实现最终一致性</p>
+<h4 id="a、异步MQ同步"><a href="#a、异步MQ同步" class="headerlink" title="a、异步MQ同步"></a>a、异步MQ同步</h4><p>方案描述：假设业务入口在微服务A中，对ES的封装在微服务B中，如下图:</p>
+<p><img src="https://res.cloudinary.com/leon824/image/upload/v1595492799/es-3_gnvfgz.png" alt></p>
+<ul>
+<li>1、业务请求到A服务中，若有对数据的写，先写入到Mysql中，然后将写的<strong>动作和data</strong>扔到MQ。</li>
+<li>2、B服务监听对应的<code>Topic</code>，根据“<strong>相应的动作</strong>”对ES发起写请求</li>
+<li>3、若写入失败，B服务将发起重试消费（可设置重试<em>上限次数</em>），直到成功。</li>
+<li>4、若重试次数超过上限，则发起报警，我们可以触发业务补偿来实现数据最终一致性。</li>
+</ul>
+<p>上述的方案通过异步的方式将数据一致性的压力从A服务转移给B服务，从而最大程度降低对A服务性能的影响。</p>
+<h4 id="b、储存层面实现最终一致性"><a href="#b、储存层面实现最终一致性" class="headerlink" title="b、储存层面实现最终一致性"></a>b、储存层面实现最终一致性</h4><p>在分布式领域，数据一致性若是能够在存储层面来解决是相对理想的情况，业务不参与数据一致性的工作，对于业务方来说读Mysql和ES永远都能拿到一样的结果，当然这是一种理想状态。<br>现实中我们可以使用Logstash来实现数据的同步，从而数据一致性对于业务来说是透明的，但是由于资源的限制，我们无法做到<strong>完全Real-time</strong>。</p>
+<h4 id="c、Logstash增量同步"><a href="#c、Logstash增量同步" class="headerlink" title="c、Logstash增量同步"></a>c、Logstash增量同步</h4><p>在前边全量数据迁移的部分我们已经使用Logstash来实现了，在增量同步同样可以使用这种方式，来来看增量同步的管道脚本。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">  jdbc &#123;</span><br><span class="line">    jdbc_driver_library =&gt; <span class="string">"/opt/soft/mysql-connector-java-5.1.47.jar"</span></span><br><span class="line">    jdbc_driver_class =&gt; <span class="string">"com.mysql.jdbc.Driver"</span></span><br><span class="line">    jdbc_connection_string =&gt; <span class="string">"jdbc:mysql://localhost:3306/database_name"</span></span><br><span class="line">    jdbc_user =&gt; <span class="string">"root"</span></span><br><span class="line">    jdbc_password =&gt; <span class="string">"********"</span></span><br><span class="line">    tracking_column =&gt; <span class="string">"unix_ts_in_secs"</span></span><br><span class="line">    use_column_value =&gt; <span class="literal">true</span></span><br><span class="line">    tracking_column_type =&gt; <span class="string">"numeric"</span></span><br><span class="line">    clean_run =&gt; <span class="literal">true</span></span><br><span class="line">    statement =&gt; <span class="string">"id, order_code as orderCode, order_name as orderName, create_time as createTime, update_time as updateTime, UNIX_TIMESTAMP(update_time) AS unix_ts_in_secs FROM es_order WHERE (UNIX_TIMESTAMP(update_time) &gt; :sql_last_value AND update_time &lt; NOW()) ORDER BY update_time ASC"</span></span><br><span class="line">    schedule =&gt; <span class="string">"*/30 * * * * *"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">  mutate &#123;</span><br><span class="line">    copy =&gt; &#123;<span class="string">"id"</span> =&gt; <span class="string">"[@metadata][_id]"</span>&#125;</span><br><span class="line">    remove_field =&gt; [<span class="string">"@version"</span>, <span class="string">"unix_ts_in_secs"</span>, <span class="string">"myid"</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">  elasticsearch &#123;</span><br><span class="line">    index =&gt; <span class="string">"es_order_index"</span></span><br><span class="line">    document_id =&gt; <span class="string">"%&#123;[@metadata][_id]&#125;"</span></span><br><span class="line">    user =&gt; admin</span><br><span class="line">    password =&gt; <span class="string">"**********"</span></span><br><span class="line">    hosts =&gt; [<span class="string">"http://localhost:9200"</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在上一部分我们已经分析了一部分参数的含义，这里我们接着看新出现的属性值</p>
+<ul>
+<li><p><strong>tracking_column</strong>：用于跟踪Logstash从MySQL读取的最后一个文档，下面会进行描述），它存储在.logstash_jdbc_last_run中的磁盘上。该值将会用来确定Logstash在其轮询循环的下一次迭代中所请求文档的起始值。</p>
+</li>
+<li><p><strong>unix_ts_in_secs：<code>unix_ts_in_secs</code></strong>：这是一个由上述 SELECT 语句生成的字段，包含可作为标准<code>Unix</code>时间戳（自Epoch起秒数）的 “modification_time”。我们刚讨论的 “tracking column” 会引用该字段。Unix 时间戳用于跟踪进度，而非作为简单的时间戳；如将其作为简单时间戳，可能会导致错误，因为在UMTs和本地时区之间正确地来回转换是一个十分复杂的过程。</p>
+</li>
+<li><strong>sql_last_value</strong>：这是一个内置参数，包括Logstash轮询循环中当前迭代的起始点，上面 JDBC 输入配置中的 SELECT 语句便会引用这一参数。该字段会设置为“unix_ts_in_secs”（读取自 .logstash_jdbc_last_run）的最新值。在<code>Logstash</code>轮询循环内所执行的<code>MySQL</code>查询中，其会用作所返回文档的起点。通过在查询中加入这一变量，能够确保不会将之前传播到<code>Elasticsearch</code>的插入或更新内容重新发送到<code>Elasticsearch</code>。</li>
+<li><strong>modification_time &lt; NOW()</strong>：查询语句中的这一部分是一个较难解释的概念。</li>
+</ul>
+<p>注：引用自<a href="https://www.elastic.co/cn/blog/how-to-keep-elasticsearch-synchronized-with-a-relational-database-using-logstash" target="_blank" rel="noopener">这里</a> </p>
+<p>对于SQL语句的正确性分析，在上边引用的文章已经有比较详细的描述，这里不再重述。</p>
+<p>这种方案的问题在于——<strong>特别吃资源</strong>，特别是如果<code>schedule</code>设置的定时执行时间间隔太短并且有多个表需要同步的情况下，由于这种Sql属于<strong>范围区间查询同时带有排序，无法让查询走索引</strong>，所以Mysql将会承受很大的压力。所以大家在选择这种方案的时候必须心中有数，虽然解放了应用层，但是数据存储层将会承受较大的压力。</p>
+<h4 id="d、Binlog增量同步"><a href="#d、Binlog增量同步" class="headerlink" title="d、Binlog增量同步"></a>d、Binlog增量同步</h4><p>这种类型的方案更加适合数据的增量同步，它同时能够避免上述两种方案的问题：1、业务参与解决数数据一致性，2、对存储源压力过大。</p>
+<h5 id="Canal"><a href="#Canal" class="headerlink" title="Canal"></a>Canal</h5><p>canal是阿里开源的组件，它是基于MySQL数据库增量日志解析，提供增量数据订阅和消费，消费端其中就包括ES。如下图</p>
+<p><img src="https://res.cloudinary.com/leon824/image/upload/v1595574185/es-7_t20xku.png" alt></p>
+<p>这种方案暂时还没有使用过，感兴趣的小伙伴可以自己尝试地址在这儿<a href="https://github.com/alibaba/canal/wiki" target="_blank" rel="noopener">Home</a></p>
+<h5 id="DTS"><a href="#DTS" class="headerlink" title="DTS"></a>DTS</h5><p>在上边的全量数据迁移也提到过这种方案，和Canal一样都是使用Binlog的方式来实现。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>我们先介绍了全量数据同步的方式，包括使用go-mysql-elasticsearch、ES BulkRequest、阿里云DTS和Logstash的方式，这里<strong>最推荐的还是Logstash来实现全量同步</strong>，当然有条件的可以使用DTS来实现。</p>
+<p>后边我们探讨实现增量同步的集中方法，增量同步我们分为强一致性和最终一致性，强一致性实现成本相对较高；我们主要分析了最终一致性的几种方式，若是数据库资源较为充裕，可以考虑使用Logstash来实现增量同步，否则可以采用异步MQ的方式来实现，大家可以根据自己的实际情况来选择增量的同步方式。</p>
+<p>下一部分我们继续分享如何使用<code>Java High Level REST Client</code>来实现对ES的操作。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://help.aliyun.com/document_detail/26598.html?spm=a2c4g.11186623.6.550.79f51797WZSaOm" target="_blank" rel="noopener">产品架构及功能原理</a></li>
+<li><a href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html" target="_blank" rel="noopener">Elasticsearch Reference [7.8] » REST APIs » Document APIs » Bulk API</a></li>
+<li><a href="https://www.elastic.co/cn/blog/how-to-keep-elasticsearch-synchronized-with-a-relational-database-using-logstash" target="_blank" rel="noopener">如何使用 Logstash 和 JDBC 确保 Elasticsearch 与关系型数据库保持同步</a></li>
+</ul>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/07/22/ES数据迁移策略（ES系列二）/" data-id="ckczxj13g0000buyn8djrvhca" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+    
+      <a href="/2020/07/22/ES系列（一）/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">初识ES（ES系列一）</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2020 花谢花开</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="花谢花开"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/tocbot.min.js"></script>
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>

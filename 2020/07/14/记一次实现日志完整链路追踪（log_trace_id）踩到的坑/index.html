@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  
+    <meta name="description" content="人们常常嘲笑“螳臂当车” 但有时候啊，你并不是驾车的人 正巧是那只，反抗不了的螳螂。">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>
+    记一次实现日志完整链路追踪（log_trace_id）踩到的坑 |
+    
+    花谢花开</title>
+  
+    <link rel="shortcut icon" href="/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+    <link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+  
+  <script src="/js/pace.min.js"></script>
+</head>
+</html>
+<body>
+<main class="content">
+  <section class="outer">
+  <article id="post-记一次实现日志完整链路追踪（log_trace_id）踩到的坑" class="article article-type-post" itemscope itemprop="blogPost" data-scroll-reveal>
+
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+  
+    <h1 class="article-title" itemprop="name">
+      记一次实现日志完整链路追踪（log_trace_id）踩到的坑
+    </h1>
+  
+  
+
+
+
+
+            </header>
+            
+
+                
+                    <div class="article-meta">
+                        <a href="/2020/07/14/记一次实现日志完整链路追踪（log_trace_id）踩到的坑/" class="article-date">
+  <time datetime="2020-07-14T07:29:37.000Z" itemprop="datePublished">2020-07-14</time>
+</a>
+                            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/java/">java</a>
+  </div>
+
+                    </div>
+                    
+
+                        
+                            
+    <div class="tocbot"></div>
+
+
+
+
+
+                                
+
+                                    <div class="article-entry" itemprop="articleBody">
+                                        
+
+
+                                            
+
+                                                
+                                                                    <h1 id="记一次实现日志完整链路追踪（log-trace-id）踩到的坑"><a href="#记一次实现日志完整链路追踪（log-trace-id）踩到的坑" class="headerlink" title=" 记一次实现日志完整链路追踪（log_trace_id）踩到的坑"></a><center> 记一次实现日志完整链路追踪（log_trace_id）踩到的坑</center></h1><p></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在分布式环境下，微服务众多、日志分散是一个令人头疼的问题，当然我们可以采用ELK来<strong>将单个微服务的各个容器节点日志汇总到一个索引中来集中查询</strong>，这确实能够提高日志查询的效率。<br>但是，在kiaban中查询日志的时候我们仍然会面对很多的问题，这里就拿三个例子来说明：</p>
+<ul>
+<li><p>1、[用户请求 -&gt; Gateway -&gt; Microservice]，很多时候Microservice内部还有很多的相互调用，我们如何将一个用户的请求在微服务内部的调用串联起来呢，方便快速定位问题？ELK的架构是无法满足我们这个需求的。</p>
+</li>
+<li><p>2、MQ也是微服务必备的技术栈，通常producer和consumer不在同一个微服务里，就算在同一个服务里，也不会在同一个线程里。所以，当我们需要追踪某一条消费从生产到消费的完整路径时会比较麻烦。</p>
+</li>
+<li><p>3、当某一个较大的任务在执行时，我们通常会采用多线程的任务去执行，那么这些多个线程执行的情况我们要如何去串联在一起？方便我们看到整体执行情况 。</p>
+</li>
+<li><p>4、有时候我们采用@Async注解用异步的方式来运行某些任务，这个异步任务也会运行在一个新的线程中，我们要如何将调用方和异步任务串联起来？</p>
+</li>
+</ul>
+<p>上边描述的三个问题<strong>归根到底就是需要用一个“标识”将一次请求的完整链路全部串联起来</strong>，采用log_trace_ld能够帮助我们来实现全链路追踪。</p>
+<h2 id="实现串联微服务"><a href="#实现串联微服务" class="headerlink" title="实现串联微服务"></a>实现串联微服务</h2><p>在前边我们探讨了要使用log_trace_id的原因，所以就开始准备着手解决第一个问题：将微服务内部之间的调用串联起来。</p>
+<p>思路如下：</p>
+<ul>
+<li>1、我们将log_reace_id字段放到Http请求头里边，微服务在接收到请求时，使用拦截器拦截每次请求，若Header中已经存在此字段，则说明此次请求时微服务内部的调用，则继续沿用Header中的log_trace_log，否则重新生成log_trace_id设置到MDC中，代码如下:</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> leon</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2020/7/14</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RequestInterceptor</span> <span class="keyword">extends</span> <span class="title">HandlerInterceptorAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> Logger log = LoggerFactory.getLogger(RequestInterceptor.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        log.info(<span class="string">"Enter Interceptor."</span>);</span><br><span class="line">        String traceId = request.getHeader(LOG_TRACE_ID);</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(traceId))&#123;</span><br><span class="line">           traceId = UuidUtil.get32UUID();</span><br><span class="line">        &#125;</span><br><span class="line">        MDC.put(LOG_TRACE_ID, traceId);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        MDC.remove(LOG_TRACE_ID);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>2、当微服务发起远程调用的时候，我们还需要将log_trace_id设置到Header中，保持完整调用链使用同一个log_trace_id。因为微服务之间调用全部统一使用Feign来调用，所以这里使用Feign提供的<code>RequestInterceptor</code>拦截器在Feign发起微服务调用之前将参数设置到请求头中。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 当前服务Feign请求拦截器，设置请求头信息</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> leon</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@date</span> 2020/7/14</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyFeignRequestInterceptor</span> <span class="keyword">implements</span> <span class="title">RequestInterceptor</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> Logger log = LoggerFactory.getLogger(MyFeignRequestInterceptor.class);</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(RequestTemplate template)</span> </span>&#123;</span><br><span class="line">        String traceId = MDC.get(LOG_TRACE_ID);</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isNotBlank(traceId))&#123;</span><br><span class="line">            template.header(LOG_TRACE_ID, traceId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="问题来了"><a href="#问题来了" class="headerlink" title="问题来了"></a>问题来了</h3><ul>
+<li>在调试的过程中出现了一个现象，<strong>在有的微服务中<code>String traceId = MDC.get(LOG_TRACE_ID)</code>这行代码是能够拿到traceId的，而有些微服务traceId却为null</strong></li>
+</ul>
+<h2 id="填坑之路"><a href="#填坑之路" class="headerlink" title="填坑之路"></a>填坑之路</h2><p><strong>在很多时候，我们对某些现象感到疑惑，绝大部分时候说明我们没有认真看文档，没有完整的概念、原理认知才会出现这种情况</strong>。</p>
+<p>首先我们需要弄清楚<code>MDC</code>。在上边我们使用<code>MDC</code>(Mapped Diagnostic Context)这个类保存traceId并在Feign请求的时候取出来设置到Header中。简单来说，MDC就是由log4j库提供的一个<code>InheritableThreadLocal&lt;Map&lt;String, String&gt;&gt;</code>对象，我们将traceId设置到这个<code>InheritableThreadLocal</code>中，在同一个线程中/子线程中能够获取到之前我们在拦截器的K-V，同时我们还可以在日志配置文件中pattern中引用当前MDC设置的值<code>%X{log_trace_id}</code>，可以在每行日志中打印traceId对应的值。</p>
+<p>通过上边对MDC的描述，我们可以猜测在<code>MyFeignRequestInterceptor</code>拦截类的线程和请求进入的<code>RequestInterceptor</code>拦截器设置traceId并不在同一个线程里。</p>
+<p>为了验证想法，我们将线程组的名称、当前线程的ID、name打印出来。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">ThreadGroup threadGroup = Thread.currentThread().getThreadGroup();</span><br><span class="line">Thread thread = Thread.currentThread();</span><br><span class="line">log.info(<span class="string">"RequestInterceptor current thread group name: &#123;&#125;, current thread name: &#123;&#125; , id: &#123;&#125;"</span>, threadGroup.getName(), thread.getName(), thread.getId());</span><br><span class="line">        </span><br><span class="line">ThreadGroup threadGroup = Thread.currentThread().getThreadGroup();</span><br><span class="line">Thread thread = Thread.currentThread();</span><br><span class="line">log.info(<span class="string">"MyFeignRequestInterceptor current thread group: &#123;&#125;, name: &#123;&#125; , id: &#123;&#125;"</span>, threadGroup.getName(), thread.getName(), thread.getId());</span><br></pre></td></tr></table></figure>
+<p>上边日志打印的结果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RequestInterceptor current thread name: XNIO-5 task-1 , id: 187</span><br><span class="line">MyFeignRequestInterceptor current thread name: hystrix-bling-share-xdfproducer-1 , id: 192</span><br></pre></td></tr></table></figure>
+<p>可以明显的看到在<code>RequestInterceptor</code>拦截类中的线程和<code>MyFeignRequestInterceptor</code>拦截类中的线程并不是同一个线程，也没有父子关系，所以在Feign的拦截类是无法获取到traceId。</p>
+<p><strong>所以现在的问题是如何解决不同线程之间数据共享的问题</strong>？</p>
+<hr>
+<p>分析：虽然当前请求的两个拦截类<strong>不处于同一个线程内，但却是处于同一个请求的生命周期内，那我们只要找到一种方法把变量设置到一个<code>request scope</code>的共享变量</strong>，那么这个请求周期内无论有多少个线程，我们设置的信息就都可以随时被这次请求内的线程获取到，也就间接地实现了线程间的信息共享。</p>
+<h3 id="HystrixRequestVariableDefault"><a href="#HystrixRequestVariableDefault" class="headerlink" title="HystrixRequestVariableDefault"></a>HystrixRequestVariableDefault</h3><p>“Default implementation of  HystrixRequestVariable. Similar to ThreadLocal but scoped at the user request level. Context is managed via HystrixRequestContext”</p>
+<p><code>HystrixRequestVariableDefault</code>类是Hystrix Concurrency包提供的一个类，类似于<code>ThreadLocal</code>，<strong>但是它的生命周期是用户请求级别的</strong>，所以我们来尝试用它来解决同义词请求线程间数据共享的问题。</p>
+<p>在使用HystrixRequestVariableDefault类的时候要注意，因为这是一个整个请求范围内的，我们需要将其定义为一个全局的变量，同时要注意<code>Context is managed via HystrixRequestContext</code>这句话，我们在使用之前需要使用HystrixRequestContext.initializeContext()来初始化，否则将会抛出NPE。</p>
+<p>我们首先定义一个全局的<code>HystrixRequestVariableDefault&lt;String&gt;</code>对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HystrixCredentialsContext</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> HystrixRequestVariableDefault&lt;String&gt; HYSTRIX_REQUEST_VARIABLE_DEFAULT =</span><br><span class="line">            <span class="keyword">new</span> HystrixRequestVariableDefault&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HystrixRequestVariableDefault&lt;String&gt; <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> HYSTRIX_REQUEST_VARIABLE_DEFAULT;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>定义完全局变量之后，我们使用过滤器来实现请求的过滤，设置traceId。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HystrixRequestContextEnablerFilter</span> <span class="keyword">implements</span> <span class="title">Filter</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> Logger log = LoggerFactory.getLogger(HystrixRequestContextEnablerFilter.class);</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest request, ServletResponse response, FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;</span><br><span class="line">        HystrixRequestContext context = HystrixRequestContext.initializeContext();</span><br><span class="line">        HttpServletRequest httpRequest = (HttpServletRequest) request;</span><br><span class="line">        String traceId = httpRequest.getHeader(LOG_TRACE_ID);</span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isBlank(traceId))&#123;</span><br><span class="line">            traceId = UuidUtil.get32UUID();</span><br><span class="line">        &#125;</span><br><span class="line">          MDC.put(LOG_TRACE_ID, traceId);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            HystrixCredentialsContext.getInstance().set(traceId);</span><br><span class="line">            log.info(<span class="string">"Set traceId successful: &#123;&#125;"</span>, traceId);</span><br><span class="line">            chain.doFilter(request, response);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            MDC.clear();</span><br><span class="line">            context.shutdown();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;&#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>好了，经过这一番改造，我们再来尝试在<code>MyFeignRequestInterceptor</code>类中获取log_trace_id.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyFeignRequestInterceptor</span> <span class="keyword">implements</span> <span class="title">RequestInterceptor</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> Logger log = LoggerFactory.getLogger(MyFeignRequestInterceptor.class);</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">apply</span><span class="params">(RequestTemplate template)</span> </span>&#123;</span><br><span class="line">           <span class="comment">// 这里不再使用MDC来获取了</span></span><br><span class="line">            String traceId = HystrixCredentialsContext.getInstance().get();</span><br><span class="line">            log.info(<span class="string">"print current thread logTraceId: &#123;&#125;"</span>, traceId);    </span><br><span class="line">           <span class="keyword">if</span> (StringUtils.isNotBlank(traceId))&#123;</span><br><span class="line">            template.header(LOG_TRACE_ID, traceId);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过日志，我们能看到这次确实能够拿到<code>traceId</code>了，说明我们采用<code>HystrixRequestVariableDefault</code>来解决线程间的数据共享是成功的。</p>
+<h5 id="但是现在还有一个问题没解决：为什么有的服务不采用HystrixRequestVariableDefault来实现数据共享也能拿到traceId呢？"><a href="#但是现在还有一个问题没解决：为什么有的服务不采用HystrixRequestVariableDefault来实现数据共享也能拿到traceId呢？" class="headerlink" title="但是现在还有一个问题没解决：为什么有的服务不采用HystrixRequestVariableDefault来实现数据共享也能拿到traceId呢？"></a>但是现在还有一个问题没解决：<strong>为什么有的服务不采用<code>HystrixRequestVariableDefault</code>来实现数据共享也能拿到traceId呢</strong>？</h5><p>为了表述的方便，这里使用A来代表<strong>不采用</strong><code>HystrixRequestVariableDefault</code>也能获取到MDC的traceID的微服务，B来代表<strong>采用</strong>这种方式的微服务。</p>
+<p>为了定位问题，我们分别在两个微服务的请求过滤器和Feign调用拦截器中打印当前线程的<strong>线程组名称、线程名、线程ID</strong>信息来帮助定位问题，下面是日志打印:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">A服务：</span><br><span class="line"> main, thread name: XNIO-5 task-1, thread id: 185</span><br><span class="line"> main, thread name: XNIO-5 task-1, thread id: 185</span><br><span class="line"></span><br><span class="line">B服务：</span><br><span class="line">main, thread name: XNIO-5 task-1, thread id: 177</span><br><span class="line">main, thread name: hystrix-B-1, thread id: 182</span><br></pre></td></tr></table></figure>
+<p>从上边我们可以看出，A服务在过滤器和拦截器中均为同一个线程，所以才能通过MDC获取到traceId，而B服务并非同一个线程，自然无法通过MDC拿到。</p>
+<p><strong>那么现在问题来了，为什么A服务使用同一个线程，则B服务却是不同的线程</strong>？？</p>
+<p>通过对比A和B的配置，发现在B的服务中配置了<code>feign.hystrix.enabled=true</code>，而A服务却没有配置，经过验证之后确认是因为此配置导致A和B在调用微服务时，<strong>采用了不同的线程策略</strong>。</p>
+<h3 id="Hystrix-feign请求流程"><a href="#Hystrix-feign请求流程" class="headerlink" title="Hystrix feign请求流程"></a>Hystrix feign请求流程</h3><p>在上边B服务配置了<code>feign.hystrix.enabled=true</code>参数，也就是说B服务的Feign调用开启了熔断的的功能，因为开启了熔断，所以发起远程调用的时候Hystrix重启根据当前所调用的微服务使用了一个新的线程去处理远程调用，下边是Feign发起远程调用的完整流程。</p>
+<p><img src="https://res.cloudinary.com/leon824/image/upload/v1595245562/feign2_upi4wh.png" width="70%" height="70%"></p>
+<p>从上图可以看到，第1步就是通过JDK动态生成代理类代理类，比较重要的是下边这段代码。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">  <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(<span class="keyword">final</span> Object proxy, <span class="keyword">final</span> Method method, <span class="keyword">final</span> Object[] args)</span></span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line">      .....</span><br><span class="line">    HystrixCommand&lt;Object&gt; hystrixCommand = <span class="keyword">new</span> HystrixCommand&lt;Object&gt;(setterMethodMap.get(method)) &#123;</span><br><span class="line">      <span class="meta">@Override</span></span><br><span class="line">      <span class="function"><span class="keyword">protected</span> Object <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">          <span class="keyword">return</span> HystrixInvocationHandler.<span class="keyword">this</span>.dispatch.get(method).invoke(args);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">          <span class="keyword">throw</span> e;</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">          <span class="keyword">throw</span> (Error) t;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    .......</span><br></pre></td></tr></table></figure>
+<p>其中最重要的一行代码就是<code>HystrixInvocationHandler.this.dispatch.get(method).invoke(args);</code>它将会生成一个新的<code>hystrixCommand</code>，同时启动一个新的线程。具体细节可以参考这里<a href="https://www.programmersought.com/article/68091584946/" target="_blank" rel="noopener">Hystrix feign thread model</a>。因为第一步就创建了新的线程，所以在上图中第五步拦截的时候使用的就是这个新创建的线程。</p>
+<p>到这里为止，我们也就能解释为什么A服务使用了同一个线程，则B服务却是不同的线程。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
+<li><a href="https://www.programmersought.com/article/68091584946/" target="_blank" rel="noopener">Hystrix feign thread model</a></li>
+<li><a href="https://juejin.im/post/5e79bce5e51d4527235b8878" target="_blank" rel="noopener">SpringBoot+MDC实现全链路调用日志跟踪</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1484945" target="_blank" rel="noopener">在Java项目中使用traceId跟踪请求全流程日志</a></li>
+<li><a href="https://programming.vip/docs/spring-cloud-openfeign-source-code-analysis.html" target="_blank" rel="noopener">Spring Cloud OpenFeign source code analysis</a></li>
+<li><a href="https://juejin.im/post/5df19a4751882512816014e2" target="_blank" rel="noopener">Feign源码分析:记初次使用Feign踩的一些坑</a></li>
+</ul>
+
+                                                                        
+                                    </div>
+                                    <footer class="article-footer">
+                                        <a data-url="http://yoursite.com/2020/07/14/记一次实现日志完整链路追踪（log_trace_id）踩到的坑/" data-id="ckczxj13l0002buyn0snd2rdd" class="article-share-link">
+                                            Share
+                                        </a>
+                                        
+                                    </footer>
+
+    </div>
+
+    
+        
+  <nav class="article-nav">
+    
+      <a href="/2020/07/22/ES系列（一）/" class="article-nav-link">
+        <strong class="article-nav-caption">Newer</strong>
+        <div class="article-nav-title">
+          
+            初识ES（ES系列一）
+          
+        </div>
+      </a>
+    
+    
+      <a href="/2020/07/07/浅谈计算机领域的缓存/" class="article-nav-link">
+        <strong class="article-nav-caption">Older</strong>
+        <div class="article-nav-title">浅谈计算机领域的缓存</div>
+      </a>
+    
+  </nav>
+
+
+            
+
+                
+                    
+                        
+                            
+
+</article>
+</section>
+  <footer class="footer">
+  <div class="outer">
+    <div class="float-right">
+      <ul class="list-inline">
+  
+    <li><i class="fe fe-smile-alt"></i> <span id="busuanzi_value_site_uv"></span></li>
+  
+    <li><i class="fe fe-bookmark"></i> <span id="busuanzi_value_page_pv"></span></li>
+  
+</ul>
+    </div>
+    <ul class="list-inline">
+      <li>&copy; 2020 花谢花开</li>
+      <li>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></li>
+      <li>Theme  <a href="https://github.com/zhwangart/hexo-theme-ocean">Ocean</a></li>
+    </ul>
+  </div>
+</footer>
+
+</main>
+<aside class="sidebar">
+  <button class="navbar-toggle"></button>
+<nav class="navbar">
+  
+    <div class="logo">
+      <a href="/"><img src="/images/hexo.svg" alt="花谢花开"></a>
+    </div>
+  
+  <ul class="nav nav-main">
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/">Home</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/archives">Archives</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/gallery">Gallery</a>
+      </li>
+    
+      <li class="nav-item">
+        <a class="nav-item-link" href="/about">About</a>
+      </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link nav-item-search" title="Search">
+        <i class="fe fe-search"></i>
+        Search
+      </a>
+    </li>
+  </ul>
+</nav>
+<nav class="navbar navbar-bottom">
+  <ul class="nav">
+    <li class="nav-item">
+      <div class="totop" id="totop">
+  <i class="fe fe-rocket"></i>
+</div>
+    </li>
+    <li class="nav-item">
+      
+        <a class="nav-item-link" target="_blank" href="/atom.xml" title="RSS Feed">
+          <i class="fe fe-feed"></i>
+        </a>
+      
+    </li>
+  </ul>
+</nav>
+<div class="search-form-wrap">
+  <div class="local-search local-search-plugin">
+  <input type="search" id="local-search-input" class="local-search-input" placeholder="Search...">
+  <div id="local-search-result" class="local-search-result"></div>
+</div>
+</div>
+</aside>
+<script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/lazyload.min.js"></script>
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+
+  <script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+  <script src="/js/tocbot.min.js"></script>
+  <script>
+    // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
+    tocbot.init({
+      tocSelector: '.tocbot',
+      contentSelector: '.article-entry',
+      headingSelector: 'h1, h2, h3, h4, h5, h6',
+      hasInnerContainers: true,
+      scrollSmooth: true,
+      positionFixedSelector: '.tocbot',
+      positionFixedClass: 'is-position-fixed',
+      fixedSidebarOffset: 'auto',
+    });
+  </script>
+
+
+<script src="/js/ocean.js"></script>
+
+</body>
+</html>
