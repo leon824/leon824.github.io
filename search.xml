@@ -1178,8 +1178,7 @@
   <entry>
     <title>记一次实现日志完整链路追踪（log_trace_id）踩到的坑</title>
     <url>/2020/07/14/%E8%AE%B0%E4%B8%80%E6%AC%A1%E5%AE%9E%E7%8E%B0%E6%97%A5%E5%BF%97%E5%AE%8C%E6%95%B4%E9%93%BE%E8%B7%AF%E8%BF%BD%E8%B8%AA%EF%BC%88log_trace_id%EF%BC%89%E8%B8%A9%E5%88%B0%E7%9A%84%E5%9D%91/</url>
-    <content><![CDATA[<h1 id="记一次实现日志完整链路追踪（log-trace-id）踩到的坑"><a href="#记一次实现日志完整链路追踪（log-trace-id）踩到的坑" class="headerlink" title=" 记一次实现日志完整链路追踪（log_trace_id）踩到的坑"></a><center> 记一次实现日志完整链路追踪（log_trace_id）踩到的坑</center></h1><p></p>
-<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在分布式环境下，微服务众多、日志分散是一个令人头疼的问题，当然我们可以采用ELK来<strong>将单个微服务的各个容器节点日志汇总到一个索引中来集中查询</strong>，这确实能够提高日志查询的效率。<br>但是，在kiaban中查询日志的时候我们仍然会面对很多的问题，这里就拿三个例子来说明：</p>
+    <content><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>在分布式环境下，微服务众多、日志分散是一个令人头疼的问题，当然我们可以采用ELK来<strong>将单个微服务的各个容器节点日志汇总到一个索引中来集中查询</strong>，这确实能够提高日志查询的效率。<br>但是，在kiaban中查询日志的时候我们仍然会面对很多的问题，这里就拿三个例子来说明：</p>
 <ul>
 <li><p>1、[用户请求 -&gt; Gateway -&gt; Microservice]，很多时候Microservice内部还有很多的相互调用，我们如何将一个用户的请求在微服务内部的调用串联起来呢，方便快速定位问题？ELK的架构是无法满足我们这个需求的。</p>
 </li>
