@@ -1,85 +1,15 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-hk">
+<html>
 <head><meta name="generator" content="Hexo 3.9.0">
-  <meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<meta name="theme-color" content="#222">
-
-
-
-
-
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform">
-<meta http-equiv="Cache-Control" content="no-siteapp">
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <meta charset="utf-8">
+  
+  <title>es数据迁移策略（es系列二） | 花谢花开</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/xiongmao.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/xiongmao.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Hexo, NexT">
-
-
-
-
-
-
-
-
-
-
-<meta name="description" content="前言在上一篇文章初识ES中我们介绍了ES优势、使用场景以及相关的核心概念。这篇文章我们继续探讨如何将数据从Mysql迁移到ES中。 在本文中，Logstash和ES的版本均为7.3 一、全量数据迁移在将业务迁移到ES的过程中首先就需要将数据全量迁移到ES中，这是一次性的，在调研的过程中主要考虑了如下几种方案。 1、go-mysql-elasticsearchgo-mysql-elasticsear">
+  
+  
+  <meta name="description" content="前言在上一篇文章初识ES中我们介绍了ES优势、使用场景以及相关的核心概念。这篇文章我们继续探讨如何将数据从Mysql迁移到ES中。 在本文中，Logstash和ES的版本均为7.3 一、全量数据迁移在将业务迁移到ES的过程中首先就需要将数据全量迁移到ES中，这是一次性的，在调研的过程中主要考虑了如下几种方案。 1、go-mysql-elasticsearchgo-mysql-elasticsear">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ES数据迁移策略（ES系列二）">
 <meta property="og:url" content="http://yoursite.com/2020/07/22/ES数据迁移策略（ES系列二）/index.html">
@@ -94,267 +24,181 @@
 <meta name="twitter:title" content="ES数据迁移策略（ES系列二）">
 <meta name="twitter:description" content="前言在上一篇文章初识ES中我们介绍了ES优势、使用场景以及相关的核心概念。这篇文章我们继续探讨如何将数据从Mysql迁移到ES中。 在本文中，Logstash和ES的版本均为7.3 一、全量数据迁移在将业务迁移到ES的过程中首先就需要将数据全量迁移到ES中，这是一次性的，在调研的过程中主要考虑了如下几种方案。 1、go-mysql-elasticsearchgo-mysql-elasticsear">
 <meta name="twitter:image" content="https://res.cloudinary.com/leon824/image/upload/v1595426140/es4_lqfyib.png">
-
-
-
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
-  };
-</script>
-
-
-
-  <link rel="canonical" href="http://yoursite.com/2020/07/22/ES数据迁移策略（ES系列二）/">
-
-
-
-
-
-  <title>ES数据迁移策略（ES系列二） | 花谢花开</title>
+  
+    <link rel="alternate" href="/atom.xml" title="花谢花开" type="application/atom+xml">
   
 
+  
 
+  <link rel="icon" href="/css/images/mylogo.jpg">
+  <link rel="apple-touch-icon" href="/css/images/mylogo.jpg">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt; src:url("/css/fonts/FuturaPTBold.otf") format("woff");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt-light; src:url("/css/fonts/FuturaPTBook.otf") format("woff");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt-italic; src:url("/css/fonts/FuturaPTBookOblique.otf") format("woff");font-weight:400;font-style:italic;}
+}
 
+  </style>
+  <link rel="stylesheet" href="/css/style.css">
 
+  <script src="/js/jquery-3.1.1.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
 
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.css">
 
+  
+    <link rel="stylesheet" href="/css/dialog.css">
+  
 
+  
+
+  
+    <link rel="stylesheet" href="/css/header-post.css">
+  
+
+  
+  
+  
+    <link rel="stylesheet" href="/css/vdonate.css">
+  
 
 </head>
+</html>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-hk">
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
 
   
-  
-    
-  
-
-  <div class="container sidebar-position-left page-post-detail">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">花谢花开</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
-    </div>
+  <div id="container">
+    <div id="wrap">
       
-        <p class="site-subtitle"></p>
-      
-  </div>
+        <header>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
-  </div>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
-            
-            首頁
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
-            
-            歸檔
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
-</nav>
-
-
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/22/ES数据迁移策略（ES系列二）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="leonyoung">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="https://res.cloudinary.com/leon824/image/upload/v1505793001/IMG_3957_uwrsum.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="花谢花开">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">ES数据迁移策略（ES系列二）</h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">發表於</span>
-              
-              <time title="創建於" itemprop="dateCreated datePublished" datetime="2020-07-22T19:19:32+08:00">
-                2020-07-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
+    <div id="allheader" class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="navbar-inner">
           
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分類於</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/elasticsearch/" itemprop="url" rel="index">
-                    <span itemprop="name">elasticsearch</span>
-                  </a>
-                </span>
+          <div class="container"> 
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
 
+            
+              <a class="brand" style="
+                 margin-top: 0px;"  
+                href="#" data-toggle="modal" data-target="#myModal" >
+                  <img width="124px" height="124px" alt="Hike News" src="/css/images/mylogo.jpg">
+              </a>
+            
+            
+            <div class="navbar-collapse collapse">
+              <ul class="hnav navbar-nav">
                 
+                  <li> <a class="main-nav-link" href="/">Home</a> </li>
                 
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
+                  <li> <a class="main-nav-link" href="/archives">Archives</a> </li>
                 
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
+                  <li> <a class="main-nav-link" href="/categories">Categories</a> </li>
                 
-                  <span class="post-meta-item-text">字數統計&#58;</span>
+                  <li> <a class="main-nav-link" href="/tags">Tags</a> </li>
                 
-                <span title="字數統計">
-                  3,499
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
+                  <li> <a class="main-nav-link" href="/about">About</a> </li>
                 
-                  <span class="post-meta-item-text">閱讀時長 &asymp;</span>
-                
-                <span title="閱讀時長">
-                  13
-                </span>
-              
-            </div>
-          
+                  <li><div id="search-form-wrap">
 
-          
-
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
         </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div></li>
+            </div>
+          </div>
+                
+      </div>
+    </div>
+
+</header>
+
+
+
+      
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-ES数据迁移策略（ES系列二）" style="width: 75%; float:left;" class="article article-type-post" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" class="article-title" itemprop="name">
+      ES数据迁移策略（ES系列二）
+    </h1>
+  
+
       </header>
     
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+    <div class="article-meta">
+      
+	<a href="/2020/07/22/ES数据迁移策略（ES系列二）/" class="article-date">
+	  <time datetime="2020-07-22T11:19:32.000Z" itemprop="datePublished">2020-07-22</time>
+	</a>
 
       
+    <a class="article-category-link" href="/categories/elasticsearch/">elasticsearch</a>
+
+      
+	<a class="article-views">
+	<span id="busuanzi_container_page_pv">
+		PV:<span id="busuanzi_value_page_pv"></span>
+	</span>
+	</a>
+
       
 
+    </div>
+    <div class="article-entry" itemprop="articleBody">
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇文章<a href="https://juejin.im/post/5f06eb2be51d453480767b88" target="_blank" rel="noopener">初识ES</a>中我们介绍了ES优势、使用场景以及相关的核心概念。这篇文章我们继续探讨如何将数据从Mysql迁移到ES中。</p>
 <p>在本文中，Logstash和ES的版本均为7.3</p>
@@ -433,274 +277,196 @@
 
       
     </div>
-    
-    
-    
+    <footer class="article-footer">
+      
+        <div id="donation_div"></div>
 
-    
-
-    
+<script src="/js/vdonate.js"></script>
+<script>
+var a = new Donate({
+  title: '如果觉得我的文章对您有用，请随意打赏。您的支持将鼓励我继续创作!', // 可选参数，打赏标题
+  btnText: 'Donate', // 可选参数，打赏按钮文字
+  el: document.getElementById('donation_div'),
+  wechatImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/WeChanQR.png',
+  alipayImage: 'https://raw.githubusercontent.com/iTimeTraveler/iTimeTraveler.github.io/site/source/about/donate/images/AliPayQR.jpg'
+});
+</script>
+      
+      
       <div>
-        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
-  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
-  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
-    <span>打賞</span>
-  </button>
-  <div id="QR" style="display: none;">
-
-    
-      <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="https://res.cloudinary.com/leon824/image/upload/v1550390622/WechatIMG56_vpe35d.jpg" alt="leonyoung 微信支付">
-        <p>微信支付</p>
-      </div>
-    
-
-    
-
-    
-
-  </div>
-</div>
-
-      </div>
-    
-
-    
-
-    <footer class="post-footer">
-      
+        <ul class="post-copyright">
+          <li class="post-copyright-author">
+          <strong>Post author:  </strong>leonyoung</a>
+          </li>
+          <li class="post-copyright-link">
+          <strong>Post link:  </strong>
+          <a href="/2020/07/22/ES数据迁移策略（ES系列二）/" target="_blank" title="ES数据迁移策略（ES系列二）">http://yoursite.com/2020/07/22/ES数据迁移策略（ES系列二）/</a>
+          </li>
+          <li class="post-copyright-license">
+            <strong>Copyright Notice:   </strong>
+            All articles in this blog are licensed under <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">CC BY-NC-ND 4.0</a>
+            unless stating additionally.
+          </li>
+         
+        </ul>
+<div>
 
       
       
-      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
 
       
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2020/07/22/ES系列（一）/" rel="next" title="初识ES（ES系列一）">
-                <i class="fa fa-chevron-left"></i> 初识ES（ES系列一）
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-          </div>
-        </div>
+      
+        
       
 
-      
-      
     </footer>
   </div>
   
-  
-  
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-
-  
-
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
     
-      <div id="sidebar-dimmer"></div>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/07/22/ES系列（一）/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">初识ES（ES系列一）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="toc-sidebar">
+    <div id="toc" class="toc-article">
+    <strong class="toc-title">Contents</strong>
     
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目錄
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            本站概覽
-          </li>
-        </ul>
-      
-
-      <section class="site-overview-wrap sidebar-panel">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image" src="https://res.cloudinary.com/leon824/image/upload/v1505793001/IMG_3957_uwrsum.jpg" alt="leonyoung">
-            
-              <p class="site-author-name" itemprop="name">leonyoung</p>
-              <p class="site-description motion-element" itemprop="description">人们常常嘲笑“螳臂当车” 但有时候啊，你并不是驾车的人 正巧是那只，反抗不了的螳螂。</p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">24</span>
-                  <span class="site-state-item-name">文章</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                
-                  <span class="site-state-item-count">13</span>
-                  <span class="site-state-item-name">分類</span>
-                
-              </div>
-            
-
-            
-
-          </nav>
-
-          
-
-          
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、全量数据迁移"><span class="nav-number">2.</span> <span class="nav-text">一、全量数据迁移</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、go-mysql-elasticsearch"><span class="nav-number">2.1.</span> <span class="nav-text">1、go-mysql-elasticsearch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、ES-BulkRequest"><span class="nav-number">2.2.</span> <span class="nav-text">2、ES BulkRequest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、阿里云DTS"><span class="nav-number">2.3.</span> <span class="nav-text">3、阿里云DTS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、Logstash"><span class="nav-number">2.4.</span> <span class="nav-text">4、Logstash</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#input模块"><span class="nav-number">2.4.1.</span> <span class="nav-text">input模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#filter模块"><span class="nav-number">2.4.2.</span> <span class="nav-text">filter模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#output模块"><span class="nav-number">2.4.3.</span> <span class="nav-text">output模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、增量数据同步"><span class="nav-number">3.</span> <span class="nav-text">二、增量数据同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、强一致性实现"><span class="nav-number">3.1.</span> <span class="nav-text">1、强一致性实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、最终一致性"><span class="nav-number">3.2.</span> <span class="nav-text">2、最终一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a、异步MQ同步"><span class="nav-number">3.2.1.</span> <span class="nav-text">a、异步MQ同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b、储存层面实现最终一致性"><span class="nav-number">3.2.2.</span> <span class="nav-text">b、储存层面实现最终一致性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c、Logstash增量同步"><span class="nav-number">3.2.3.</span> <span class="nav-text">c、Logstash增量同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d、Binlog增量同步"><span class="nav-number">3.2.4.</span> <span class="nav-text">d、Binlog增量同步</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Canal"><span class="nav-number">3.2.4.1.</span> <span class="nav-text">Canal</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DTS"><span class="nav-number">3.2.4.2.</span> <span class="nav-text">DTS</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
-      
-
-      
-
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、全量数据迁移"><span class="nav-number">2.</span> <span class="nav-text">一、全量数据迁移</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、go-mysql-elasticsearch"><span class="nav-number">2.1.</span> <span class="nav-text">1、go-mysql-elasticsearch</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、ES-BulkRequest"><span class="nav-number">2.2.</span> <span class="nav-text">2、ES BulkRequest</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、阿里云DTS"><span class="nav-number">2.3.</span> <span class="nav-text">3、阿里云DTS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、Logstash"><span class="nav-number">2.4.</span> <span class="nav-text">4、Logstash</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#input模块"><span class="nav-number">2.4.1.</span> <span class="nav-text">input模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#filter模块"><span class="nav-number">2.4.2.</span> <span class="nav-text">filter模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#output模块"><span class="nav-number">2.4.3.</span> <span class="nav-text">output模块</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、增量数据同步"><span class="nav-number">3.</span> <span class="nav-text">二、增量数据同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、强一致性实现"><span class="nav-number">3.1.</span> <span class="nav-text">1、强一致性实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、最终一致性"><span class="nav-number">3.2.</span> <span class="nav-text">2、最终一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#a、异步MQ同步"><span class="nav-number">3.2.1.</span> <span class="nav-text">a、异步MQ同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#b、储存层面实现最终一致性"><span class="nav-number">3.2.2.</span> <span class="nav-text">b、储存层面实现最终一致性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c、Logstash增量同步"><span class="nav-number">3.2.3.</span> <span class="nav-text">c、Logstash增量同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#d、Binlog增量同步"><span class="nav-number">3.2.4.</span> <span class="nav-text">d、Binlog增量同步</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Canal"><span class="nav-number">3.2.4.1.</span> <span class="nav-text">Canal</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#DTS"><span class="nav-number">3.2.4.2.</span> <span class="nav-text">DTS</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.3.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol>
+    
     </div>
   </aside>
 
-
+</section>
         
       </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-<div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">leonyoung</span>
-
+      
+      <footer id="footer">
   
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-area-chart"></i>
-    </span>
-    
-      <span class="post-meta-item-text">Site words total count&#58;</span>
-    
-    <span title="Site words total count">39.4k</span>
-  
-</div>
 
+  <div class="container">
+      	<div class="row">
+	      <p> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/iTimeTraveler/hexo-theme-hiker" target="_blank">Hexo-theme-hiker</a> </p>
+	      <p id="copyRightEn">Copyright &copy; 2013 - 2020 花谢花开 All Rights Reserved.</p>
+	      
+	      
+    		<p class="busuanzi_uv">
+				UV : <span id="busuanzi_value_site_uv"></span> |  
+				PV : <span id="busuanzi_value_site_pv"></span>
+		    </p>
+  		   
+		</div>
 
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主題 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
-
-
-<span id="busuanzi_container_site_pv">
-    本站总访问量<span id="busuanzi_value_site_pv"></span>次
-</span>
-
-
-
-        
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-          <span id="scrollpercent"><span>0</span>%</span>
-        
-      </div>
-    
-
-    
-
+		
   </div>
+</footer>
 
+
+<!-- min height -->
+
+<script>
+    var wrapdiv = document.getElementById("wrap");
+    var contentdiv = document.getElementById("content");
+    var allheader = document.getElementById("allheader");
+
+    wrapdiv.style.minHeight = document.body.offsetHeight + "px";
+    if (allheader != null) {
+      contentdiv.style.minHeight = document.body.offsetHeight - allheader.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    } else {
+      contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("footer").offsetHeight + "px";
+    }
+</script>
+    </div>
+    <!-- <nav id="mobile-nav">
   
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
 
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
 
 
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+
+
+
+
+  <script src="/js/dialog.js"></script>
 
 
 
@@ -708,134 +474,85 @@
 
 
 
+
+	<div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="myModalLabel">设置</h2>
+      </div>
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+
+
+      <div class="modal-body">
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" onclick="javascript:setFontSize();" aria-expanded="true" aria-controls="collapseOne">
+              正文字号大小
+            </a>
+          </div>
+          <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+          <div class="panel-body">
+            您已调整页面字体大小
+          </div>
+        </div>
+      
+
+
+          <div style="margin:6px;">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" onclick="javascript:setBackground();" aria-expanded="true" aria-controls="collapseTwo">
+              夜间护眼模式
+            </a>
+        </div>
+          <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+          <div class="panel-body">
+            夜间模式已经开启，再次单击按钮即可关闭 
+          </div>
+        </div>
+
+        <div>
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;关 于&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+        </div>
+         <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+          <div class="panel-body">
+            花谢花开
+          </div>
+          <div class="panel-body">
+            Copyright © 2020 leonyoung All Rights Reserved.
+          </div>
+        </div>
+      </div>
+
+
+      <hr style="margin-top:0px; margin-bottom:0px; width:80%; border-top: 1px solid #000;">
+      <hr style="margin-top:2px; margin-bottom:0px; width:80%; border-top: 3px solid #000;">
+      <div class="modal-footer">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+    </div>
+  </div>
+</div>
   
-
-
-
-
-
-
-
-
-
-
-
-
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
   
+    <a id="menu-switch"><i class="fa fa-bars fa-lg"></i></a>
   
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
-
-
-
-
-
-<!-- 页面点击小红心 -->
-<script type="text/javascript" src="/js/src/love.js"></script>
 </body>
 </html>
